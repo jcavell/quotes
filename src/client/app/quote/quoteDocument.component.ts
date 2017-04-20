@@ -1,6 +1,6 @@
 import {Component, Input} from "@angular/core";
-import {Product} from "../shared/product/product.model";
 import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
+import {Quote, QuoteProduct} from "../shared/quote/quote.model";
 // import jsPDF from 'jspdf';
 const jsPDF = require('jspdf/dist/jspdf.min');
 
@@ -14,7 +14,7 @@ const jsPDF = require('jspdf/dist/jspdf.min');
 })
 
 export class QuoteDocumentComponent {
-  @Input() products: Product[];
+  @Input() quote: Quote;
   @Input() quoteRequest: QuoteRequest;
 
   formatter = new Intl.NumberFormat('en-GB', {
@@ -23,23 +23,19 @@ export class QuoteDocumentComponent {
   minimumFractionDigits: 2,
 });
 
-  constructor() {
-  }
+  constructor() {}
 
-  private pricing(product:Product) : [number, number] {
+
+  private retrieveUnitPrice(quoteProduct:QuoteProduct) : number {
     let priceKey: number;
-    let quantity = this.quoteRequest.quantity;
-    if (quantity <= 999) priceKey = 500;
-    else if (quantity <= 1999) priceKey = 1000;
-    else if (quantity <= 4999) priceKey = 2000;
-    else if (quantity <= 9999) priceKey = 5000;
+    if (quoteProduct.quantity <= 999) priceKey = 500;
+    else if (quoteProduct.quantity <= 1999) priceKey = 1000;
+    else if (quoteProduct.quantity <= 4999) priceKey = 2000;
+    else if (quoteProduct.quantity <= 9999) priceKey = 5000;
     else priceKey = 10000;
 
-    let unitPrice = product.prices[priceKey];
-    return [unitPrice, quantity * unitPrice];
+    return quoteProduct.prices[priceKey];
   }
-
-
 
   public download() {
 
@@ -47,20 +43,22 @@ export class QuoteDocumentComponent {
     doc.setFontType('bold')
     doc.text(20, 20, 'FAO ' + this.quoteRequest.customer_name);
 
-    for(let i in this.products) {
-      let product = this.products[i];
+    for(let i in this.quote.quote_products) {
+      let quoteProduct = this.quote.quote_products[i];
+      console.log('Quote product: ' + JSON.stringify(quoteProduct));
 
       doc.setFontType('normal')
-      doc.text(20, 40 + (40 * i), product.name);
+      doc.text(20, 40 + (40 * i), quoteProduct.name);
       // doc.addPage();
 
-      let [unitPrice, totalPrice] = this.pricing(product);
-      doc.text(20, 50 + (40 * i), `${this.quoteRequest.quantity} @ ${this.formatter.format(unitPrice)} per unit`);
-      doc.setFontType('bold')
+      let unitPrice = this.retrieveUnitPrice(quoteProduct)
+      let totalPrice = quoteProduct.quantity * unitPrice;
+      doc.text(20, 50 + (40 * i), `${quoteProduct.quantity} @ ${this.formatter.format(unitPrice)} per unit`);
+      doc.setFontType('bold');
       doc.text(20, 60 + (40 * i), '= ' + this.formatter.format(totalPrice));
     }
 
     // Save the PDF
-    doc.save('quote_' + this.quoteRequest.id + '.pdf');
+    doc.save('quote_' + this.quote.id + '.pdf');
   }
 }

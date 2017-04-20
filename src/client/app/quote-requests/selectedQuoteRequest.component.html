@@ -1,20 +1,18 @@
-<div *ngIf="quoteRequest && products">
+<div *ngIf="quote">
 
-<h3>Quote Request ID: {{quoteRequest.id}}, Rep ID: {{quoteRequest.rep_id}}</h3>
+<h3>Quote Request ID: {{quote.quote_request_id}}</h3>
 
   <table class="table table-striped" border="1">
     <tr>
       <th>Product name</th>
-      <th>Colour</th>
-      <th>Ink colour</th>
+      <th>Sku</th>
       <th>Quantity</th>
     </tr>
-    <tr *ngFor="let product of products">
+    <tr *ngFor="let product of quote.quote_products">
       <td>{{product.name}}</td>
-      <td>{{product.colour}}</td>
-      <td>{{product.ink_colour}}</td>
-      <td><input [(ngModel)]="quoteRequest.quantity" name="quantity"></td>
+      <td>{{product.sku}}</td>
+      <td><input [(ngModel)]="product.quantity" name="quantity"></td>
     </tr>
   </table>
-  <download-quote [products] = "products" [quoteRequest] = "quoteRequest"></download-quote>
+  <download-quote [quote] = "quote" [quoteRequest] = "quoteRequest"></download-quote>
 </div>

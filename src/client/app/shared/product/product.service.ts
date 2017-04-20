@@ -44,27 +44,27 @@ export class ProductService {
       .catch(this.handleError);
   }
 
-  getProductCheapestAlternativeAndCrossSell(requestedProductId: number): Observable<Product[]> {
+  getProductAndAlternatives(requestedProductId: number): Observable<Product[]> {
     let combined = this.getFromPenWarehouse().combineLatest(this.getFromCrossSell(),
       (penWarehouseProds, crossSellProds) => {
-        console.log('cross sell products: ' + JSON.stringify(crossSellProds));
+        // console.log('cross sell products: ' + JSON.stringify(crossSellProds));
         let quoteProducts: Product[] = [];
         let requestedProd = penWarehouseProds.find(product => product.id === requestedProductId);
-        console.log('requested product: ' + JSON.stringify(requestedProd));
+        // console.log('requested product: ' + JSON.stringify(requestedProd));
         quoteProducts.push(requestedProd);
 
         let similarProds = penWarehouseProds.filter(product => product.id !== requestedProductId && product.category === requestedProd.category);
-        console.log('similar products: ' + JSON.stringify(similarProds));
+        // console.log('similar products: ' + JSON.stringify(similarProds));
 
         if (similarProds.length > 0) {
-          console.log('Getting cheapest product')
+          // console.log('Getting cheapest product')
           let cheapestProd = similarProds.reduce((a, b) => Math.max(a.prices[0], b.prices[[0]])); // TODO use price for quantity requested
-          console.log('cheapest product: ' + JSON.stringify(cheapestProd));
+          // console.log('cheapest product: ' + JSON.stringify(cheapestProd));
           if (cheapestProd.id !== requestedProd.id) quoteProducts.push(cheapestProd);
-          console.log(`set selected product to ${requestedProd.id} and cheapest product to ${cheapestProd.id}`);
+          // console.log(`set selected product to ${requestedProd.id} and cheapest product to ${cheapestProd.id}`);
         }
         quoteProducts = quoteProducts.concat(crossSellProds);
-        console.log('***combined products***: ' + JSON.stringify(quoteProducts));
+        // console.log('***combined products***: ' + JSON.stringify(quoteProducts));
         return quoteProducts;
       });
 
