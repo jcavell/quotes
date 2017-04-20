@@ -1,6 +1,6 @@
 import {Component, Input} from "@angular/core";
 import {Product} from "../shared/product/product.model";
-import {Quote} from "../shared/quote/quote.model";
+import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
 // import jsPDF from 'jspdf';
 const jsPDF = require('jspdf/dist/jspdf.min');
 
@@ -13,10 +13,9 @@ const jsPDF = require('jspdf/dist/jspdf.min');
         `
 })
 
-
 export class QuoteDocumentComponent {
   @Input() products: Product[];
-  @Input() quote: Quote;
+  @Input() quoteRequest: QuoteRequest;
 
   formatter = new Intl.NumberFormat('en-GB', {
   style: 'currency',
@@ -29,7 +28,7 @@ export class QuoteDocumentComponent {
 
   private pricing(product:Product) : [number, number] {
     let priceKey: number;
-    let quantity = this.quote.quantity;
+    let quantity = this.quoteRequest.quantity;
     if (quantity <= 999) priceKey = 500;
     else if (quantity <= 1999) priceKey = 1000;
     else if (quantity <= 4999) priceKey = 2000;
@@ -46,7 +45,7 @@ export class QuoteDocumentComponent {
 
     let doc = new jsPDF();
     doc.setFontType('bold')
-    doc.text(20, 20, 'FAO ' + this.quote.customer_name);
+    doc.text(20, 20, 'FAO ' + this.quoteRequest.customer_name);
 
     for(let i in this.products) {
       let product = this.products[i];
@@ -56,12 +55,12 @@ export class QuoteDocumentComponent {
       // doc.addPage();
 
       let [unitPrice, totalPrice] = this.pricing(product);
-      doc.text(20, 50 + (40 * i), `${this.quote.quantity} @ ${this.formatter.format(unitPrice)} per unit`);
+      doc.text(20, 50 + (40 * i), `${this.quoteRequest.quantity} @ ${this.formatter.format(unitPrice)} per unit`);
       doc.setFontType('bold')
       doc.text(20, 60 + (40 * i), '= ' + this.formatter.format(totalPrice));
     }
 
     // Save the PDF
-    doc.save('quote_' + this.quote.id + '.pdf');
+    doc.save('quote_' + this.quoteRequest.id + '.pdf');
   }
 }

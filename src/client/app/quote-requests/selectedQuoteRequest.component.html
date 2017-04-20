@@ -1,6 +1,6 @@
-<div *ngIf="quote && products">
+<div *ngIf="quoteRequest && products">
 
-<h3>Quote ID: {{quote.id}}, Rep ID: {{quote.rep_id}}</h3>
+<h3>Quote Request ID: {{quoteRequest.id}}, Rep ID: {{quoteRequest.rep_id}}</h3>
 
   <table class="table table-striped" border="1">
     <tr>
@@ -13,8 +13,8 @@
       <td>{{product.name}}</td>
       <td>{{product.colour}}</td>
       <td>{{product.ink_colour}}</td>
-      <td><input [(ngModel)]="quote.quantity" name="quantity"></td>
+      <td><input [(ngModel)]="quoteRequest.quantity" name="quantity"></td>
     </tr>
   </table>
-  <download-quote [products] = "products" [quote] = "quote"></download-quote>
+  <download-quote [products] = "products" [quoteRequest] = "quoteRequest"></download-quote>
 </div>

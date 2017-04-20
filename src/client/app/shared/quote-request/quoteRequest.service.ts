@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Http, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
-import {QuoteRequest} from "./quote.model";
+import {QuoteRequest} from "./quoteRequest.model";
 // import 'rxjs/add/operator/do';  // for debugging
 
 /**
@@ -22,7 +22,7 @@ export class QuoteRequestService {
    * @return {Product[]} The Observable for the HTTP request.
    */
 getNew(): Observable<QuoteRequest[]> {
-    return this.http.get('mock-data/quoteRequests/new-quoteRequests.json')
+    return this.http.get('mock-data/quote-requests/new.json')
                     .map((res: Response) => res.json())
     //              .do(data => console.log('server data:', data))  // debug
                     .catch(this.handleError);

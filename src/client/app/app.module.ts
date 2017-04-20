@@ -9,11 +9,11 @@ import {AboutModule} from "./about/about.module";
 import {HomeModule} from "./home/home.module";
 import {SharedModule} from "./shared/shared.module";
 import {ProductModule} from "./product/product.module";
-import {QuotesModule} from "./quotes/quotes.module";
+import {QuoteRequestsModule} from "./quote-requests/quoteRequests.module";
 
 
 @NgModule({
-  imports: [BrowserModule, HttpModule, AppRoutingModule, AboutModule, HomeModule, ProductModule, QuotesModule, SharedModule.forRoot()],
+  imports: [BrowserModule, HttpModule, AppRoutingModule, AboutModule, HomeModule, ProductModule, QuoteRequestsModule, SharedModule.forRoot()],
   declarations: [AppComponent],
   providers: [{
     provide: APP_BASE_HREF,

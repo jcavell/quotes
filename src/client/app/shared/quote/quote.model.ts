@@ -1,17 +1,20 @@
+export class QuoteProduct {
+  constructor(public id: number,
+              product_id: number,
+              product_name: string,
+              product_sku: string,
+              product_sage_sku: string,
+              quantity: number,
+              unitPrice: number) {
+
+  }
+}
+
 export class Quote {
   constructor(public id: number,
-              rep_id: number,
-              lead_source: string,
-              lead_subject: string,
-              customer_name: string,
-              customer_telephone: string,
-              customer_email: string,
-              customer_company: string,
-              date_added: string,
-              product_id: number,
-              quantity: number,
-              supplier: string,
-              sku: string) {
+              quote_request_id: number,
+              quote_created: string,
+              quote_products: QuoteProduct[]) {
 
   }
 }

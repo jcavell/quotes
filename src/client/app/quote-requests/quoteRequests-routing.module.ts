@@ -1,13 +1,14 @@
 import {NgModule} from "@angular/core";
 import {RouterModule} from "@angular/router";
-import {QuotesComponent} from "./quotes.component";
+import {QuoteRequestsComponent} from "./quoteRequests.component";
 
 @NgModule({
   imports: [
     RouterModule.forChild([
-      { path: 'quotes', component: QuotesComponent }
+      { path: 'quote-requests', component: QuoteRequestsComponent }
     ])
   ],
   exports: [RouterModule]
 })
-export class QuotesRoutingModule { }
+
+export class QuoteRequestsRoutingModule { }
