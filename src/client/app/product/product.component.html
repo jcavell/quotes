@@ -1,0 +1,71 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+
+      <form (submit)="getProducts()">
+
+        <div>
+          <h3>Order quantity</h3>
+          <input [(ngModel)]="quantity" name="quantity" placeholder="Quantity" class = "input-sm">
+        </div>
+
+        <div class="radio">
+          <h3>Number of colours</h3>
+          <label class="radio-inline"><input type="radio" [(ngModel)]="numColours" name="numColours" value="1">1</label>
+          <label class="radio-inline"><input type="radio" [(ngModel)]="numColours" name="numColours" value="2">2</label>
+          <label class="radio-inline"><input type="radio" [(ngModel)]="numColours" name="numColours" value="3">3</label>
+          <label class="radio-inline"><input type="radio" [(ngModel)]="numColours" name="numColours" value="4">4</label>
+        </div>
+
+        <div class="radio">
+          <h3>Minimum lead time</h3>
+          <label class="radio-inline"><input type="radio" [(ngModel)]="leadTime" name="leadTime" value="4">4</label>
+          <label class="radio-inline"><input type="radio" [(ngModel)]="leadTime" name="leadTime" value="10">10</label>
+          <label class="radio-inline"><input type="radio" [(ngModel)]="leadTime" name="leadTime" value="20">20</label>
+        </div>
+
+        <div class="form-group">
+          <h3>Ink colour</h3>
+          <select [(ngModel)]="inkColour" class="form-control" name="Ink Colour" placeholder="Ink colour">
+            <option *ngFor="let inkColour of inkColours" [attr.value]="inkColour">{{inkColour}}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <h3>Pen colour</h3>
+          <select [(ngModel)]="colour" class="form-control" name="Colour" placeholder="Colour">
+            <option *ngFor="let colour of colours" [attr.value]="colour">{{colour}}</option>
+          </select>
+        </div>
+
+        <div>
+          <button type="submit" class="btn btn-lg btn-info">Find Products</button>
+        </div>
+
+      </form>
+    </div>
+
+
+    <div class="col-md-9">
+      <table class="table table-striped" border="1">
+        <thead>
+        <tr>
+          <th>Product name</th>
+          <th>Price</th>
+          <th>Stock level</th>
+          <th>Enough stock?</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let product of products">
+          <td>{{product.name}}</td>
+          <td>{{product.prices[priceKey]}}</td>
+          <td>{{product.stock_level}}</td>
+          <td>{{product.enough_stock}}</td>
+        </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>

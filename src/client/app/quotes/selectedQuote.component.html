@@ -1,0 +1,20 @@
+<div *ngIf="quote && products">
+
+<h3>Quote ID: {{quote.id}}, Rep ID: {{quote.rep_id}}</h3>
+
+  <table class="table table-striped" border="1">
+    <tr>
+      <th>Product name</th>
+      <th>Colour</th>
+      <th>Ink colour</th>
+      <th>Quantity</th>
+    </tr>
+    <tr *ngFor="let product of products">
+      <td>{{product.name}}</td>
+      <td>{{product.colour}}</td>
+      <td>{{product.ink_colour}}</td>
+      <td><input [(ngModel)]="quote.quantity" name="quantity"></td>
+    </tr>
+  </table>
+  <download-quote [products] = "products" [quote] = "quote"></download-quote>
+</div>
