@@ -8,7 +8,7 @@ const jsPDF = require('jspdf/dist/jspdf.min');
   selector: 'download-quote',
   template: `
         <button
-          (click)="download()">Download quote
+          (click)="download()">Create quote
         </button>
         `
 })
@@ -25,7 +25,6 @@ export class QuoteDocumentComponent {
 
   constructor() {}
 
-
   private retrieveUnitPrice(quoteProduct:QuoteProduct) : number {
     let priceKey: number;
     if (quoteProduct.quantity <= 999) priceKey = 500;
@@ -38,22 +37,22 @@ export class QuoteDocumentComponent {
   }
 
   public download() {
-
     let doc = new jsPDF();
     doc.setFontType('bold')
     doc.text(20, 20, 'FAO ' + this.quoteRequest.customer_name);
 
-    for(let i in this.quote.quote_products) {
-      let quoteProduct = this.quote.quote_products[i];
-      console.log('Quote product: ' + JSON.stringify(quoteProduct));
+    let filteredProducts = this.quote.quote_products.filter(prod => prod.is_included);
+    for(let i in filteredProducts) {
+      let product = filteredProducts[i];
+      console.log('Quote product: ' + JSON.stringify(product));
 
       doc.setFontType('normal')
-      doc.text(20, 40 + (40 * i), quoteProduct.name);
+      doc.text(20, 40 + (40 * i), product.name);
       // doc.addPage();
 
-      let unitPrice = this.retrieveUnitPrice(quoteProduct)
-      let totalPrice = quoteProduct.quantity * unitPrice;
-      doc.text(20, 50 + (40 * i), `${quoteProduct.quantity} @ ${this.formatter.format(unitPrice)} per unit`);
+      let unitPrice = this.retrieveUnitPrice(product)
+      let totalPrice = product.quantity * unitPrice;
+      doc.text(20, 50 + (40 * i), `${product.quantity} @ ${this.formatter.format(unitPrice)} per unit`);
       doc.setFontType('bold');
       doc.text(20, 60 + (40 * i), '= ' + this.formatter.format(totalPrice));
     }

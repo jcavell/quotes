@@ -5,6 +5,7 @@ export class QuoteProduct {
               public sku: string,
               public sage_sku: string,
               public quantity: number,
+              public is_included: boolean,
               public prices: Map<number, number>) {
 
   }
