@@ -19,6 +19,7 @@ export class Product {
               public manufacturer: string,
               public material: string,
               public minimum_order_quantity: number,
+              public origination_price : number,
               public prices: Map<number, number>,
               public weight: string,
               public stock_level: number,
