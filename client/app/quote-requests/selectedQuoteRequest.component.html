@@ -1,20 +1,25 @@
-<div *ngIf="quote">
-
-<h3>Quote request for {{quoteRequest.customer_name}}</h3>
-
-  <table class="table table-striped" border="1">
-    <tr>
-      <th>Product name</th>
-      <th>Sku</th>
-      <th>Quantity</th>
-      <th>Include in quote?</th>
-    </tr>
-    <tr *ngFor="let product of quote.quote_products">
-      <td>{{product.name}}</td>
-      <td>{{product.sku}}</td>
-      <td><input [(ngModel)]="product.quantity" name="quantity"></td>
-      <td><input type="checkbox" [checked]="product.is_included" (change)="product.is_included = !product.is_included"></td>
-    </tr>
-  </table>
-  <download-quote [quote] = "quote" [quoteRequest] = "quoteRequest"></download-quote>
+<div *ngIf="quote" class="card">
+  <h4 class="card-header">Quote request {{quoteRequest.id}}: {{quoteRequest.customer_name}}</h4>
+  <div class="card-block">
+    <table class="table table-bordered table-striped">
+      <thead class="thead-default">
+      <tr>
+        <th>Product name</th>
+        <th>Sku</th>
+        <th>Quantity</th>
+        <th>Include?</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let product of quote.quote_products">
+        <td>{{product.name}}</td>
+        <td>{{product.sku}}</td>
+        <td><input [(ngModel)]="product.quantity" name="quantity"></td>
+        <td><input type="checkbox" [checked]="product.is_included"
+                   (change)="product.is_included = !product.is_included"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <download-quote [quote]="quote" [quoteRequest]="quoteRequest"></download-quote>
 </div>

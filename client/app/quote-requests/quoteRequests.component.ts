@@ -23,7 +23,7 @@ export class QuoteRequestsComponent implements OnInit {
     this.getQuoteRequests();
   }
 
-  displaySelectedQuoteRequest(event: Event, quoteRequest:QuoteRequest) {
+  displaySelectedQuoteRequest(event: Event, quoteRequest: QuoteRequest) {
     console.log('Selected quote: ' + quoteRequest.id);
     this.selectedQuoteRequestService.changeQuote(quoteRequest);
   }

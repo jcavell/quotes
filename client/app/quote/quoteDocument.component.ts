@@ -7,10 +7,8 @@ import jsPDF from "jspdf";
 @Component({
   selector: 'download-quote',
   template: `
-        <button
-          (click)="download()">Create quote
-        </button>
-        `
+ <button class="btn btn-primary" (click)="download()"><i class="fa fa-download"></i> Download quote</button> 
+`
 })
 
 export class QuoteDocumentComponent {

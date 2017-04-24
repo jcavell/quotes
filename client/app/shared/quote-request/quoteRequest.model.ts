@@ -1,6 +1,6 @@
 export class QuoteRequest {
   constructor(public id: number,
-              public rep_id: number,
+              public rep_email: string,
               public lead_source: string,
               public lead_subject: string,
               public customer_name: string,
