@@ -2,9 +2,6 @@ import {Component} from "@angular/core";
 import {ProductService} from "../shared/product/product.service";
 import {Product} from "../shared/product/product.model";
 
-/**
- * This class represents the lazy loaded ProductComponent.
- */
 @Component({
   moduleId: module.id,
   selector: 'sd-home',
@@ -15,12 +12,12 @@ import {Product} from "../shared/product/product.model";
 export class ProductComponent {
   products: Product[];
   errorMessage: string;
-  quantity:number = 500;
-  numColours: string = '';
-  inkColour: string = '';
-  colour:string = '';
-  leadTime:number = 0;
-  priceKey:string = 'tbc';
+  quantity = 500;
+  numColours = '';
+  inkColour = '';
+  colour = '';
+  leadTime = 0;
+  priceKey = 'tbc';
   leadTimes: string[] = ['1-4 working days', '5-10 working days', '11-20 working days']
   inkColours: string[] = ['', 'Blue', 'Black', 'Green', 'Red'];
   colours: string[] = ['', 'Blue', 'Black', 'Green', 'Red'];
@@ -46,11 +43,17 @@ export class ProductComponent {
 
 
   setPriceKey() {
-    if(this.quantity <= 999) this.priceKey = '500';
-    else if (this.quantity <= 1999) this.priceKey = '1000';
-    else if (this.quantity <= 4999) this.priceKey = '2000';
-    else if (this.quantity <= 9999) this.priceKey = '5000';
-    else this.priceKey = '10000';
+    if (this.quantity <= 999) {
+      this.priceKey = '500';
+    } else if (this.quantity <= 1999) {
+      this.priceKey = '1000';
+    } else if (this.quantity <= 4999) {
+      this.priceKey = '2000';
+    } else if (this.quantity <= 9999) {
+      this.priceKey = '5000';
+    } else {
+      this.priceKey = '10000';
+    }
   }
 
   setStockLevel(product: Product) {
