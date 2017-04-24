@@ -1,0 +1,31 @@
+<div class="container">
+  <h3>Quote requests</h3>
+      <table class="table table-striped" border="1">
+        <thead>
+        <tr>
+          <th>Date</th>
+          <th>Quote Request ID</th>
+          <th>Product ID</th>
+          <th>Rep ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Company</th>
+          <th>Quantity</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let quoteRequest of quoteRequests" (click)="displaySelectedQuoteRequest($event, quoteRequest)">
+          <td>{{quoteRequest.date_added}}</td>
+          <td>{{quoteRequest.id}}</td>
+          <td>{{quoteRequest.product_id}}</td>
+          <td>{{quoteRequest.rep_id}}</td>
+          <td>{{quoteRequest.customer_name}}</td>
+          <td>{{quoteRequest.customer_email}}</td>
+          <td>{{quoteRequest.customer_company}}</td>
+          <td>{{quoteRequest.quantity}}</td>
+        </tr>
+        </tbody>
+      </table>
+
+  <selected-quote-request></selected-quote-request>
+</div>
