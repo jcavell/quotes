@@ -8,7 +8,7 @@ import {SelectedQuoteRequestService} from "../shared/quote-request/selectedQuote
  */
 @Component({
   moduleId: module.id,
-  selector: 'sd-home',
+  selector: 'sd-rep',
   templateUrl: 'quoteRequests.component.html',
   styleUrls: ['quoteRequests.component.css'],
 })

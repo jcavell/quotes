@@ -1,8 +1,8 @@
 /* tslint:disable:no-unused-variable */
 
-/*describe('Component: Home', () => {
+/*describe('Component: Rep', () => {
   it('should create an instance', () => {
-    let component = new HomeComponent();
+    let component = new RepComponent();
     expect(component).toBeTruthy();
   });
 });*/

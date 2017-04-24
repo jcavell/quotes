@@ -2,7 +2,6 @@ import {Component, Input} from "@angular/core";
 import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
 import {Quote, QuoteProduct} from "../shared/quote/quote.model";
 import jsPDF from "jspdf";
-// const jsPDF = require('jspdf/dist/jspdf.min');
 // const autoTable = require('jspdf-autotable/dist/jspdf.plugin.autotable');
 
 @Component({
@@ -19,26 +18,33 @@ export class QuoteDocumentComponent {
   @Input() quoteRequest: QuoteRequest;
 
   formatter = new Intl.NumberFormat('en-GB', {
-  style: 'currency',
-  currency: 'GBP',
-  minimumFractionDigits: 2,
-});
+    style: 'currency',
+    currency: 'GBP',
+    minimumFractionDigits: 2,
+  });
 
-  constructor() {}
+  constructor() {
+  }
 
-  private retrieveUnitPrice(quoteProduct: QuoteProduct) : number {
+  private retrieveUnitPrice(quoteProduct: QuoteProduct): number {
     let priceKey: number;
-    if (quoteProduct.quantity <= 999) priceKey = 500;
-    else if (quoteProduct.quantity <= 1999) priceKey = 1000;
-    else if (quoteProduct.quantity <= 4999) priceKey = 2000;
-    else if (quoteProduct.quantity <= 9999) priceKey = 5000;
-    else priceKey = 10000;
+    if (quoteProduct.quantity <= 999) {
+      priceKey = 500;
+    } else if (quoteProduct.quantity <= 1999) {
+      priceKey = 1000;
+    } else if (quoteProduct.quantity <= 4999) {
+      priceKey = 2000;
+    } else if (quoteProduct.quantity <= 9999) {
+      priceKey = 5000;
+    } else {
+      priceKey = 10000;
+    }
 
     return quoteProduct.prices[priceKey];
   }
 
   public download() {
-    let doc = new jsPDF();
+    const doc = new jsPDF();
     doc.setFontType('bold')
     doc.text(20, 20, 'FAO ' + this.quoteRequest.customer_name);
 
@@ -46,8 +52,8 @@ export class QuoteDocumentComponent {
 
     const totalPriceForProducts: number[] = [];
 
-    let counter:string;
-    for(counter in includedProducts) {
+    let counter: string;
+    for (counter in includedProducts) {
       const i = parseInt(counter); // TODO do this better
 
       const startingRowPosition = 50 * i;
@@ -73,7 +79,7 @@ export class QuoteDocumentComponent {
     const vat = totalPrice * 0.2;
     const totalPriceWithVat = totalPrice + vat;
 
-    const row = 40 + (50 * includedProducts.length -1);
+    const row = 40 + (50 * includedProducts.length - 1);
     doc.setFontType('normal');
     doc.text(20, row, `Total: ${this.formatter.format(totalPrice)}`);
     doc.text(20, row + 10, `VAT @ 20%: ${this.formatter.format(vat)}`);

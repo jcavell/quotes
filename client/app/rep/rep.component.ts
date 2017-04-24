@@ -6,11 +6,11 @@ import {DataService} from "../services/data.service";
 import {ToastComponent} from "../shared/toast/toast.component";
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  selector: 'app-rep',
+  templateUrl: './rep.component.html',
+  styleUrls: ['./rep.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class RepComponent implements OnInit {
 
   reps = [];
   isLoading = true;
