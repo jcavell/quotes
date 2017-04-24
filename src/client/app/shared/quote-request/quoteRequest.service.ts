@@ -22,7 +22,7 @@ export class QuoteRequestService {
    * @return {Product[]} The Observable for the HTTP request.
    */
 getNew(): Observable<QuoteRequest[]> {
-    return this.http.get('mock-data/quote-requests/new.json')
+    return this.http.get('http://localhost:3001/quote-requests')
                     .map((res: Response) => res.json())
     //              .do(data => console.log('server data:', data))  // debug
                     .catch(this.handleError);

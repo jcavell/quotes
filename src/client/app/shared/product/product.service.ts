@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Http, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
-import {Product} from "./product.model";
+import {Product, Stock} from "./product.model";
 // import 'rxjs/add/operator/do';  // for debugging
 
 /**
@@ -30,16 +30,16 @@ export class ProductService {
   }
 
   getFromPenWarehouse(): Observable<Product[]> {
-    return this.get('mock-data/products/pen-warehouse/all-products.json');
+    return this.get('http://localhost:3001/products');
   }
 
   getFromCrossSell(): Observable<Product[]> {
-    return this.get('mock-data/products/cross-sell/all-products.json');
+    return this.get('http://localhost:3001/cross-sell');
   }
 
 
-  getStockLevel(sageSku: string): Observable<object> {
-    return this.http.get(`mock-data/stock-level/pen-warehouse/${sageSku}.json`)
+  getStock(sageSku: string): Observable<Stock> {
+    return this.http.get(`http://localhost:3001/stock-level-by-sage-sku/${sageSku}`)
       .map((res: Response) => res.json())
       .catch(this.handleError);
   }

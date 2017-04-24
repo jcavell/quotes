@@ -27,4 +27,9 @@ export class Product {
   }
 }
 
+export class Stock {
+  constructor(public id: string, public stock_level: number) {
+  }
+}
+
 

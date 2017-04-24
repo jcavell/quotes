@@ -54,10 +54,10 @@ export class ProductComponent {
   }
 
   setStockLevel(product: Product) {
-    this.productService.getStockLevel(product.sage_sku)
+    this.productService.getStock(product.sage_sku)
       .subscribe(
-        sageSku2stockLevel => {
-          product.stock_level = sageSku2stockLevel[product.sage_sku];
+        stock => {
+          product.stock_level = stock.stock_level;
           if(product.stock_level < this.quantity) {product.enough_stock = false;} else {product.enough_stock = true;}
         },
         error => this.errorMessage = <any>error
