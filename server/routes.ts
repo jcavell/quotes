@@ -1,14 +1,14 @@
-import CatsCtrl from "./controllers/cats";
+import RepsCtrl from "./controllers/reps";
 
 export default function setRoutes(app) {
 
-  const cats = new CatsCtrl();
+  const reps = new RepsCtrl();
 
   // APIs
-  app.route('/api/cats').get(cats.getAll);
-  app.route('/api/cats/count').get(cats.count);
-  app.route('/api/cat').post(cats.insert);
-  app.route('/api/cat/:id').get(cats.get);
-  app.route('/api/cat/:id').put(cats.update);
-  app.route('/api/cat/:id').delete(cats.delete);
+  app.route('/api/reps').get(reps.getAll);
+  app.route('/api/reps/count').get(reps.count);
+  app.route('/api/rep').post(reps.insert);
+  app.route('/api/rep/:id').get(reps.get);
+  app.route('/api/rep/:id').put(reps.update);
+  app.route('/api/rep/:id').delete(reps.delete);
 }

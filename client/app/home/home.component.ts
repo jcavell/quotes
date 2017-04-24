@@ -12,16 +12,15 @@ import {ToastComponent} from "../shared/toast/toast.component";
 })
 export class HomeComponent implements OnInit {
 
-  cats = [];
+  reps = [];
   isLoading = true;
 
-  cat = {};
+  rep = {};
   isEditing = false;
 
-  addCatForm: FormGroup;
+  addRepForm: FormGroup;
   name = new FormControl('', Validators.required);
-  age = new FormControl('', Validators.required);
-  weight = new FormControl('', Validators.required);
+  email = new FormControl('', Validators.required);
 
   constructor(private http: Http,
               private dataService: DataService,
@@ -29,65 +28,64 @@ export class HomeComponent implements OnInit {
               private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    this.getCats();
+    this.getReps();
 
-    this.addCatForm = this.formBuilder.group({
+    this.addRepForm = this.formBuilder.group({
       name: this.name,
-      age: this.age,
-      weight: this.weight
+      email: this.email,
     });
   }
 
-  getCats() {
-    this.dataService.getCats().subscribe(
-      data => this.cats = data,
+  getReps() {
+    this.dataService.getReps().subscribe(
+      data => this.reps = data,
       error => console.log(error),
       () => this.isLoading = false
     );
   }
 
-  addCat() {
-    this.dataService.addCat(this.addCatForm.value).subscribe(
+  addRep() {
+    this.dataService.addRep(this.addRepForm.value).subscribe(
       res => {
-        const newCat = res.json();
-        this.cats.push(newCat);
-        this.addCatForm.reset();
+        const newRep = res.json();
+        this.reps.push(newRep);
+        this.addRepForm.reset();
         this.toast.setMessage('item added successfully.', 'success');
       },
       error => console.log(error)
     );
   }
 
-  enableEditing(cat) {
+  enableEditing(rep) {
     this.isEditing = true;
-    this.cat = cat;
+    this.rep = rep;
   }
 
   cancelEditing() {
     this.isEditing = false;
-    this.cat = {};
+    this.rep = {};
     this.toast.setMessage('item editing cancelled.', 'warning');
-    // reload the cats to reset the editing
-    this.getCats();
+    // reload the reps to reset the editing
+    this.getReps();
   }
 
-  editCat(cat) {
-    this.dataService.editCat(cat).subscribe(
+  editRep(rep) {
+    this.dataService.editRep(rep).subscribe(
       res => {
         this.isEditing = false;
-        this.cat = cat;
+        this.rep = rep;
         this.toast.setMessage('item edited successfully.', 'success');
       },
       error => console.log(error)
     );
   }
 
-  deleteCat(cat) {
+  deleteRep(rep) {
     if (window.confirm('Are you sure you want to permanently delete this item?')) {
-      this.dataService.deleteCat(cat).subscribe(
+      this.dataService.deleteRep(rep).subscribe(
         res => {
-          const pos = this.cats.map(elem => { return elem._id; }).indexOf(cat._id);
-          this.cats.splice(pos, 1);
+          const pos = this.reps.map(elem => { return elem._id; }).indexOf(rep._id);
+          this.reps.splice(pos, 1);
           this.toast.setMessage('item deleted successfully.', 'success');
         },
         error => console.log(error)
