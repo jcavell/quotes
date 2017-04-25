@@ -6,6 +6,7 @@ import {RepComponent} from "./rep/rep.component";
 import {DataService} from "./services/data.service";
 import {QuoteRequestsModule} from "./quote-requests/quoteRequests.module";
 import {ProductModule} from "./product/product.module";
+import {QuotesModule} from "./quotes/quotes.module";
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import {ProductModule} from "./product/product.module";
     AppRoutingModule,
     SharedModule,
     ProductModule,
-    QuoteRequestsModule
+    QuoteRequestsModule,
+    QuotesModule
   ],
   providers: [
     DataService

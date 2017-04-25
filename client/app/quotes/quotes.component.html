@@ -1,0 +1,32 @@
+<app-toast [message]="toast.message"></app-toast>
+
+<div class="card" *ngIf="!isLoading">
+  <h4 class="card-header">New quotes ({{quotes.length}})</h4>
+  <div class="card-block">
+    <table class="table table-bordered table-striped">
+      <thead class="thead-default">
+        <tr>
+          <th>Quote request</th>
+          <th>Customer</th>
+          <th>Created</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="quotes.length === 0">
+        <tr>
+          <td colspan="4">There are no new quotes</td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr *ngFor="let quote of quotes">
+          <td>{{quote[1].id}}</td>
+          <td>{{quote[1].customer_name}}</td>
+          <td>{{quote[0].quote_created}}</td>
+          <td>
+            <button class="btn btn-sm btn-warning"><i class="fa fa-pencil"></i> Create PO</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

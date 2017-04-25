@@ -10,7 +10,7 @@ import {SelectedQuoteRequestService} from "../shared/quote-request/selectedQuote
   moduleId: module.id,
   selector: 'sd-rep',
   templateUrl: 'quoteRequests.component.html',
-  styleUrls: ['quoteRequests.component.css'],
+  styleUrls: ['./quoteRequests.component.scss']
 })
 
 export class QuoteRequestsComponent implements OnInit {

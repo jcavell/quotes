@@ -18,4 +18,7 @@ export class QuoteService {
     return this.http.post('/api/quote', JSON.stringify(quote), this.options);
   }
 
+  getQuotes(): Observable<any> {
+    return this.http.get('/api/quotes').map(res => res.json());
+  }
 }

@@ -12,7 +12,8 @@ import {Quote, QuoteProduct} from "../shared/quote/quote.model";
 @Component({
   moduleId: module.id,
   selector: 'selected-quote-request',
-  templateUrl: 'selectedQuoteRequest.component.html'
+  templateUrl: 'selectedQuoteRequest.component.html',
+  styleUrls: ['./quoteRequests.component.scss']
 })
 
 export class SelectedQuoteRequestComponent implements OnInit, OnDestroy {
