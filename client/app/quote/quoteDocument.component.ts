@@ -1,15 +1,14 @@
 import {Component, Input} from "@angular/core";
 import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
 import {Quote, QuoteProduct} from "../shared/quote/quote.model";
+import {QuoteService} from "../shared/quote/quote.service";
 // import jsPDF from 'jspdf';
 declare var jsPDF: any;
-
-// const autoTable = require('jspdf-autotable/dist/jspdf.plugin.autotable');
 
 @Component({
   selector: 'download-quote',
   template: `
- <button class="btn btn-primary" (click)="download()"><i class="fa fa-download"></i> Download quote</button> 
+ <button class='btn btn-primary' (click)='download()'><i class='fa fa-download'></i> Download quote</button> 
 `
 })
 export class QuoteDocumentComponent {
@@ -22,10 +21,10 @@ export class QuoteDocumentComponent {
     minimumFractionDigits: 2,
   });
 
-  constructor() {
+  constructor(private quoteService: QuoteService) {
   }
 
-  private retrieveUnitPrice(quoteProduct: QuoteProduct): number {
+  private setUnitPrice(quoteProduct: QuoteProduct) {
     let priceKey: number;
     if (quoteProduct.quantity <= 999) {
       priceKey = 500;
@@ -38,14 +37,13 @@ export class QuoteDocumentComponent {
     } else {
       priceKey = 10000;
     }
-
-    return quoteProduct.prices[priceKey];
+    quoteProduct.unit_price = quoteProduct.prices[priceKey];
   }
 
   public download() {
     const doc = new jsPDF();
 
-    const columns = ["Product", "Quantity", "Origination", "Unit price", "Total"];
+    const columns = ['Product', 'Quantity', 'Origination', 'Unit price', 'Cost'];
     const data = [];
 
     // doc.setFontType('bold')
@@ -55,30 +53,15 @@ export class QuoteDocumentComponent {
 
     const totalPriceForProducts: number[] = [];
 
-    let counter: string;
-    for (counter in includedProducts) {
-      const i = parseInt(counter); // TODO do this better
-
-      // const startingRowPosition = 50 * i;
-      const product = includedProducts[i];
-      console.log('Quote product: ' + JSON.stringify(product));
-
-      // doc.setFontType('normal');
-      // doc.text(20, 40 + startingRowPosition, product.name);
-      // doc.addPage();
-
+    for (const product of includedProducts) {
+      // console.log('Quote product: ' + JSON.stringify(product));
       const originationPrice = product.origination_price;
-      const unitPrice = this.retrieveUnitPrice(product);
-      const totalPriceForProduct = product.quantity * unitPrice + originationPrice;
+      this.setUnitPrice(product);
+      const totalPriceForProduct = product.quantity * product.unit_price + originationPrice;
       totalPriceForProducts.push(totalPriceForProduct);
-      // doc.text(20, 50 + startingRowPosition, `Set up costs: ${this.formatter.format(originationPrice)}`);
-      // doc.text(20, 60 + startingRowPosition, `${product.quantity} @ ${this.formatter.format(unitPrice)} per unit`);
-      // doc.setFontType('bold');
-      // doc.text(20, 70 + startingRowPosition, '= ' + this.formatter.format(totalPriceForProduct));
-
       data.push([
         product.name, product.quantity,
-        this.formatter.format(originationPrice), this.formatter.format(unitPrice),
+        this.formatter.format(originationPrice), this.formatter.format(product.unit_price),
         this.formatter.format(totalPriceForProduct)
       ]);
     }
@@ -96,5 +79,13 @@ export class QuoteDocumentComponent {
 
     // Save the PDF
     doc.save('quote_' + this.quote.id + '.pdf');
+
+    // Save the new Quote
+    this.quoteService.addQuote(this.quote).subscribe(
+      res => {
+        // Do nothing
+      },
+      error => console.log(error)
+    );
   }
 }

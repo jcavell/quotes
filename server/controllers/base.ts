@@ -18,8 +18,10 @@ abstract class BaseCtrl {
     });
   };
 
+
   // Insert
   insert = (req, res) => {
+    console.log(`Logging ${JSON.stringify(req.body )}`);
     const obj = new this.model(req.body);
     obj.save((err, item) => {
       if (err) { return console.error(err); }
