@@ -8,12 +8,13 @@ declare var jsPDF: any;
 @Component({
   selector: 'download-quote',
   template: `
- <button class='btn btn-primary' (click)='download()'><i class='fa fa-download'></i> Download quote</button> 
+ <button class='btn btn-primary' (click)='download()'><i class='fa fa-download'></i> {{buttonName}}</button> 
 `
 })
 export class QuoteDocumentComponent {
   @Input() quote: Quote;
   @Input() quoteRequest: QuoteRequest;
+  @Input() buttonName = 'Download quote';
 
   formatter = new Intl.NumberFormat('en-GB', {
     style: 'currency',

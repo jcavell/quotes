@@ -5,12 +5,12 @@ import {QuoteRequestsComponent} from "./quoteRequests.component";
 import {QuoteRequestsRoutingModule} from "./quoteRequests-routing.module";
 import {SelectedQuoteRequestComponent} from "./selectedQuoteRequest.component";
 import {SelectedQuoteRequestService} from "../shared/quote-request/selectedQuoteRequest.service";
-import {QuoteDocumentComponent} from "../quote-document/quoteDocument.component";
+import {QuoteDocumentModule} from "../quote-document/quoteDocument.module";
 
 @NgModule({
-  imports: [QuoteRequestsRoutingModule, SharedModule],
-  declarations: [QuoteRequestsComponent, SelectedQuoteRequestComponent, QuoteDocumentComponent],
-  exports: [QuoteRequestsComponent, SelectedQuoteRequestComponent, QuoteDocumentComponent],
+  imports: [QuoteRequestsRoutingModule, QuoteDocumentModule, SharedModule],
+  declarations: [QuoteRequestsComponent, SelectedQuoteRequestComponent],
+  exports: [QuoteRequestsComponent, SelectedQuoteRequestComponent],
   providers: [QuoteRequestService, SelectedQuoteRequestService]
 })
 export class QuoteRequestsModule { }

@@ -7,6 +7,7 @@ import {DataService} from "./services/data.service";
 import {QuoteRequestsModule} from "./quote-requests/quoteRequests.module";
 import {ProductModule} from "./product/product.module";
 import {QuotesModule} from "./quotes/quotes.module";
+import {QuoteDocumentModule} from "./quote-document/quoteDocument.module";
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import {QuotesModule} from "./quotes/quotes.module";
     SharedModule,
     ProductModule,
     QuoteRequestsModule,
-    QuotesModule
+    QuotesModule,
+    QuoteDocumentModule
   ],
   providers: [
     DataService

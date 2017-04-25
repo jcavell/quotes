@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, EventEmitter, OnInit, Output} from "@angular/core";
 import {Http} from "@angular/http";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 
@@ -6,6 +6,9 @@ import {ToastComponent} from "../shared/toast/toast.component";
 import {QuoteRequestService} from "../shared/quote-request/quoteRequest.service";
 import {QuoteService} from "../shared/quote/quote.service";
 import {Observable} from "rxjs";
+import {Quote} from "../shared/quote/quote.model";
+import {SelectedQuoteService} from "../shared/quote/selectedQuote.service";
+import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
 
 @Component({
   selector: 'app-quote',
@@ -14,8 +17,16 @@ import {Observable} from "rxjs";
 })
 export class QuotesComponent implements OnInit {
 
-  quotes = [];
+  quoteRequestsAndQuotes: [[QuoteRequest, Quote]];
   isLoading = true;
+
+  @Output() notifyQuoteSelected = new EventEmitter<Quote>();
+  @Output() onVoted = new EventEmitter<boolean>();
+  quoteSelected(quoteRequest: QuoteRequest, quote: Quote) {
+    console.log('Clicked!');
+    this.onVoted.emit(true);
+    this.notifyQuoteSelected.emit(quote);
+  }
 
   addQuoteForm: FormGroup;
   quote_request_id = new FormControl('', Validators.required);
@@ -24,11 +35,12 @@ export class QuotesComponent implements OnInit {
   constructor(private http: Http,
               private quoteService: QuoteService,
               private quoteRequestService: QuoteRequestService,
+              private selectedQuoteService: SelectedQuoteService,
               public toast: ToastComponent,
               private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    this.getQuotesAndQuoteRequest();
+    this.getQuoteRequestAndQuoteTuples();
 
     this.addQuoteForm = this.formBuilder.group({
       quote_request_id: this.quote_request_id,
@@ -37,18 +49,22 @@ export class QuotesComponent implements OnInit {
   }
 
 
-  combineQuotesAndQuoteRequests(): Observable<any> {
+  combineQuotesAndQuoteRequests(): Observable<[[QuoteRequest, Quote]]> {
     const combined = this.quoteService.getQuotes().combineLatest(this.quoteRequestService.getNew(),
       (quotes, quoteRequests) => {
-            return quotes.map(quote => [quote, quoteRequests.find(qr => qr.id == quote.quote_request_id)]);
+            return quotes.map(quote => [quoteRequests.find(qr => qr.id == quote.quote_request_id), quote]);
       });
     return combined;
   }
 
-  getQuotesAndQuoteRequest() {
+  displaySelectedQuote(event: Event, quoteRequestAndQuote: [QuoteRequest, Quote]) {
+    this.selectedQuoteService.changeQuote(quoteRequestAndQuote);
+  }
+
+  getQuoteRequestAndQuoteTuples() {
     this.combineQuotesAndQuoteRequests().subscribe(
       data => {
-        this.quotes = data;
+        this.quoteRequestsAndQuotes = data;
         // console.log(`Quotes: ${JSON.stringify(data)}`);
       },
       error => console.log(error),

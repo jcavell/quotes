@@ -1,7 +1,7 @@
 <app-toast [message]="toast.message"></app-toast>
 
 <div class="card" *ngIf="!isLoading">
-  <h4 class="card-header">New quotes ({{quotes.length}})</h4>
+  <h4 class="card-header">New quotes ({{quoteRequestsAndQuotes.length}})</h4>
   <div class="card-block">
     <table class="table table-bordered table-striped">
       <thead class="thead-default">
@@ -12,16 +12,16 @@
           <th>Actions</th>
         </tr>
       </thead>
-      <tbody *ngIf="quotes.length === 0">
+      <tbody *ngIf="quoteRequestsAndQuotes.length === 0">
         <tr>
           <td colspan="4">There are no new quotes</td>
         </tr>
       </tbody>
       <tbody>
-        <tr *ngFor="let quote of quotes">
-          <td>{{quote[1].id}}</td>
-          <td>{{quote[1].customer_name}}</td>
-          <td>{{quote[0].quote_created}}</td>
+        <tr *ngFor="let quoteRequestAndQuote of quoteRequestsAndQuotes" (click)="displaySelectedQuote($event, quoteRequestAndQuote)">
+          <td>{{quoteRequestAndQuote[0].id}}</td>
+          <td>{{quoteRequestAndQuote[0].customer_name}}</td>
+          <td>{{quoteRequestAndQuote[1].quote_created}}</td>
           <td>
             <button class="btn btn-sm btn-warning"><i class="fa fa-pencil"></i> Create PO</button>
           </td>
@@ -30,3 +30,4 @@
     </table>
   </div>
 </div>
+<selected-quote></selected-quote>
