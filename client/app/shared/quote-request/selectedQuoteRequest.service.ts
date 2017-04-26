@@ -9,6 +9,13 @@ export class SelectedQuoteRequestService {
   _selectedQuoteRequestSource = new BehaviorSubject<number>(0);
   selectedQuoteRequest$ = this._selectedQuoteRequestSource.asObservable();
 
+  _isEditingSource = new BehaviorSubject<boolean>(false);
+  isEditing$ = this._isEditingSource.asObservable();
+
+  setEditing(isEditing: boolean) {
+    this._isEditingSource.next(isEditing);
+  }
+
   // service command
   changeQuote(quoteRequest: QuoteRequest) {
     console.log('Changing quote to ' + quoteRequest.id);

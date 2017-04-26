@@ -1,5 +1,5 @@
 <div *ngIf="quote" class="card">
-  <h4 class="card-header">Quote request {{quoteRequest.id}}: {{quoteRequest.customer_name}}</h4>
+  <h4 class="card-header">Quote</h4>
   <div class="card-block">
     <table class="table table-bordered table-striped">
       <thead class="thead-default">
@@ -18,8 +18,11 @@
         <td><input type="checkbox" [checked]="product.is_included"
                    (change)="product.is_included = !product.is_included"></td>
       </tr>
+      <td colspan="4">
+        <download-quote [quote]="quote" [quoteRequest]="quoteRequest"></download-quote>
+        <button class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button>
+      </td>
       </tbody>
     </table>
   </div>
-  <download-quote [quote]="quote" [quoteRequest]="quoteRequest"></download-quote>
 </div>

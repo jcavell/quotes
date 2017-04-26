@@ -2,9 +2,9 @@ import * as mongoose from "mongoose";
 
 const quoteSchema = new mongoose.Schema({
   quote_request_id: String,
-  quote_created: String,
+  quote_created: Date,
   quote_products: [{
-    productId: Number, name: String, sku: String, sage_sku: String, quantity: Number, unit_price: Number, originationPrice: Number
+    productId: Number, name: String, sku: String, sage_sku: String, origination_price: Number, quantity: Number, unit_price: Number, originationPrice: Number
   }]
 });
 

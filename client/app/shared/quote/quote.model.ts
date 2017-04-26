@@ -1,6 +1,5 @@
 export class QuoteProduct {
-  constructor(public id: number,
-              public product_id: number,
+  constructor(public product_id: number,
               public name: string,
               public sku: string,
               public sage_sku: string,
@@ -14,9 +13,8 @@ export class QuoteProduct {
 }
 
 export class Quote {
-  constructor(public id: number,
-              public quote_request_id: number,
-              public quote_created: string,
+  constructor(public quote_request_id: number,
+              public quote_created: Date,
               public quote_products: QuoteProduct[]) {
 
   }

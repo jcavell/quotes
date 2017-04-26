@@ -6,9 +6,15 @@ import {QuoteRequest} from "../quote-request/quoteRequest.model";
 @Injectable()
 export class SelectedQuoteService {
 
-  // Observable selected quote source
   _selectedQuoteSource = new BehaviorSubject<[QuoteRequest, Quote]>([null, null]);
   selectedQuote$ = this._selectedQuoteSource.asObservable();
+
+  _isEditingSource = new BehaviorSubject<boolean>(false);
+  isEditing$ = this._isEditingSource.asObservable();
+
+  setEditing(isEditing: boolean) {
+    this._isEditingSource.next(isEditing);
+  }
 
   // service command
   changeQuote(quoteRequestAndQuote: [QuoteRequest, Quote]) {

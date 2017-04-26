@@ -7,6 +7,7 @@ export class QuoteRequest {
               public customer_telephone: string,
               public customer_email: string,
               public customer_company: string,
+              public customer_address: string,
               public date_added: string,
               public product_id: number,
               public quantity: number,

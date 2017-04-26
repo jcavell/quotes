@@ -18,13 +18,15 @@
         </tr>
       </tbody>
       <tbody>
-        <tr *ngFor="let quoteRequestAndQuote of quoteRequestsAndQuotes" (click)="displaySelectedQuote($event, quoteRequestAndQuote)">
+        <tr *ngFor="let quoteRequestAndQuote of quoteRequestsAndQuotes">
+          <ng-container *ngIf="!isEditing || selectedQuote == quoteRequestAndQuote[1]">
           <td>{{quoteRequestAndQuote[0].id}}</td>
           <td>{{quoteRequestAndQuote[0].customer_name}}</td>
           <td>{{quoteRequestAndQuote[1].quote_created}}</td>
           <td>
-            <button class="btn btn-sm btn-warning"><i class="fa fa-pencil"></i> Create PO</button>
+            <button class="btn btn-sm btn-warning" (click)="displaySelectedQuote($event, quoteRequestAndQuote)"><i class="fa fa-pencil"></i> New PO</button>
           </td>
+          </ng-container>
         </tr>
       </tbody>
     </table>

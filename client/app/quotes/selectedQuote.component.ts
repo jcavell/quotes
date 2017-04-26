@@ -4,9 +4,6 @@ import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
 import {Quote} from "../shared/quote/quote.model";
 import {SelectedQuoteService} from "../shared/quote/selectedQuote.service";
 
-/**
- * This class represents the lazy loaded QuoteRequestComponent.
- */
 @Component({
   moduleId: module.id,
   selector: 'selected-quote',
@@ -24,10 +21,6 @@ export class SelectedQuoteComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // this.subscription = this.selectedQuoteService.selectedQuote$.subscribe(qid => {
-    //   console.log('Received event ' + JSON.stringify(qid));
-    // });
-
     this.subscription = this.selectedQuoteService.selectedQuote$.subscribe(quoteRequestAndQuote => {
       // console.log('Received event ' + JSON.stringify(quoteRequestAndQuote));
         const quoteRequest = quoteRequestAndQuote[0];
@@ -35,10 +28,15 @@ export class SelectedQuoteComponent implements OnInit, OnDestroy {
         if (quoteRequest !== null && quote !== null) {
           this.quoteRequest = quoteRequest;
           this.quote = quote;
-          console.log('Changed selected quote to ' + JSON.stringify(this.quote));
+          // console.log('Changed selected quote to ' + JSON.stringify(this.quote));
         }
       }
     );
+  }
+
+  cancelEditing() {
+    this.quote = undefined;
+    this.selectedQuoteService.setEditing(false);
   }
 
   ngOnDestroy() {

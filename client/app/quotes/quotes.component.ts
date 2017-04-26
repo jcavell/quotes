@@ -1,11 +1,11 @@
-import {Component, EventEmitter, OnInit, Output} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {Http} from "@angular/http";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 
 import {ToastComponent} from "../shared/toast/toast.component";
 import {QuoteRequestService} from "../shared/quote-request/quoteRequest.service";
 import {QuoteService} from "../shared/quote/quote.service";
-import {Observable} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {Quote} from "../shared/quote/quote.model";
 import {SelectedQuoteService} from "../shared/quote/selectedQuote.service";
 import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
@@ -19,14 +19,10 @@ export class QuotesComponent implements OnInit {
 
   quoteRequestsAndQuotes: [[QuoteRequest, Quote]];
   isLoading = true;
+  selectedQuote: Quote;
+  isEditing: boolean;
+  subscription: Subscription;
 
-  @Output() notifyQuoteSelected = new EventEmitter<Quote>();
-  @Output() onVoted = new EventEmitter<boolean>();
-  quoteSelected(quoteRequest: QuoteRequest, quote: Quote) {
-    console.log('Clicked!');
-    this.onVoted.emit(true);
-    this.notifyQuoteSelected.emit(quote);
-  }
 
   addQuoteForm: FormGroup;
   quote_request_id = new FormControl('', Validators.required);
@@ -40,6 +36,13 @@ export class QuotesComponent implements OnInit {
               private formBuilder: FormBuilder) { }
 
   ngOnInit() {
+
+    this.subscription = this.selectedQuoteService.isEditing$.subscribe(isEditing => {
+        this.isEditing = isEditing;
+      console.log('Changed isEditing to ' + this.isEditing);
+      }
+    );
+
     this.getQuoteRequestAndQuoteTuples();
 
     this.addQuoteForm = this.formBuilder.group({
@@ -57,8 +60,10 @@ export class QuotesComponent implements OnInit {
     return combined;
   }
 
-  displaySelectedQuote(event: Event, quoteRequestAndQuote: [QuoteRequest, Quote]) {
-    this.selectedQuoteService.changeQuote(quoteRequestAndQuote);
+  displaySelectedQuote(event: Event, selectedQuoteRequestAndQuote: [QuoteRequest, Quote]) {
+    this.selectedQuoteService.changeQuote(selectedQuoteRequestAndQuote);
+    this.selectedQuote = selectedQuoteRequestAndQuote[1];
+    this.selectedQuoteService.setEditing(true);
   }
 
   getQuoteRequestAndQuoteTuples() {

@@ -10,16 +10,22 @@
           <th>Customer</th>
           <th>Company</th>
           <th>Quantity</th>
+          <th>Action</th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let quoteRequest of quoteRequests" (click)="displaySelectedQuoteRequest($event, quoteRequest)">
+        <tr *ngFor="let quoteRequest of quoteRequests">
+          <ng-container *ngIf="!isEditing || selectedQuoteRequest == quoteRequest">
           <td>{{quoteRequest.date_added}}</td>
           <td>{{quoteRequest.product_id}}</td>
           <td>{{quoteRequest.rep_email}}</td>
           <td>{{quoteRequest.customer_name}}</td>
           <td>{{quoteRequest.customer_company}}</td>
           <td>{{quoteRequest.quantity}}</td>
+          <td>
+            <button class="btn btn-sm btn-warning" (click)="displaySelectedQuoteRequest($event, quoteRequest)"><i class="fa fa-pencil"></i> New quote</button>
+          </td>
+          </ng-container>
         </tr>
         </tbody>
       </table>
