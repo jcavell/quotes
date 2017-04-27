@@ -1,3 +1,9 @@
+export enum QuoteStatus {
+  New = 1,
+  PO_Generated = 2,
+  Supplier_Invoice_Generated = 3
+}
+
 export class QuoteProduct {
   constructor(public product_id: number,
               public name: string,
@@ -13,8 +19,10 @@ export class QuoteProduct {
 }
 
 export class Quote {
-  constructor(public quote_request_id: number,
+  constructor(public _id: String,
+              public quote_request_id: number,
               public quote_created: Date,
+              public quote_status: QuoteStatus,
               public quote_products: QuoteProduct[]) {
 
   }

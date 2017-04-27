@@ -6,7 +6,7 @@ import {ToastComponent} from "../shared/toast/toast.component";
 import {QuoteRequestService} from "../shared/quote-request/quoteRequest.service";
 import {QuoteService} from "../shared/quote/quote.service";
 import {Observable, Subscription} from "rxjs";
-import {Quote} from "../shared/quote/quote.model";
+import {Quote, QuoteStatus} from "../shared/quote/quote.model";
 import {SelectedQuoteService} from "../shared/quote/selectedQuote.service";
 import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
 
@@ -23,10 +23,26 @@ export class QuotesComponent implements OnInit {
   isEditing: boolean;
   subscription: Subscription;
 
-
   addQuoteForm: FormGroup;
   quote_request_id = new FormControl('', Validators.required);
   quote_created = new FormControl('', Validators.required);
+
+  quoteStatus = QuoteStatus;
+
+  displayStatuses = [1];
+  shouldDisplay(status: number) {
+    const doDisplay = this.displayStatuses.includes(status);
+    // console.log(`Should display ${status}? ${doDisplay}`);
+    return doDisplay;
+  }
+  toggleDisplayStatus(status: number) {
+    if (this.shouldDisplay(status)) {
+      this.displayStatuses.splice(this.displayStatuses.indexOf(status), 1);
+    } else {
+      this.displayStatuses.push(status);
+    }
+    // console.log(`Status: ${JSON.stringify(this.displayStatuses)}`);
+  }
 
   constructor(private http: Http,
               private quoteService: QuoteService,

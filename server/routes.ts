@@ -15,5 +15,6 @@ export default function setRoutes(app) {
   app.route('/api/rep/:id').delete(reps.delete);
 
   app.route('/api/quote').post(quotes.insert);
+  app.route('/api/quote/:id').put(quotes.update);
   app.route('/api/quotes').get(quotes.getAll);
 }

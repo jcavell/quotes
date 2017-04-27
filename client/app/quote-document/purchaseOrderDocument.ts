@@ -1,4 +1,4 @@
-import {Quote} from "../shared/quote/quote.model";
+import {Quote, QuoteStatus} from "../shared/quote/quote.model";
 import {QuoteService} from "../shared/quote/quote.service";
 import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
 
@@ -56,12 +56,13 @@ export class PurchaseOrderDocument {
     // Save the PDF
     doc.save('purchase_order_' + 'xx' + '.pdf');
 
-    // Save the new Quote
-    // this.quoteService.addQuote(quote).subscribe(
-    //   res => {
-    //     // Do nothing
-    //   },
-    //   error => console.log(error)
-    // );
+    // Update the Quote Status
+    quote.quote_status = QuoteStatus.PO_Generated;
+    this.quoteService.updateQuote(quote).subscribe(
+      res => {
+        // Do nothing
+      },
+      error => console.log(error)
+    );
   }
 }

@@ -1,7 +1,13 @@
 <app-toast [message]="toast.message"></app-toast>
 
 <div class="card" *ngIf="!isLoading">
-  <h4 class="card-header">New quotes ({{quoteRequestsAndQuotes.length}})</h4>
+  <h4 class="card-header">
+    Quotes ({{quoteRequestsAndQuotes.length}})
+  </h4>
+  <h5 class="card-header">
+    New <input type="checkbox" [checked]="shouldDisplay(1)" (change)="toggleDisplayStatus(1)">
+    PO Generated <input type="checkbox" [checked]="shouldDisplay(2)" (change)="toggleDisplayStatus(2)">
+  </h5>
   <div class="card-block">
     <table class="table table-bordered table-striped">
       <thead class="thead-default">
@@ -9,20 +15,22 @@
           <th>Quote request</th>
           <th>Customer</th>
           <th>Created</th>
+          <th>Status</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody *ngIf="quoteRequestsAndQuotes.length === 0">
         <tr>
-          <td colspan="4">There are no new quotes</td>
+          <td colspan="4">There are no quotes</td>
         </tr>
       </tbody>
       <tbody>
-        <tr *ngFor="let quoteRequestAndQuote of quoteRequestsAndQuotes">
+        <tr *ngFor="let quoteRequestAndQuote; of quoteRequestsAndQuotes | quotesByStatus:displayStatuses">
           <ng-container *ngIf="!isEditing || selectedQuote == quoteRequestAndQuote[1]">
           <td>{{quoteRequestAndQuote[0].id}}</td>
           <td>{{quoteRequestAndQuote[0].customer_name}}</td>
-          <td>{{quoteRequestAndQuote[1].quote_created}}</td>
+          <td>{{quoteRequestAndQuote[1].quote_created | date:'medium'}}</td>
+            <td>{{quoteStatus[quoteRequestAndQuote[1].quote_status]}}</td>
           <td>
             <button class="btn btn-sm btn-warning" (click)="displaySelectedQuote($event, quoteRequestAndQuote)"><i class="fa fa-pencil"></i> New PO</button>
           </td>

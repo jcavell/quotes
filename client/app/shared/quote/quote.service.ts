@@ -14,8 +14,13 @@ export class QuoteService {
   constructor(private http: Http) { }
 
   addQuote(quote: Quote): Observable<any> {
-    console.log(`Saving quote ${quote.id}`);
+    console.log(`Creating quote ${quote}`);
     return this.http.post('/api/quote', JSON.stringify(quote), this.options);
+  }
+
+  updateQuote(quote: Quote): Observable<any> {
+    console.log(`Updating quote ${quote}`);
+    return this.http.put(`/api/quote/${quote._id}`, JSON.stringify(quote), this.options);
   }
 
   getQuotes(): Observable<any> {
