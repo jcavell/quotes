@@ -1,41 +1,60 @@
 <app-toast [message]="toast.message"></app-toast>
 
 <div class="card" *ngIf="!isLoading">
-  <h4 class="card-header">
-    Quotes ({{quoteRequestsAndQuotes.length}})
-  </h4>
-  <h5 class="card-header">
-    New <input type="checkbox" [checked]="shouldDisplay(1)" (change)="toggleDisplayStatus(1)">
-    PO Generated <input type="checkbox" [checked]="shouldDisplay(2)" (change)="toggleDisplayStatus(2)">
-  </h5>
+  <h4 class="card-header">Quotes</h4>
+  <div class="form-check form-check-inline">
+
+    <strong><label class="form-check-label">
+      <input type="checkbox" class="form-check-input big-checkbox" [checked]="shouldDisplay(1)"
+             (change)="toggleDisplayStatus(1)"> Awaiting PO ({{getCount(1)}})
+    </label></strong>
+
+    <strong><label class="form-check-label">
+      <input type="checkbox" class="form-check-input big-checkbox" [checked]="shouldDisplay(2)"
+                           (change)="toggleDisplayStatus(2)"> Awaiting Invoice ({{getCount(2)}})
+    </label></strong>
+
+    <strong><label class="form-check-label">
+      <input type="checkbox" class="form-check-input big-checkbox" [checked]="shouldDisplay(3)"
+                        (change)="toggleDisplayStatus(3)"> Completed ({{getCount(3)}})
+    </label></strong>
+  </div>
   <div class="card-block">
-    <table class="table table-bordered table-striped">
+    <table class="table table-bordered table-responsive table-striped table-hover">
       <thead class="thead-default">
-        <tr>
-          <th>Quote request</th>
-          <th>Customer</th>
-          <th>Created</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
+      <tr>
+        <th>Quote request</th>
+        <th>Customer</th>
+        <th>Created</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
       </thead>
       <tbody *ngIf="quoteRequestsAndQuotes.length === 0">
-        <tr>
-          <td colspan="4">There are no quotes</td>
-        </tr>
+      <tr>
+        <td colspan="4">There are no quotes</td>
+      </tr>
       </tbody>
       <tbody>
-        <tr *ngFor="let quoteRequestAndQuote; of quoteRequestsAndQuotes | quotesByStatus:displayStatuses">
-          <ng-container *ngIf="!isEditing || selectedQuote == quoteRequestAndQuote[1]">
+      <tr *ngFor="let quoteRequestAndQuote; of quoteRequestsAndQuotes | quotesByStatus:displayStatuses">
+        <ng-container *ngIf="!isEditing || selectedQuote == quoteRequestAndQuote[1]">
           <td>{{quoteRequestAndQuote[0].id}}</td>
           <td>{{quoteRequestAndQuote[0].customer_name}}</td>
           <td>{{quoteRequestAndQuote[1].quote_created | date:'medium'}}</td>
-            <td>{{quoteStatus[quoteRequestAndQuote[1].quote_status]}}</td>
+          <td>{{quoteStatus[quoteRequestAndQuote[1].quote_status]}}</td>
           <td>
-            <button class="btn btn-sm btn-warning" (click)="displaySelectedQuote($event, quoteRequestAndQuote)"><i class="fa fa-pencil"></i> New PO</button>
+            <button *ngIf="quoteRequestAndQuote[1].quote_status === 1" class="btn btn-warning btn-sm btn-space"
+                    (click)="displaySelectedQuote($event, quoteRequestAndQuote)"><i class="fa fa-pencil"></i> New PO
+            </button>
+            <button *ngIf="quoteRequestAndQuote[1].quote_status != 1" class="btn btn-outline-warning btn-sm btn-space"
+                    (click)="displaySelectedQuote($event, quoteRequestAndQuote)"> New PO
+            </button>
+            <button *ngIf="quoteRequestAndQuote[1].quote_status != 1" class="btn btn-warning btn-sm btn-space"
+                    (click)="displaySelectedQuote($event, quoteRequestAndQuote)"><i class="fa fa-pencil"></i> Invoice
+            </button>
           </td>
-          </ng-container>
-        </tr>
+        </ng-container>
+      </tr>
       </tbody>
     </table>
   </div>

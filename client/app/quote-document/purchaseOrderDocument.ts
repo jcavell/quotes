@@ -57,7 +57,7 @@ export class PurchaseOrderDocument {
     doc.save('purchase_order_' + 'xx' + '.pdf');
 
     // Update the Quote Status
-    quote.quote_status = QuoteStatus.PO_Generated;
+    quote.quote_status = QuoteStatus.Awaiting_Invoice;
     this.quoteService.updateQuote(quote).subscribe(
       res => {
         // Do nothing

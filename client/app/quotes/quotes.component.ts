@@ -44,6 +44,11 @@ export class QuotesComponent implements OnInit {
     // console.log(`Status: ${JSON.stringify(this.displayStatuses)}`);
   }
 
+  getCount(status: number) {
+    return this.quoteRequestsAndQuotes.filter(
+      quoteRequestAndQuote => quoteRequestAndQuote[1].quote_status === status).length;
+  }
+
   constructor(private http: Http,
               private quoteService: QuoteService,
               private quoteRequestService: QuoteRequestService,
@@ -55,6 +60,9 @@ export class QuotesComponent implements OnInit {
 
     this.subscription = this.selectedQuoteService.isEditing$.subscribe(isEditing => {
         this.isEditing = isEditing;
+        if (!isEditing) {
+          this.selectedQuote = undefined;
+        }
       console.log('Changed isEditing to ' + this.isEditing);
       }
     );

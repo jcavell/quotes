@@ -28,7 +28,7 @@ export class SelectedQuoteComponent implements OnInit, OnDestroy {
         if (quoteRequest !== null && quote !== null) {
           this.quoteRequest = quoteRequest;
           this.quote = quote;
-          // console.log('Changed selected quote to ' + JSON.stringify(this.quote));
+          console.log('Changed selected quote to ' + JSON.stringify(this.quote));
         }
       }
     );
@@ -36,6 +36,7 @@ export class SelectedQuoteComponent implements OnInit, OnDestroy {
 
   cancelEditing() {
     this.quote = undefined;
+    this.quoteRequest = undefined;
     this.selectedQuoteService.setEditing(false);
   }
 

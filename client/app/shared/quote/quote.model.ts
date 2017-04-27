@@ -1,7 +1,7 @@
 export enum QuoteStatus {
-  New = 1,
-  PO_Generated = 2,
-  Supplier_Invoice_Generated = 3
+  Awaiting_PO = 1,
+  Awaiting_Invoice = 2,
+  Completed = 3
 }
 
 export class QuoteProduct {
