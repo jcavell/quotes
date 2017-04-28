@@ -21,6 +21,7 @@ export class PurchaseOrderDocument {
     const data = [];
 
     doc.setFontSize(12);
+    doc.text(20, 10, 'PURCHASE ORDER');
     doc.text(20, 20, quoteRequest.customer_name);
     doc.text(20, 30, quoteRequest.customer_company);
     doc.text(20, 40, quoteRequest.customer_address);

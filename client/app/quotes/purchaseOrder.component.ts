@@ -1,17 +1,17 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
 import {Subscription} from "rxjs/Rx";
 import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
-import {Quote} from "../shared/quote/quote.model";
+import {Quote, QuoteStatus} from "../shared/quote/quote.model";
 import {SelectedQuoteService} from "../shared/quote/selectedQuote.service";
 
 @Component({
   moduleId: module.id,
-  selector: 'selected-quote',
-  templateUrl: 'selectedQuote.component.html',
+  selector: 'purchase-order',
+  templateUrl: 'purchaseOrder.component.html',
   styleUrls: ['./quotes.component.scss']
 })
 
-export class SelectedQuoteComponent implements OnInit, OnDestroy {
+export class PurchaseOrderComponent implements OnInit, OnDestroy {
   quoteRequest: QuoteRequest;
   quote: Quote;
   subscription: Subscription;
@@ -22,13 +22,16 @@ export class SelectedQuoteComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscription = this.selectedQuoteService.selectedQuote$.subscribe(quoteRequestAndQuote => {
-      // console.log('Received event ' + JSON.stringify(quoteRequestAndQuote));
-        const quoteRequest = quoteRequestAndQuote[0];
-        const quote = quoteRequestAndQuote[1];
-        if (quoteRequest !== null && quote !== null) {
-          this.quoteRequest = quoteRequest;
-          this.quote = quote;
-          console.log('Changed selected quote to ' + JSON.stringify(this.quote));
+        // console.log(`QRAQ: ${JSON.stringify(quoteRequestAndQuote)}`);
+        if (quoteRequestAndQuote[0] != null && quoteRequestAndQuote[1].quote_status === QuoteStatus.Awaiting_PO) {
+          // console.log('Received event ' + JSON.stringify(quoteRequestAndQuote));
+          const quoteRequest = quoteRequestAndQuote[0];
+          const quote = quoteRequestAndQuote[1];
+          if (quoteRequest !== null && quote !== null) {
+            this.quoteRequest = quoteRequest;
+            this.quote = quote;
+            console.log('Changed selected quote to ' + JSON.stringify(this.quote));
+          }
         }
       }
     );

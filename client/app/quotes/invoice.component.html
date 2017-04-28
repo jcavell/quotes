@@ -1,0 +1,26 @@
+<div *ngIf="quote" class="card">
+  <h4 class="card-header">Invoice</h4>
+  <div class="card-block">
+
+    <table class="table table-bordered table-striped table-responsive table-hover">
+      <thead class="thead-default">
+      <tr>
+        <th>Product name</th>
+        <th>Sku</th>
+        <th>Quantity</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let product of quote.quote_products">
+        <td>{{product.name}}</td>
+        <td>{{product.sku}}</td>
+        <td>{{product.quantity}}</td>
+      </tr>
+      </tbody>
+      <tr><td colspan="3">  <download-quote [quote]="quote" [quoteRequest]="quoteRequest" [documentType]="'invoice'"
+                                            [buttonName]="'Create Invoice'"></download-quote>
+        <button class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button></td></tr>
+    </table>
+  </div>
+
+</div>

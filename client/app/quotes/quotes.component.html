@@ -46,11 +46,8 @@
             <button *ngIf="quoteRequestAndQuote[1].quote_status === 1" class="btn btn-warning btn-sm btn-space"
                     (click)="displaySelectedQuote($event, quoteRequestAndQuote)"><i class="fa fa-pencil"></i> New PO
             </button>
-            <button *ngIf="quoteRequestAndQuote[1].quote_status != 1" class="btn btn-outline-warning btn-sm btn-space"
-                    (click)="displaySelectedQuote($event, quoteRequestAndQuote)"> New PO
-            </button>
-            <button *ngIf="quoteRequestAndQuote[1].quote_status != 1" class="btn btn-warning btn-sm btn-space"
-                    (click)="displaySelectedQuote($event, quoteRequestAndQuote)"><i class="fa fa-pencil"></i> Invoice
+            <button *ngIf="quoteRequestAndQuote[1].quote_status === 2" class="btn btn-warning btn-sm btn-space"
+                    (click)="displaySelectedQuote($event, quoteRequestAndQuote)"><i class="fa fa-pencil"></i> New Invoice
             </button>
           </td>
         </ng-container>
@@ -59,4 +56,5 @@
     </table>
   </div>
 </div>
-<selected-quote></selected-quote>
+<purchase-order></purchase-order>
+<invoice></invoice>

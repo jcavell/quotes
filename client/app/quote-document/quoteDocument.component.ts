@@ -4,6 +4,7 @@ import {Quote} from "../shared/quote/quote.model";
 import {QuoteService} from "../shared/quote/quote.service";
 import {QuoteDocument} from "./quoteDocument";
 import {PurchaseOrderDocument} from "./purchaseOrderDocument";
+import {InvoiceDocument} from "./invoiceDocument";
 // import jsPDF from 'jspdf';
 declare var jsPDF: any;
 
@@ -26,6 +27,8 @@ export class QuoteDocumentComponent {
       new QuoteDocument(this.quoteService).save(this.quoteRequest, this.quote);
     } else if (this.documentType === 'purchase_order') {
       new PurchaseOrderDocument(this.quoteService).save(this.quoteRequest, this.quote);
+    } else if (this.documentType === 'invoice') {
+      new InvoiceDocument(this.quoteService).save(this.quoteRequest, this.quote);
     }
   }
 }
