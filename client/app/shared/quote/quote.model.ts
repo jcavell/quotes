@@ -1,4 +1,5 @@
 export enum QuoteStatus {
+  New = 0,
   Awaiting_PO = 1,
   Awaiting_Invoice = 2,
   Completed = 3

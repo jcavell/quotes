@@ -1,4 +1,4 @@
-import {Quote, QuoteProduct} from "../shared/quote/quote.model";
+import {Quote, QuoteProduct, QuoteStatus} from "../shared/quote/quote.model";
 import {QuoteService} from "../shared/quote/quote.service";
 import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
 
@@ -77,6 +77,7 @@ export class QuoteDocument {
     doc.save('quote_' + 'xxxx' + '.pdf');
 
     // Save the new Quote
+    quote.quote_status = QuoteStatus.Awaiting_PO;
     this.quoteService.addQuote(quote).subscribe(
       res => {
         // Do nothing
