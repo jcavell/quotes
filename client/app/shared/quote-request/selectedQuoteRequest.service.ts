@@ -6,7 +6,7 @@ import {QuoteRequest} from "./quoteRequest.model";
 export class SelectedQuoteRequestService {
 
   // Observable selected quote source
-  _selectedQuoteRequestSource = new BehaviorSubject<number>(0);
+  _selectedQuoteRequestSource = new BehaviorSubject<QuoteRequest>(null);
   selectedQuoteRequest$ = this._selectedQuoteRequestSource.asObservable();
 
   _isEditingSource = new BehaviorSubject<boolean>(false);
@@ -17,10 +17,9 @@ export class SelectedQuoteRequestService {
   }
 
   // service command
-  changeQuote(quoteRequest: QuoteRequest) {
-    console.log('Changing quote to ' + quoteRequest.id);
-    this._selectedQuoteRequestSource.next(quoteRequest.id);
+  changeQuoteRequest(quoteRequest: QuoteRequest) {
+    // console.log('Changing quote to ' + JSON.stringify(quoteRequest));
+    this._selectedQuoteRequestSource.next(quoteRequest);
   }
-
 }
 

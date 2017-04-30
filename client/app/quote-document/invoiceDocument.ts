@@ -58,7 +58,7 @@ export class InvoiceDocument {
     doc.save('invoice_' + 'xx' + '.pdf');
 
     // Update the Quote Status
-    quote.quote_status = QuoteStatus.Completed;
+    quote.quote_status = QuoteStatus.Invoiced;
     this.quoteService.updateQuote(quote).subscribe(
       res => {
         // Do nothing

@@ -21,10 +21,10 @@
       <td colspan="4">
         <ng-container *ngIf="quote.quote_status === 0">
         <download-quote [quote]="quote" [quoteRequest]="quoteRequest"></download-quote>
-        <button class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button>
+        <button type = "button" class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button>
         </ng-container>
         <ng-container *ngIf="quote.quote_status != 0">
-          <button class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-backward"></i> Back to quote requests</button>
+          <button type = "button" class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Close</button>
         </ng-container>
       </td>
       </tbody>

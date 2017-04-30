@@ -77,7 +77,7 @@ export class QuoteDocument {
     doc.save('quote_' + 'xxxx' + '.pdf');
 
     // Save the new Quote
-    quote.quote_status = QuoteStatus.Awaiting_PO;
+    quote.quote_status = QuoteStatus.Quoted;
     this.quoteService.addQuote(quote).subscribe(
       res => {
         // Do nothing

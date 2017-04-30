@@ -1,12 +1,9 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {QuoteRequestService} from "../shared/quote-request/quoteRequest.service";
 import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
 import {SelectedQuoteRequestService} from "../shared/quote-request/selectedQuoteRequest.service";
 import {Subscription} from "rxjs";
 
-/**
- * This class represents the lazy loaded QuoteRequestsComponent.
- */
 @Component({
   moduleId: module.id,
   selector: 'sd-rep',
@@ -14,32 +11,50 @@ import {Subscription} from "rxjs";
   styleUrls: ['./quoteRequests.component.scss']
 })
 
-export class QuoteRequestsComponent implements OnInit {
+export class QuoteRequestsComponent implements OnInit, OnDestroy {
   quoteRequests: QuoteRequest[];
   selectedQuoteRequest: QuoteRequest;
   errorMessage: string;
   isEditing = false;
   subscription: Subscription;
 
-  constructor(public quoteRequestService: QuoteRequestService, public selectedQuoteRequestService: SelectedQuoteRequestService) {}
+  constructor(public quoteRequestService: QuoteRequestService, public selectedQuoteRequestService: SelectedQuoteRequestService) {
+  }
 
   ngOnInit() {
     this.subscription = this.selectedQuoteRequestService.isEditing$.subscribe(isEditing => {
       this.isEditing = isEditing;
-      console.log('Changed isEditing to ' + this.isEditing);
+      console.log('ngOnInit: Changed isEditing to ' + this.isEditing);
+    });
+
+    this.selectedQuoteRequestService.selectedQuoteRequest$.subscribe(quoteRequest => {
+      console.log(`ngOnInit: Setting selected quote request to ${JSON.stringify(quoteRequest)}`);
+      this.selectedQuoteRequest = quoteRequest;
     });
 
     this.getQuoteRequests();
   }
 
+  ngOnDestroy() {
+    // console.log('Destroying quoteRequestsComponent');
+    this.selectedQuoteRequestService.setEditing(false);
+    this.subscription.unsubscribe();
+    this.selectedQuoteRequest = undefined;
+    this.selectedQuoteRequestService.changeQuoteRequest(undefined);
+  }
+
+  /*
+   Quote button clicked - inform listeners and set edit mode
+   */
   displaySelectedQuoteRequest(event: Event, quoteRequest: QuoteRequest) {
-    // console.log('Selected quote: ' + quoteRequest.id);
-    this.selectedQuoteRequestService.changeQuote(quoteRequest);
-    this.selectedQuoteRequest = quoteRequest;
+    console.log('Changing selected quoteRequest');
+    this.selectedQuoteRequestService.changeQuoteRequest(quoteRequest);
     this.selectedQuoteRequestService.setEditing(true);
   }
 
-
+  /*
+   Called from ngOnInit, get all new quote requests
+   */
   getQuoteRequests(): boolean {
     this.quoteRequestService.getNew()
       .subscribe(

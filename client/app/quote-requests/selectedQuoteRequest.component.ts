@@ -5,6 +5,7 @@ import {SelectedQuoteRequestService} from "../shared/quote-request/selectedQuote
 import {QuoteRequestService} from "../shared/quote-request/quoteRequest.service";
 import {ProductService} from "../shared/product/product.service";
 import {Quote, QuoteProduct, QuoteStatus} from "../shared/quote/quote.model";
+import {isNullOrUndefined} from "util";
 
 /**
  * This class represents the lazy loaded QuoteRequestComponent.
@@ -29,10 +30,13 @@ export class SelectedQuoteRequestComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscription = this.selectedQuoteRequestService.selectedQuoteRequest$.subscribe(quoteRequestId => {
-        if (quoteRequestId !== 0) {
-          this.setSelectedQuoteRequest(quoteRequestId);
-          console.log('Changed selected quoteRequest to ' + quoteRequestId);
+    this.subscription = this.selectedQuoteRequestService.selectedQuoteRequest$.subscribe(quoteRequest => {
+        if (isNullOrUndefined(quoteRequest)) {
+          this.quoteRequest = undefined;
+          this.quote = undefined;
+        } else {
+          this.setSelectedQuoteRequest(quoteRequest);
+          // console.log('Changed selected quoteRequest to ' + quoteRequest.id);
         }
       }
     );
@@ -48,22 +52,16 @@ export class SelectedQuoteRequestComponent implements OnInit, OnDestroy {
     this.selectedQuoteRequestService.setEditing(false);
   }
 
-  setSelectedQuoteRequest(quoteRequestId: number): boolean {
-    this.quoteRequestService.getNew()
+  setSelectedQuoteRequest(quoteRequest: QuoteRequest): boolean {
+    this.quoteRequest = quoteRequest;
+    this.productService.getProductAndAlternatives(this.quoteRequest.product_id)
       .subscribe(
-        quoteRequests => {
-          this.quoteRequest = quoteRequests.find(q => q.id === quoteRequestId);
-          this.productService.getProductAndAlternatives(this.quoteRequest.product_id)
-            .subscribe(
-              products => {
-                const quoteProducts = products.map(product =>
-                  new QuoteProduct(product.id, product.name, product.sku, product.sage_sku,
-                    this.quoteRequest.quantity, true, product.origination_price, product.prices, 0));
-                this.quote = new Quote(undefined, this.quoteRequest.id, new Date(), QuoteStatus.New, quoteProducts);
-                // console.log('Set quote to: ' + JSON.stringify(this.quote));
-              },
-              error => this.errorMessage = <any>error
-            );
+        products => {
+          const quoteProducts = products.map(product =>
+            new QuoteProduct(product.id, product.name, product.sku, product.sage_sku,
+              this.quoteRequest.quantity, true, product.origination_price, product.prices, 0));
+          this.quote = new Quote(undefined, this.quoteRequest.id, new Date(), QuoteStatus.New, quoteProducts);
+          // console.log('Set quote to: ' + JSON.stringify(this.quote));
         },
         error => this.errorMessage = <any>error
       );
