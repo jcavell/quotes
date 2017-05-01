@@ -6,11 +6,21 @@ import {QuoteRequestsRoutingModule} from "./quoteRequests-routing.module";
 import {SelectedQuoteRequestComponent} from "./selectedQuoteRequest.component";
 import {SelectedQuoteRequestService} from "../shared/quote-request/selectedQuoteRequest.service";
 import {QuoteDocumentModule} from "../quote-document/quoteDocument.module";
+import {ModalModule} from "angular2-modal";
+import {BootstrapModalModule} from "angular2-modal/plugins/bootstrap";
+import {SearchModal} from "./search.component";
 
 @NgModule({
-  imports: [QuoteRequestsRoutingModule, QuoteDocumentModule, SharedModule],
-  declarations: [QuoteRequestsComponent, SelectedQuoteRequestComponent],
+  imports: [
+    QuoteRequestsRoutingModule,
+    QuoteDocumentModule,
+    SharedModule,
+    ModalModule.forRoot(),
+    BootstrapModalModule
+  ],
+  declarations: [QuoteRequestsComponent, SelectedQuoteRequestComponent, SearchModal],
   exports: [QuoteRequestsComponent, SelectedQuoteRequestComponent],
-  providers: [QuoteRequestService, SelectedQuoteRequestService]
+  providers: [QuoteRequestService, SelectedQuoteRequestService],
+  entryComponents: [ SearchModal ]
 })
 export class QuoteRequestsModule { }

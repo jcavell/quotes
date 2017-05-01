@@ -1,4 +1,8 @@
-import {Component, OnDestroy, OnInit} from "@angular/core";
+import {Component, OnDestroy, OnInit, ViewContainerRef} from "@angular/core";
+import {Overlay, overlayConfigFactory} from "angular2-modal";
+import {BSModalContext, Modal} from "angular2-modal/plugins/bootstrap";
+import {SearchModal} from "./search.component";
+
 import {Subscription} from "rxjs/Rx";
 import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
 import {SelectedQuoteRequestService} from "../shared/quote-request/selectedQuoteRequest.service";
@@ -26,7 +30,12 @@ export class SelectedQuoteRequestComponent implements OnInit, OnDestroy {
 
   constructor(public selectedQuoteRequestService: SelectedQuoteRequestService,
               public quoteRequestService: QuoteRequestService,
-              public productService: ProductService) {
+              public productService: ProductService, overlay: Overlay, vcRef: ViewContainerRef, public modal: Modal) {
+    overlay.defaultViewContainer = vcRef;
+  }
+
+  openSearchModal() {
+    return this.modal.open(SearchModal,  overlayConfigFactory({ quoteRequest: this.quoteRequest, quote: this.quote }, BSModalContext));
   }
 
   ngOnInit() {
@@ -52,6 +61,10 @@ export class SelectedQuoteRequestComponent implements OnInit, OnDestroy {
     this.selectedQuoteRequestService.setEditing(false);
   }
 
+  remove(product: QuoteProduct) {
+    this.quote.quote_products.splice(this.quote.quote_products.indexOf(product), 1);
+  }
+
   setSelectedQuoteRequest(quoteRequest: QuoteRequest): boolean {
     this.quoteRequest = quoteRequest;
     this.productService.getProductAndAlternatives(this.quoteRequest.product_id)
@@ -59,7 +72,7 @@ export class SelectedQuoteRequestComponent implements OnInit, OnDestroy {
         products => {
           const quoteProducts = products.map(product =>
             new QuoteProduct(product.id, product.name, product.sku, product.sage_sku,
-              this.quoteRequest.quantity, true, product.origination_price, product.prices, 0, 0));
+              this.quoteRequest.quantity, product.origination_price, product.prices, 0, 0));
           this.quote = new Quote(undefined, this.quoteRequest.id, new Date(), QuoteStatus.New, quoteProducts);
           // console.log('Set quote to: ' + JSON.stringify(this.quote));
         },

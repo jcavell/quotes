@@ -45,11 +45,9 @@ export class QuoteDocument {
     doc.text(20, 60, quoteRequest.customer_email);
     doc.text(20, 70, 'Tel ' + quoteRequest.customer_telephone);
 
-    const includedProducts = quote.quote_products.filter(prod => prod.is_included);
-
     const totalPriceForProducts: number[] = [];
 
-    for (const product of includedProducts) {
+    for (const product of quote.quote_products) {
       // console.log('Quote product: ' + JSON.stringify(product));
       const originationPrice = product.origination_price;
       this.setUnitPrice(product);
