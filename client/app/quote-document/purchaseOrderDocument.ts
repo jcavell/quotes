@@ -34,11 +34,11 @@ export class PurchaseOrderDocument {
       // console.log('Quote product: ' + JSON.stringify(product));
       const originationPrice = product.origination_price;
 
-      const totalPriceForProduct = product.quantity * product.unit_price + originationPrice;
+      const totalPriceForProduct = product.quantity * product.unit_price * (1 + product.markup / 100) + originationPrice;
       totalPriceForProducts.push(totalPriceForProduct);
       data.push([
         product.name, product.quantity,
-        this.formatter.format(originationPrice), this.formatter.format(product.unit_price),
+        this.formatter.format(originationPrice), this.formatter.format(product.unit_price * (1 + product.markup / 100)),
         this.formatter.format(totalPriceForProduct)
       ]);
     }

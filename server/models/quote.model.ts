@@ -8,7 +8,7 @@ const quoteSchema = new mongoose.Schema({
     enum: [1, 2, 3]
   },
   quote_products: [{
-    productId: Number, name: String, sku: String, sage_sku: String, origination_price: Number, quantity: Number, unit_price: Number, originationPrice: Number
+    productId: Number, name: String, sku: String, sage_sku: String, origination_price: Number, quantity: Number, unit_price: Number, originationPrice: Number, markup: Number
   }]
 });
 
