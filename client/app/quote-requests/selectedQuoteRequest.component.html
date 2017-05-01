@@ -1,10 +1,10 @@
 <div *ngIf="quote" class="card">
-  <h4 class="card-header">Quote</h4>
+  <h4 class="card-header"><button type = "button" class="btn btn-sm btn-warning" (click)="openSearchModal()"><i class="fa fa-search"></i> Products</button>
+  </h4>
 
-    <button type = "button" class="btn btn-sm btn-warning" (click)="openSearchModal()"><i class="fa fa-search"></i> Search products</button>
 
   <div class="card-block">
-    <table class="table table-bordered table-responsive table-striped table-hover">
+    <table class="table table-responsive table-striped table-hover">
       <thead class="thead-default">
       <tr>
         <th>Product name</th>
@@ -22,7 +22,7 @@
         <td><input [(ngModel)]="product.markup" name="markup"></td>
         <td><button type = "button" class="btn btn-sm btn-danger" (click)="remove(product)"><i class="fa fa-times"></i> Remove</button></td>
       </tr>
-      <td colspan="4">
+      <td colspan="5">
         <ng-container *ngIf="quote.quote_status === 0">
         <download-quote [quote]="quote" [quoteRequest]="quoteRequest"></download-quote>
         <button type = "button" class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button>

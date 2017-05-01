@@ -34,7 +34,7 @@ export class QuoteDocument {
   public save(quoteRequest: QuoteRequest, quote: Quote) {
     const doc = new jsPDF();
 
-    const columns = ['Product', 'Quantity', 'Origination', 'Unit price', 'Cost'];
+    const columns = ['Product', 'Quantity', 'Origination', 'Unit price', 'Price (pre VAT)', 'VAT', 'Price (incl. VAT)'];
     const data = [];
 
     doc.setFontSize(12);
@@ -45,32 +45,39 @@ export class QuoteDocument {
     doc.text(20, 60, quoteRequest.customer_email);
     doc.text(20, 70, 'Tel ' + quoteRequest.customer_telephone);
 
-    const totalPriceForProducts: number[] = [];
-
     for (const product of quote.quote_products) {
       // console.log('Quote product: ' + JSON.stringify(product));
       const originationPrice = product.origination_price;
       this.setUnitPrice(product);
-      const totalPriceForProduct = product.quantity * product.unit_price * (1 + product.markup / 100) + originationPrice;
-      totalPriceForProducts.push(totalPriceForProduct);
+      const unitPrice = product.unit_price * (1 + product.markup / 100);
+      const preVatTotal = product.quantity * unitPrice + originationPrice;
+      const vat = preVatTotal * 0.2;
+      const totalInclVat = preVatTotal + vat;
+
       data.push([
         product.name, product.quantity,
         this.formatter.format(originationPrice),
-        this.formatter.format(product.unit_price * (1 + product.markup / 100)),
-        this.formatter.format(totalPriceForProduct)
+        this.formatter.format(unitPrice),
+        this.formatter.format(preVatTotal),
+        this.formatter.format(vat),
+        this.formatter.format(totalInclVat)
       ]);
     }
 
-    // Total price
-    const totalPrice = totalPriceForProducts.reduce((total, price) => total += price);
-    const vat = totalPrice * 0.2;
-    const totalPriceWithVat = totalPrice + vat;
-
-    data.push(['Total', '', '', '', this.formatter.format(totalPrice)]);
-    data.push(['VAT @20%', '', '', '', this.formatter.format(vat)]);
-    data.push(['Total incl. VAT', '', '', '', this.formatter.format(totalPriceWithVat)]);
-
-    doc.autoTable(columns, data,  {startY: 80});
+    doc.autoTable(columns, data,  {startY: 80,  tableWidth: 'auto', styles: {
+      cellPadding: 3, // a number, array or object (see margin below)
+        fontSize: 8,
+        font: "helvetica", // helvetica, times, courier
+        lineColor: 200,
+        lineWidth: 0,
+        fontStyle: 'normal', // normal, bold, italic, bolditalic
+        overflow: 'linebreak', // visible, hidden, ellipsize or linebreak
+        fillColor: false, // false for transparent or a color as described below
+        textColor: 20,
+        halign: 'left', // left, center, right
+        valign: 'middle', // top, middle, bottom
+        columnWidth: 'auto' // 'auto', 'wrap' or a number
+    }});
 
     // Save the PDF
     doc.save('quote_' + 'xxxx' + '.pdf');
