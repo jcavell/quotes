@@ -23,9 +23,11 @@ export class Product {
               public prices: Map<number, number>,
               public weight: string,
               public stock_level: number,
-              public enough_stock: boolean) {
+              public enough_stock: boolean,
+              public image_url: string) {
   }
 }
+
 
 export class Stock {
   constructor(public id: string, public stock_level: number) {

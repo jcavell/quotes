@@ -14,7 +14,8 @@ export class QuoteProduct {
               public origination_price: number,
               public prices: Map<number, number>,
               public unit_price: number,
-              public markup: number) {
+              public markup: number,
+              public image_url: string) {
 
   }
 }

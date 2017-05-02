@@ -72,7 +72,7 @@ export class SelectedQuoteRequestComponent implements OnInit, OnDestroy {
         products => {
           const quoteProducts = products.map(product =>
             new QuoteProduct(product.id, product.name, product.sku, product.sage_sku,
-              this.quoteRequest.quantity, product.origination_price, product.prices, 0, 0));
+              this.quoteRequest.quantity, product.origination_price, product.prices, 0, 0, product.image_url));
           this.quote = new Quote(undefined, this.quoteRequest.id, new Date(), QuoteStatus.New, quoteProducts);
           // console.log('Set quote to: ' + JSON.stringify(this.quote));
         },

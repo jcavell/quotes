@@ -117,7 +117,7 @@ export class SearchModal implements CloseGuard, ModalComponent<SearchModalContex
 
   add(product: Product) {
     const quoteProduct = new QuoteProduct(product.id, product.name, product.sku, product.sage_sku,
-      this.quantity, product.origination_price, product.prices, 0, 0);
+      this.quantity, product.origination_price, product.prices, 0, 0, product.image_url);
     this.context.quote.quote_products.push(quoteProduct);
   }
 }

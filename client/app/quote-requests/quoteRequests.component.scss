@@ -1,4 +1,14 @@
 .table td, .table th {
    text-align: center;
-   width: 25%;  
+   width: 25%;
+}
+
+input.quantity {
+  padding-left: 4px;
+  width: 70px;
+}
+
+input.markup {
+  width: 30px;
+  padding-left: 4px;
 }
