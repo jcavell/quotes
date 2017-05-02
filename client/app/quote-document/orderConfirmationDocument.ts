@@ -4,7 +4,7 @@ import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
 
 declare var jsPDF: any;
 
-export class PurchaseOrderDocument {
+export class OrderConfirmationDocument {
 
   formatter = new Intl.NumberFormat('en-GB', {
     style: 'currency',
@@ -21,7 +21,7 @@ export class PurchaseOrderDocument {
     const data = [];
 
     doc.setFontSize(12);
-    doc.text(20, 10, 'PURCHASE ORDER');
+    doc.text(20, 10, 'ORDER CONFIRMATION');
     doc.text(20, 20, quoteRequest.customer_name);
     doc.text(20, 30, quoteRequest.customer_company);
     doc.text(20, 40, quoteRequest.customer_address);
@@ -55,10 +55,10 @@ export class PurchaseOrderDocument {
     doc.autoTable(columns, data,  {startY: 80});
 
     // Save the PDF
-    doc.save('purchase_order_' + 'xx' + '.pdf');
+    doc.save('order_confirmation' + 'xx' + '.pdf');
 
     // Update the Quote Status
-    quote.quote_status = QuoteStatus.POd;
+    quote.quote_status = QuoteStatus.OrderConfirmed;
     this.quoteService.updateQuote(quote).subscribe(
       res => {
         // Do nothing

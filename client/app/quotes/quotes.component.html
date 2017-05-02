@@ -6,7 +6,7 @@
 
     <strong><label class="form-check-label">
       <input type="checkbox" class="form-check-input big-checkbox" [checked]="shouldDisplay(1)"
-             (change)="toggleDisplayStatus(1)"> Awaiting PO ({{getCount(1)}})
+             (change)="toggleDisplayStatus(1)"> Awaiting Order Confirmation ({{getCount(1)}})
     </label></strong>
 
     <strong><label class="form-check-label">
@@ -44,10 +44,10 @@
           <td>{{quoteStatus[quoteRequestAndQuote[1].quote_status]}}</td>
           <td>
             <button *ngIf="quoteRequestAndQuote[1].quote_status === 1" class="btn btn-warning btn-sm btn-space"
-                    (click)="displaySelectedQuote($event, quoteRequestAndQuote)"><i class="fa fa-pencil"></i> New PO
+                    (click)="displaySelectedQuote($event, quoteRequestAndQuote)"><i class="fa fa-pencil"></i> Order confirmation
             </button>
             <button *ngIf="quoteRequestAndQuote[1].quote_status === 2" class="btn btn-warning btn-sm btn-space"
-                    (click)="displaySelectedQuote($event, quoteRequestAndQuote)"><i class="fa fa-pencil"></i> New Invoice
+                    (click)="displaySelectedQuote($event, quoteRequestAndQuote)"><i class="fa fa-pencil"></i> Invoice
             </button>
           </td>
         </ng-container>
@@ -56,5 +56,5 @@
     </table>
   </div>
 </div>
-<purchase-order></purchase-order>
+<order-confirmation></order-confirmation>
 <invoice></invoice>

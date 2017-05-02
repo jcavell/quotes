@@ -1,7 +1,7 @@
 export enum QuoteStatus {
   New = 0,
   Quoted = 1,
-  POd = 2,
+  OrderConfirmed = 2,
   Invoiced = 3
 }
 

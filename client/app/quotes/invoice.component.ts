@@ -23,7 +23,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscription = this.selectedQuoteService.selectedQuote$.subscribe(quoteRequestAndQuote => {
         // console.log(`QRAQ: ${JSON.stringify(quoteRequestAndQuote)}`);
-        if (quoteRequestAndQuote[0] != null && quoteRequestAndQuote[1].quote_status === QuoteStatus.POd) {
+        if (quoteRequestAndQuote[0] != null && quoteRequestAndQuote[1].quote_status === QuoteStatus.OrderConfirmed) {
           // console.log('Received event ' + JSON.stringify(quoteRequestAndQuote));
           const quoteRequest = quoteRequestAndQuote[0];
           const quote = quoteRequestAndQuote[1];

@@ -3,7 +3,7 @@ import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
 import {Quote} from "../shared/quote/quote.model";
 import {QuoteService} from "../shared/quote/quote.service";
 import {QuoteDocument} from "./quoteDocument";
-import {PurchaseOrderDocument} from "./purchaseOrderDocument";
+import {OrderConfirmationDocument} from "./orderConfirmationDocument";
 import {InvoiceDocument} from "./invoiceDocument";
 // import jsPDF from 'jspdf';
 declare var jsPDF: any;
@@ -25,8 +25,8 @@ export class QuoteDocumentComponent {
   public download() {
     if (this.documentType === 'quote') {
       new QuoteDocument(this.quoteService).save(this.quoteRequest, this.quote);
-    } else if (this.documentType === 'purchase_order') {
-      new PurchaseOrderDocument(this.quoteService).save(this.quoteRequest, this.quote);
+    } else if (this.documentType === 'order_confirmation') {
+      new OrderConfirmationDocument(this.quoteService).save(this.quoteRequest, this.quote);
     } else if (this.documentType === 'invoice') {
       new InvoiceDocument(this.quoteService).save(this.quoteRequest, this.quote);
     }
