@@ -3,6 +3,17 @@
   width: 25%;
 }
 
+ input.quantity {
+   padding-left: 4px;
+  width: 70px;
+}
+
+input.markup {
+  width: 30px;
+  padding-left: 4px;
+}
+
+
 .btn-space {
   margin: 3px;
 }
@@ -14,3 +25,4 @@
   margin-right: 3px;
   margin-top: 15px;
 }
+

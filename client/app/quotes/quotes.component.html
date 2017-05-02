@@ -6,12 +6,12 @@
 
     <strong><label class="form-check-label">
       <input type="checkbox" class="form-check-input big-checkbox" [checked]="shouldDisplay(1)"
-             (change)="toggleDisplayStatus(1)"> Awaiting Order Confirmation ({{getCount(1)}})
+             (change)="toggleDisplayStatus(1)"> Orders for acknowledgement ({{getCount(1)}})
     </label></strong>
 
     <strong><label class="form-check-label">
       <input type="checkbox" class="form-check-input big-checkbox" [checked]="shouldDisplay(2)"
-                           (change)="toggleDisplayStatus(2)"> Awaiting Invoice ({{getCount(2)}})
+                           (change)="toggleDisplayStatus(2)"> Orders for invoice ({{getCount(2)}})
     </label></strong>
 
     <strong><label class="form-check-label">
@@ -44,7 +44,7 @@
           <td>{{quoteStatus[quoteRequestAndQuote[1].quote_status]}}</td>
           <td>
             <button *ngIf="quoteRequestAndQuote[1].quote_status === 1" class="btn btn-warning btn-sm btn-space"
-                    (click)="displaySelectedQuote($event, quoteRequestAndQuote)"><i class="fa fa-pencil"></i> Order confirmation
+                    (click)="displaySelectedQuote($event, quoteRequestAndQuote)"><i class="fa fa-pencil"></i> Order
             </button>
             <button *ngIf="quoteRequestAndQuote[1].quote_status === 2" class="btn btn-warning btn-sm btn-space"
                     (click)="displaySelectedQuote($event, quoteRequestAndQuote)"><i class="fa fa-pencil"></i> Invoice
@@ -56,5 +56,5 @@
     </table>
   </div>
 </div>
-<order-confirmation></order-confirmation>
+<order-acknowledgement></order-acknowledgement>
 <invoice></invoice>
