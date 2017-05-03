@@ -46,7 +46,7 @@
             <button *ngIf="quoteRequestAndQuote[1].quote_status === 1" class="btn btn-warning btn-sm btn-space"
                     (click)="displaySelectedQuote($event, quoteRequestAndQuote)"><i class="fa fa-pencil"></i> Order
             </button>
-            <button *ngIf="quoteRequestAndQuote[1].quote_status === 2" class="btn btn-warning btn-sm btn-space"
+            <button *ngIf="auth.isAccounts() && quoteRequestAndQuote[1].quote_status === 2" class="btn btn-warning btn-sm btn-space"
                     (click)="displaySelectedQuote($event, quoteRequestAndQuote)"><i class="fa fa-pencil"></i> Invoice
             </button>
           </td>

@@ -9,6 +9,7 @@ import {Observable, Subscription} from "rxjs";
 import {Quote, QuoteStatus} from "../shared/quote/quote.model";
 import {SelectedQuoteService} from "../shared/quote/selectedQuote.service";
 import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
+import {Auth} from "../shared/auth/auth.service";
 
 @Component({
   selector: 'app-quote',
@@ -50,6 +51,7 @@ export class QuotesComponent implements OnInit {
   }
 
   constructor(private http: Http,
+              private auth: Auth,
               private quoteService: QuoteService,
               private quoteRequestService: QuoteRequestService,
               private selectedQuoteService: SelectedQuoteService,
