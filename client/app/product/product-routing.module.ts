@@ -1,12 +1,12 @@
 import {NgModule} from "@angular/core";
 import {RouterModule} from "@angular/router";
 import {ProductComponent} from "./product.component";
-import {AuthGuard} from "../shared/auth/auth.guard";
+import {AuthForRepGuard} from "../shared/auth/authForRep.guard";
 
 @NgModule({
   imports: [
     RouterModule.forChild([
-      { path: 'product', component: ProductComponent, canActivate: [AuthGuard] }
+      { path: 'product', component: ProductComponent, canActivate: [AuthForRepGuard] }
     ])
   ],
   exports: [RouterModule]

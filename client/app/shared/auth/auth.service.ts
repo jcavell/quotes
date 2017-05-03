@@ -60,6 +60,15 @@ export class Auth {
       && this.userProfile.app_metadata.roles.indexOf('admin') > -1;
   }
 
+  public isRep() {
+    return this.userProfile && this.userProfile.app_metadata
+      && this.userProfile.app_metadata.roles
+      && (
+        this.userProfile.app_metadata.roles.indexOf('admin') > -1 ||
+        this.userProfile.app_metadata.roles.indexOf('rep') > -1
+      );
+  }
+
   public logout() {
     // Remove token from localStorage
     localStorage.removeItem('id_token');

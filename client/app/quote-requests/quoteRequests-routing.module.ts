@@ -1,12 +1,12 @@
 import {NgModule} from "@angular/core";
 import {RouterModule} from "@angular/router";
 import {QuoteRequestsComponent} from "./quoteRequests.component";
-import {AuthGuard} from "../shared/auth/auth.guard";
+import {AuthForRepGuard} from "../shared/auth/authForRep.guard";
 
 @NgModule({
   imports: [
     RouterModule.forChild([
-      { path: 'quote-requests', component: QuoteRequestsComponent, canActivate: [AuthGuard] }
+      { path: 'quote-requests', component: QuoteRequestsComponent, canActivate: [AuthForRepGuard] }
     ])
   ],
   exports: [RouterModule]
