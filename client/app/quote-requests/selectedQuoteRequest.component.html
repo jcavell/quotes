@@ -10,8 +10,8 @@
       </thead>
       <thead class="thead-default">
       <tr>
+        <th>Image</th>
         <th>Product name</th>
-        <th>Sku</th>
         <th>Quantity</th>
         <th>Markup</th>
         <th>Action</th>
@@ -19,10 +19,10 @@
       </thead>
       <tbody>
       <tr *ngFor="let product of quote.quote_products">
+        <td><img width = "60" src = "{{product.image_url}}"/></td>
         <td style="width:40%">{{product.name}}</td>
-        <td style="width:15%">{{product.sku}}</td>
         <td style="width:20%"><input class="quantity" [(ngModel)]="product.quantity" name="quantity"></td>
-        <td style="width:15%"><input class="markup" [(ngModel)]="product.markup" name="markup"></td>
+        <td style="width:15%"><input class="markup" [(ngModel)]="product.markup" name="markup"> %</td>
         <td style="width:15%"><button type = "button" class="btn btn-sm btn-danger" (click)="remove(product)"><i class="fa fa-times"></i> Remove</button></td>
       </tr>
       <td colspan="5">

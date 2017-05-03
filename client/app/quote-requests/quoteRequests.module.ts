@@ -8,7 +8,7 @@ import {SelectedQuoteRequestService} from "../shared/quote-request/selectedQuote
 import {QuoteDocumentModule} from "../quote-document/quoteDocument.module";
 import {ModalModule} from "angular2-modal";
 import {BootstrapModalModule} from "angular2-modal/plugins/bootstrap";
-import {SearchModal} from "./search.component";
+import {SearchModalComponent} from "./search.component";
 
 @NgModule({
   imports: [
@@ -18,9 +18,9 @@ import {SearchModal} from "./search.component";
     ModalModule.forRoot(),
     BootstrapModalModule
   ],
-  declarations: [QuoteRequestsComponent, SelectedQuoteRequestComponent, SearchModal],
+  declarations: [QuoteRequestsComponent, SelectedQuoteRequestComponent, SearchModalComponent],
   exports: [QuoteRequestsComponent, SelectedQuoteRequestComponent],
   providers: [QuoteRequestService, SelectedQuoteRequestService],
-  entryComponents: [ SearchModal ]
+  entryComponents: [ SearchModalComponent ]
 })
 export class QuoteRequestsModule { }

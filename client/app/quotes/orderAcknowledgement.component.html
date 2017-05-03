@@ -36,11 +36,12 @@
     <table class="table table-bordered table-striped table-responsive table-hover">
       <thead class="thead-default">
       <tr>
-        <td colspan="5"><button type = "button" class="btn btn-sm btn-primary" (click)="openSearchModal()"><i class="fa fa-search"></i> Search products</button></td>
+        <td colspan="6"><button type = "button" class="btn btn-sm btn-primary" (click)="openSearchModal()"><i class="fa fa-search"></i> Search products</button></td>
       </tr>
       </thead>
       <thead class="thead-default">
       <tr>
+        <th>Image</th>
         <th>Product name</th>
         <th>Sku</th>
         <th>Quantity</th>
@@ -50,6 +51,7 @@
       </thead>
       <tbody>
       <tr *ngFor="let product of quote.quote_products">
+        <td><img width = "60" src = "{{product.image_url}}"/></td>
         <td style="width:40%">{{product.name}}</td>
         <td style="width:15%">{{product.sku}}</td>
         <td style="width:20%"><input class="quantity" [(ngModel)]="product.quantity" name="quantity"></td>
@@ -58,13 +60,13 @@
       </tr>
       </tbody>
       <ng-container *ngIf="quote.quote_status === 1">
-      <tr><td colspan="5">
+      <tr><td colspan="6">
         <download-quote [quote]="quote" [quoteRequest]="quoteRequest" [documentType]="'order_acknowledgement'"
                                             [buttonName]="'Create'"></download-quote>
         <button class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button></td></tr>
       </ng-container>
       <ng-container *ngIf="quote.quote_status != 1">
-        <tr><td colspan="5">
+        <tr><td colspan="6">
           <button class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Close</button></td></tr>
       </ng-container>
     </table>

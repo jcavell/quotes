@@ -19,7 +19,7 @@ export class SearchModalContext extends BSModalContext {
   selector: 'search-modal',
   templateUrl: 'search.component.html'
 })
-export class SearchModal implements CloseGuard, ModalComponent<SearchModalContext> {
+export class SearchModalComponent implements CloseGuard, ModalComponent<SearchModalContext> {
   context: SearchModalContext;
 
   products: Product[];

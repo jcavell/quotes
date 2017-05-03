@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit, ViewContainerRef} from "@angular/core";
 import {Overlay, overlayConfigFactory} from "angular2-modal";
 import {BSModalContext, Modal} from "angular2-modal/plugins/bootstrap";
-import {SearchModal} from "./search.component";
+import {SearchModalComponent} from "./search.component";
 
 import {Subscription} from "rxjs/Rx";
 import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
@@ -35,7 +35,7 @@ export class SelectedQuoteRequestComponent implements OnInit, OnDestroy {
   }
 
   openSearchModal() {
-    return this.modal.open(SearchModal,  overlayConfigFactory({ quoteRequest: this.quoteRequest, quote: this.quote }, BSModalContext));
+    return this.modal.open(SearchModalComponent,  overlayConfigFactory({ quoteRequest: this.quoteRequest, quote: this.quote }, BSModalContext));
   }
 
   ngOnInit() {

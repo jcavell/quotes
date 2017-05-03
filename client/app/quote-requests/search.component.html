@@ -51,6 +51,7 @@
       <table class="table table-bordered table-responsive table-striped table-hover">
         <thead>
         <tr>
+          <th>Image</th>
           <th>Product name</th>
           <th>Price</th>
           <th>Stock level</th>
@@ -60,6 +61,7 @@
         </thead>
         <tbody>
         <tr *ngFor="let product of products">
+          <td><img width = "60" src = "{{product.image_url}}"/></td>
           <td>{{product.name}}</td>
           <td>{{product.prices[priceKey]}}</td>
           <td>{{product.stock_level}}</td>
