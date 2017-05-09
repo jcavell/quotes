@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {ProductService} from "../shared/product/product.service";
+import {ProductFilters, ProductService} from "../shared/product/product.service";
 import {Product} from "../shared/product/product.model";
 
 @Component({
@@ -21,23 +21,6 @@ export class ProductComponent {
   colours: string[] = ['', 'Blue', 'Black', 'Green', 'Red'];
 
   constructor(public productService: ProductService) {
-  }
-
-  doFilter(product: Product) {
-    let passesFilter: boolean = this.quantity >= product.minimum_order_quantity;
-    if (passesFilter && this.numColours !== '') {
-      passesFilter = product.branding_method === this.numColours + 'COL';
-    }
-    if (passesFilter && this.inkColour !== '') {
-      passesFilter = product.ink_colour === this.inkColour;
-    }
-    if (passesFilter && this.colour !== '') {
-      passesFilter = product.colour === this.colour;
-    }
-    if (passesFilter && this.leadTime !== 0) {
-      passesFilter = product.max_lead_time <= this.leadTime;
-    }
-    return passesFilter;
   }
 
 
@@ -71,11 +54,27 @@ export class ProductComponent {
   }
 
   getProducts(): boolean {
-    this.productService.getFromPenWarehouse()
+    const filters = new ProductFilters();
+    if (this.colour) {
+      filters.colour = this.colour;
+    }
+    if (this.inkColour) {
+      filters.ink_colour = this.inkColour;
+    }
+    if (this.numColours) {
+      filters.branding_method = this.numColours + 'COL';
+    }
+    if (this.quantity) {
+      filters.order_quantity = this.quantity;
+    }
+
+    this.productService.getFromPenWarehouseMongo(filters)
       .subscribe(
         products => {
-          this.products = products.filter(p => this.doFilter(p));
-          this.products.forEach(product => this.setStockLevel(product));
+          this.products = products;
+          console.log(`Number of products: ${products.length}`);
+          // this.products.forEach(product => this.setStockLevel(product));
+          this.products.forEach(product => {product.stock_level = 100; product.enough_stock = true; });
           this.setPriceKey();
         },
         error => this.errorMessage = <any>error

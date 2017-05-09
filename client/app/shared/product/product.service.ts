@@ -4,6 +4,15 @@ import {Observable} from "rxjs/Observable";
 import {Product, Stock} from "./product.model";
 // import 'rxjs/add/operator/do';  // for debugging
 
+
+export class ProductFilters {
+  colour: string;
+  ink_colour: string;
+  order_quantity: number;
+  branding_method: string;
+}
+
+
 /**
  * This class provides the Product service with methods to read names and add names.
  */
@@ -22,19 +31,23 @@ export class ProductService {
    * Returns an Observable for the HTTP GET request for the JSON resource.
    * @return {Product[]} The Observable for the HTTP request.
    */
-  private get(url: string): Observable<Product[]> {
-    return this.http.get(url)
+  private get(url: string, filters: ProductFilters): Observable<Product[]> {
+    return this.http.get(url, {params: filters})
       .map((res: Response) => res.json())
       //              .do(data => console.log('server data:', data))  // debug
       .catch(this.handleError);
   }
 
   getFromPenWarehouse(): Observable<Product[]> {
-    return this.get('http://localhost:3001/products');
+    return this.get('http://localhost:3001/products', new ProductFilters());
+  }
+
+  getFromPenWarehouseMongo(filters: ProductFilters): Observable<Product[]> {
+    return this.get('http://localhost:3000/api/penwarehouseproducts', filters);
   }
 
   getFromCrossSell(): Observable<Product[]> {
-    return this.get('http://localhost:3001/cross-sell');
+    return this.get('http://localhost:3001/cross-sell', new ProductFilters());
   }
 
 
