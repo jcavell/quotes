@@ -46,6 +46,12 @@ export class ProductService {
     return this.get('http://localhost:3000/api/penwarehouseproducts', filters);
   }
 
+  getSingleFromPenWarehouseMongo(sku: string): Observable<Product> {
+    return this.http.get(`http://localhost:3000/api/penwarehouseproducts/${sku}`)
+      .map((res: Response) => res.json())
+      .catch(this.handleError);
+  }
+
   getFromCrossSell(): Observable<Product[]> {
     return this.get('http://localhost:3001/cross-sell', new ProductFilters());
   }
@@ -57,18 +63,24 @@ export class ProductService {
       .catch(this.handleError);
   }
 
-  getProductAndAlternatives(requestedProductId: number): Observable<Product[]> {
-    const combined = this.getFromPenWarehouse().combineLatest(this.getFromCrossSell(),
+
+  getMultiple(sku: string): Observable<Product[]> {
+    const combined = this.getAlternatives(sku).combineLatest(this.getSingleFromPenWarehouseMongo(sku),
+      (alternatives, requestedProduct) => {
+        // console.log(`requested product: ${JSON.stringify(requestedProduct)}`);
+        alternatives.unshift(requestedProduct);
+        return alternatives;
+      });
+    return combined;
+  }
+
+  getAlternatives(sku: string): Observable<Product[]> {
+    const combined = this.getFromPenWarehouseMongo(new ProductFilters()).combineLatest(this.getFromCrossSell(),
       (penWarehouseProds, crossSellProds) => {
         // console.log('cross sell products: ' + JSON.stringify(crossSellProds));
         let quoteProducts: Product[] = [];
-        const requestedProd = penWarehouseProds.find(product => product.id === requestedProductId);
-        // console.log('requested product: ' + JSON.stringify(requestedProd));
-        quoteProducts.push(requestedProd);
 
-        const similarProds: Product[] = penWarehouseProds.filter(
-          product => product.id !== requestedProductId && product.category === requestedProd.category);
-        // console.log('similar products: ' + JSON.stringify(similarProds));
+        const similarProds: Product[] = penWarehouseProds.filter(product => product.sku !== sku);
 
         if (similarProds.length > 0) {
           // console.log('Getting cheapest product')
@@ -77,7 +89,7 @@ export class ProductService {
           const cheapestProd = similarProds.sort((a, b) => a.prices[0] - b.prices[0])[0];
 
           // console.log('cheapest product: ' + JSON.stringify(cheapestProd));
-          if (cheapestProd.id !== requestedProd.id) {
+          if (cheapestProd.sku !== sku) {
             quoteProducts.push(cheapestProd);
           }
           // console.log(`set selected product to ${requestedProd.id} and cheapest product to ${cheapestProd.id}`);

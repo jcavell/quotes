@@ -14,7 +14,7 @@ export class GenericProduct {
               public branding_area_vertical: string,
               public branding_method: string,
               public colour: string,
-              public image: string,
+              public image_url: string,
               public ink_colour: string,
               public manufacturer: string,
               public material: string,

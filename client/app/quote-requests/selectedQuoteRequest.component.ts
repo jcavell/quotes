@@ -67,7 +67,7 @@ export class SelectedQuoteRequestComponent implements OnInit, OnDestroy {
 
   setSelectedQuoteRequest(quoteRequest: QuoteRequest): boolean {
     this.quoteRequest = quoteRequest;
-    this.productService.getProductAndAlternatives(this.quoteRequest.product_id)
+    this.productService.getMultiple(this.quoteRequest.sku)
       .subscribe(
         products => {
           const quoteProducts = products.map(product =>
@@ -76,7 +76,10 @@ export class SelectedQuoteRequestComponent implements OnInit, OnDestroy {
           this.quote = new Quote(undefined, this.quoteRequest.id, new Date(), QuoteStatus.New, quoteProducts);
           // console.log('Set quote to: ' + JSON.stringify(this.quote));
         },
-        error => this.errorMessage = <any>error
+        error => {
+          this.errorMessage = <any>error;
+          console.log(`ERROR ${JSON.stringify(error)}`);
+        }
       );
     return false;
   }

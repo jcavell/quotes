@@ -8,6 +8,7 @@ export class ProductFilters {
   ink_colour: string;
   minimum_order_quantity: any;
   branding_method: string;
+  parent_sku = {$ne: null};
 }
 
 export default class PenWarehouseProductsCtrl extends BaseCtrl {
@@ -43,7 +44,21 @@ export default class PenWarehouseProductsCtrl extends BaseCtrl {
     });
   }
 
+  // Get by sku
+  getBySku = (req, res) => {
+    this.model.findOne({ sku: req.params.sku }, (err, obj) => {
+      if (err) { return console.error(err); }
+      res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200'); // TODO fix this
+      res.json(this.mapper(obj));
+    });
+  };
+
+  getImageURL(image: String){
+    return `pens.no-ip.org:82/magemaster/sys_exporters/get_image.php?file=${image}&rotation=55&width=600`;
+  }
+
   mapper(penWareHouseProduct: PenWarehouseProductType) {
+    const image = penWareHouseProduct.images ? this.getImageURL(penWareHouseProduct.images.single) : '';
     const tierPrices = penWareHouseProduct.tier_prices.platinum;
     return new GenericProduct(
       penWareHouseProduct.sku,
@@ -59,7 +74,7 @@ export default class PenWarehouseProductsCtrl extends BaseCtrl {
       penWareHouseProduct.branding_area.vertical,
       penWareHouseProduct.branding_method,
       penWareHouseProduct.colour,
-      penWareHouseProduct.image.single,
+      image,
       penWareHouseProduct.ink_colour,
       penWareHouseProduct.manufacturer,
       penWareHouseProduct.material,

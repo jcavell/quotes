@@ -10,7 +10,7 @@ export class Origination {
   }
 }
 
-export class ProductImage {
+export class ProductImages {
   constructor(public single: string) {
   }
 }
@@ -30,7 +30,7 @@ interface IPenWarehouseProduct extends mongoose.Document {
   branding_method: string;
   branding_area: BrandingArea;
   colour: string;
-  image: ProductImage;
+  images: ProductImages;
   ink_colour: string;
   manufacturer: string;
   material: string;
@@ -43,7 +43,7 @@ interface IPenWarehouseProduct extends mongoose.Document {
 export type PenWarehouseProductType = IPenWarehouseProduct & mongoose.Document;
 
 const penWarehouseProductSchema = new mongoose.Schema({
-  _id: Number, sku: String, parent_sku: String, sage_sku: String, name: String, short_description: String, minimum_order_quantity: Number, colour: String, ink_colour: String, branding_method: String, manufacturer: String, material: String, description: String, branding_area: {title: String, horizonal: String, vertical: String}, image: {single: String}, weight: Number, origination: {platinum: Number}, tier_prices :  { platinum : { 500: Number} }
+  _id: Number, sku: String, parent_sku: String, sage_sku: String, name: String, short_description: String, minimum_order_quantity: Number, colour: String, ink_colour: String, branding_method: String, manufacturer: String, material: String, description: String, branding_area: {title: String, horizonal: String, vertical: String}, images: {single: String}, weight: Number, origination: {platinum: Number}, tier_prices :  { platinum : { 500: Number} }
   });
 
 const PenWarehouseProduct: PenWarehouseProductType  = mongoose.model('PenWarehouseProduct', penWarehouseProductSchema);

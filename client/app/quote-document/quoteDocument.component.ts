@@ -30,49 +30,62 @@ export class QuoteDocumentComponent {
   @Input() buttonName = 'Create quote';
   @Input() documentType = 'quote';
 
+
+  processedImages = 0;
   productImages: Array<[string, any]> = new Array();
 
   constructor(private quoteService: QuoteService, private http: Http) {
   }
 
   public download() {
-    const obs = this.quote.quote_products.map((product, index) => this.getProductImage('https://crossorigin.me/' + product.image_url));
-    Observable.forkJoin(obs).subscribe(
-      imageGets => {
-        imageGets.forEach((imageGet, index) => {
 
-          const contentType = imageGet.headers.get('Content-Type');
+    if (this.documentType === 'quote') {
+      const quoteDocument = new QuoteDocument(this.quoteService);
+      quoteDocument.save(this.quoteRequest, this.quote, this.productImages);
+      // this.quoteService.sendQuoteEmail(this.quote).subscribe(
+      //   (data) => console.log(data));
+    } else if (this.documentType === 'order_acknowledgement') {
+      new OrderAcknowledgementDocument(this.quoteService).save(this.quoteRequest, this.quote);
+    } else if (this.documentType === 'invoice') {
+      new InvoiceDocument(this.quoteService).save(this.quoteRequest, this.quote);
+    }
 
-          const img = new Image();
-          img.crossOrigin = 'Anonymous';
-          img.src = imageGet.url;
-          img.addEventListener('load', () => {
-            const canvas = document.createElement('canvas') as HTMLCanvasElement;
-            const context = canvas.getContext('2d');
-            context.drawImage(img, 0, 0);
-            const dataURL = canvas.toDataURL(contentType);
-            this.productImages[index] = [contentType, dataURL];
-            // console.log(`Added product image ${imageGet.url}`);
-
-            if (index === imageGets.length - 1) {
-              // console.log(`*** Creating document with images ${JSON.stringify(this.productImages)}`);
-              if (this.documentType === 'quote') {
-                new QuoteDocument(this.quoteService).save(this.quoteRequest, this.quote, this.productImages);
-              } else if (this.documentType === 'order_acknowledgement') {
-                new OrderAcknowledgementDocument(this.quoteService).save(this.quoteRequest, this.quote);
-              } else if (this.documentType === 'invoice') {
-                new InvoiceDocument(this.quoteService).save(this.quoteRequest, this.quote);
-              }
-            }
-          });
-        });
-      },
-      error => {
-        console.log('ERROR: ' + error);
-      },
-      () => {
-      }
-    );
+    //
+    // this.quote.quote_products.map(
+    //   (product, index) => {
+    //
+    //     const image_url = 'http://localhost:1337/' + encodeURI(product.image_url);
+    //     const contentType = 'image/jpeg';
+    //     const img = new Image();
+    //     img.crossOrigin = 'Anonymous';
+    //     img.src = image_url;
+    //     console.log('Image src: ' + img.src);
+    //     img.addEventListener('load', () => {
+    //         const canvas = document.createElement('canvas') as HTMLCanvasElement;
+    //         const context = canvas.getContext('2d');
+    //         context.drawImage(img, 0, 0);
+    //         const dataURL = canvas.toDataURL(contentType);
+    //         this.productImages[index] = [contentType, dataURL];
+    //
+    //       this.processedImages++;
+    //
+    //         console.log(`Added product image ${image_url} to index ${index} and this.processedImages === this.quote.quote_products.length = ${this.processedImages === this.quote.quote_products.length} and this.productImages[${index}] = ${this.productImages[index]} and it should be ${dataURL}`);
+    //
+    //         if (this.processedImages === this.quote.quote_products.length) {
+    //           console.log(`*** Creating document with images ${JSON.stringify(this.productImages)}`);
+    //           if (this.documentType === 'quote') {
+    //             new QuoteDocument(this.quoteService).save(this.quoteRequest, this.quote, this.productImages);
+    //           } else if (this.documentType === 'order_acknowledgement') {
+    //             new OrderAcknowledgementDocument(this.quoteService).save(this.quoteRequest, this.quote);
+    //           } else if (this.documentType === 'invoice') {
+    //             new InvoiceDocument(this.quoteService).save(this.quoteRequest, this.quote);
+    //           }
+    //         }
+    //       }
+    //     );
+    //     return 5;
+    //   }
+    // );
   }
 
   public getProductImage(url: string): Observable<ImageGet> {

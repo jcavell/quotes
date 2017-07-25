@@ -5,38 +5,45 @@
       <form (submit)="getProducts()">
 
         <div>
-          <h5>Order quantity</h5>
+          Order quantity
           <input [(ngModel)]="quantity" name="quantity" placeholder="Quantity" class = "input-sm">
         </div>
 
+        <br>
+
         <div class="radio">
-          <h5>Number of colours</h5>
+          Number of colours<br>
           <label class="radio-inline"><input type="radio" [(ngModel)]="numColours" name="numColours" value="1">1</label>
           <label class="radio-inline"><input type="radio" [(ngModel)]="numColours" name="numColours" value="2">2</label>
           <label class="radio-inline"><input type="radio" [(ngModel)]="numColours" name="numColours" value="3">3</label>
           <label class="radio-inline"><input type="radio" [(ngModel)]="numColours" name="numColours" value="4">4</label>
         </div>
 
+        <br>
+
         <div class="radio">
-          <h5>Minimum lead time</h5>
+          Minimum lead time<br>
           <label class="radio-inline"><input type="radio" [(ngModel)]="leadTime" name="leadTime" value="4">4</label>
           <label class="radio-inline"><input type="radio" [(ngModel)]="leadTime" name="leadTime" value="10">10</label>
           <label class="radio-inline"><input type="radio" [(ngModel)]="leadTime" name="leadTime" value="20">20</label>
         </div>
 
+        <br>
+
         <div class="form-group">
-          <h5>Ink colour</h5>
+          Ink colour
           <select [(ngModel)]="inkColour" class="form-control" name="Ink Colour" placeholder="Ink colour">
             <option *ngFor="let inkColour of inkColours" [attr.value]="inkColour">{{inkColour}}</option>
           </select>
         </div>
 
         <div class="form-group">
-          <h5>Pen colour</h5>
+          Pen colour
           <select [(ngModel)]="colour" class="form-control" name="Colour" placeholder="Colour">
             <option *ngFor="let colour of colours" [attr.value]="colour">{{colour}}</option>
           </select>
         </div>
+
 
         <div>
           <button type="submit" class="btn btn-sm btn-warning">Find Products</button>
@@ -55,7 +62,6 @@
           <th>Product name</th>
           <th>Price</th>
           <th>Stock level</th>
-          <th>Enough stock?</th>
           <th>Add</th>
         </tr>
         </thead>
@@ -65,7 +71,6 @@
           <td>{{product.name}}</td>
           <td>{{product.prices[priceKey]}}</td>
           <td>{{product.stock_level}}</td>
-          <td>{{product.enough_stock}}</td>
           <td> <button type="button" (click) = "add(product)" class="btn btn-sm btn-warning">Add</button></td>
         </tr>
         </tbody>

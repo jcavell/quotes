@@ -5,7 +5,7 @@
       <thead class="thead-default">
         <tr>
           <th>Date</th>
-          <th>Product ID</th>
+          <th>SKU</th>
           <th>Rep</th>
           <th>Customer</th>
           <th>Company</th>
@@ -17,7 +17,7 @@
         <tr *ngFor="let quoteRequest of quoteRequests">
           <ng-container *ngIf="!isEditing || selectedQuoteRequest == quoteRequest">
           <td>{{quoteRequest.date_added}}</td>
-          <td>{{quoteRequest.product_id}}</td>
+          <td>{{quoteRequest.sku}}</td>
           <td>{{quoteRequest.rep_email}}</td>
           <td>{{quoteRequest.customer_name}}</td>
           <td>{{quoteRequest.customer_company}}</td>

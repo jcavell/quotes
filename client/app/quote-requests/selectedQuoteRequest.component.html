@@ -19,7 +19,7 @@
       </thead>
       <tbody>
       <tr *ngFor="let product of quote.quote_products">
-        <td><img width = "60" src = "{{product.image_url}}"/></td>
+        <td><img width = "60" src = "http://{{product.image_url}}"/></td>
         <td style="width:40%">{{product.name}}</td>
         <td style="width:20%"><input class="quantity" [(ngModel)]="product.quantity" name="quantity"></td>
         <td style="width:15%"><input class="markup" [(ngModel)]="product.markup" name="markup"> %</td>

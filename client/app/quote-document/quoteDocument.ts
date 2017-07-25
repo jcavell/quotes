@@ -34,7 +34,7 @@ export class QuoteDocument {
   public save(quoteRequest: QuoteRequest, quote: Quote, productImages: Array<[string, any]>) {
     const doc = new jsPDF();
 
-    const columns = ['Image', 'Product', 'Quantity', 'Origination', 'Unit price', 'Price (pre VAT)', 'VAT', 'Price (incl. VAT)'];
+    const columns = ['Product', 'Quantity', 'Origination', 'Unit price', 'Price (pre VAT)', 'VAT', 'Price (incl. VAT)'];
     const data = [];
 
     doc.setFontSize(12);
@@ -54,8 +54,7 @@ export class QuoteDocument {
       const vat = preVatTotal * 0.2;
       const totalInclVat = preVatTotal + vat;
 
-      data.push(['             ',
-        product.name, product.quantity,
+      data.push([product.name, product.quantity,
         this.formatter.format(originationPrice),
         this.formatter.format(unitPrice),
         this.formatter.format(preVatTotal),
@@ -67,7 +66,7 @@ export class QuoteDocument {
     doc.autoTable(columns, data, {
       startY: 80, tableWidth: 'auto', styles: {
         cellPadding: 1, // a number, array or object (see margin below)
-        fontSize: 9,
+        fontSize: 8,
         font: "helvetica", // helvetica, times, courier
         lineColor: 200,
         lineWidth: 0,
@@ -79,15 +78,19 @@ export class QuoteDocument {
         valign: 'middle', // top, middle, bottom
         columnWidth: 'auto' // 'auto', 'wrap' or a number
       },
-      drawRow: function (row, data) {row.height  = 20}
+      drawRow: function (row, d) {row.height  = 20}
     });
 
-    quote.quote_products.forEach((product, index) => {
-      doc.addImage(productImages[index][1], productImages[index][0], 15, 89 + (index * 20), 20, 20);
-    });
+    // quote.quote_products.forEach((product, index) => {
+    //  console.log(`Attempting to add image ${JSON.stringify(productImages[index])}`);
+    //   doc.addImage(productImages[index][1], productImages[index][0], 15, 89 + (index * 20), 20, 20);
+    // });
 
     // Save the PDF
     doc.save('quote_' + 'xxxx' + '.pdf');
+
+    this.quoteService.sendQuoteEmail(quote, doc.output()).subscribe(
+      (data) => console.log(data));
 
     // Save the new Quote
     quote.quote_status = QuoteStatus.Quoted;
