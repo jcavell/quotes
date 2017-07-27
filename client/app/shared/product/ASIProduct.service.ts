@@ -7,11 +7,30 @@ import {ASISearchResults} from "./ASISearchResults.model";
 // import 'rxjs/add/operator/do';  // for debugging
 
 
-export class ProductFilters {
-  colour: string;
-  ink_colour: string;
-  order_quantity: number;
-  branding_method: string;
+export class SearchFilters {
+  constructor(public q: string,
+              public category: string,
+              public supplier: string,
+              public quantity: number,
+              public dl: string) {
+  }
+
+  public getParams() {
+    let q = this.q;
+    if (this.category) {
+      q += ` supplier:${this.supplier}`;
+    }
+    if (this.supplier) {
+      q += ` category:${this.category}`;
+    }
+    if (this.quantity) {
+      q += ` quantity: ${this.quantity}`
+    }
+    ;
+    const params = {'q': q, 'dl': this.dl};
+    console.log("PARAMS: " + JSON.stringify(params));
+    return params;
+  };
 }
 
 
@@ -23,9 +42,9 @@ export class ASIProductService {
 
   private headers = new Headers(
     {
-      'Authorization' : 'AsiMemberAuth client_id=500057384&client_secret=fde3381a96af18c43d4ce2d73667585c'
+      'Authorization': 'AsiMemberAuth client_id=500057384&client_secret=fde3381a96af18c43d4ce2d73667585c'
     }
-    );
+  );
 
   /**
    * Creates a new ProductService with the injected Http.
@@ -39,11 +58,11 @@ export class ASIProductService {
    * Returns an Observable for the HTTP GET request for the JSON resource.
    * @return {Product[]} The Observable for the HTTP request.
    */
-  private get(url: string, filters: ProductFilters): Observable<Product[]> {
+  private get(url: string): Observable<Product[]> {
     return this.http.get(url, {
-      headers: this.headers,
-      params: filters}
-      )
+        headers: this.headers
+      }
+    )
       .map((res: Response) => res.json())
       //              .do(data => console.log('server data:', data))  // debug
       .catch(this.handleError);
@@ -56,8 +75,12 @@ export class ASIProductService {
       .catch(this.handleError);
   }
 
-  searchProducts(): Observable<ASISearchResults> {
-    return this.http.get(`https://api.asicentral.com/v1/products/search.json?q=pens&supplier:ALightPromos&dl=supplier,category`, {headers: this.headers})
+  searchProducts(filters: SearchFilters): Observable<ASISearchResults> {
+    return this.http.get(`https://api.asicentral.com/v1/products/search.json`,
+      {
+        headers: this.headers,
+        params: filters.getParams()
+      })
       .map((res: Response) => res.json())
       .catch(this.handleError);
   }

@@ -1,8 +1,7 @@
 export class ASIProductionTimeItem {
   constructor(public Name: string,
               public Description: string,
-              public Days: number
-  ) {
+              public Days: number) {
   }
 }
 
@@ -59,21 +58,19 @@ export class ASIDimensions {
               public Width: string,
               public WidthUnit: string,
               public Height: string,
-              public HeightUnit: string
-  ) {
+              public HeightUnit: string) {
   }
 }
 
 export class ASIShipping {
-  constructor(public Weight: {'Values': [ASIAttribute]},
+  constructor(public Weight: { 'Values': [ASIAttribute] },
               public WeightUnit: string,
               public WeightPerPackage: number,
               public ItemsPerPackage: number,
               public Dimensions: ASIDimensions,
               public BillsByWeight: boolean,
               public BillsBySize: boolean,
-              public PackageInPlainBox: boolean
-  ) {
+              public PackageInPlainBox: boolean) {
   }
 }
 
@@ -96,8 +93,8 @@ export class ASIImprinting {
   constructor(public Colors: { 'Values': [ASIAttribute] },
               public Methods: { 'Values': [ASIImprintingMethodOrService] },
               public Services: { 'Values': [ASIImprintingMethodOrService] },
-              public Locations: {'Values': [String]},
-              public Sizes: {'Values': [ASIAttribute]},
+              public Locations: { 'Values': [String] },
+              public Sizes: { 'Values': [ASIAttribute] },
               public FullColorProcess: boolean,
               public Personalization: boolean,
               public SoldUnimprinted: boolean) {
@@ -122,6 +119,7 @@ export class ASIPrice {
 }
 
 export class ASIProduct {
+
   constructor(public Id: number,
               public Name: string,
               public Description: string,

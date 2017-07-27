@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
 import {ProductService} from "../shared/product/product.service";
-import {ASIProductService} from "../shared/product/ASIProduct.service";
-import {ASIProduct} from "../shared/product/ASIProduct.model";
+import {ASIProductService, SearchFilters} from "../shared/product/ASIProduct.service";
+import {ASIPrice, ASIProduct} from "../shared/product/ASIProduct.model";
 import {ASISearchResults} from "../shared/product/ASISearchResults.model";
 
 @Component({
@@ -13,6 +13,7 @@ export class ProductComponent {
   product: ASIProduct;
   productId = 550517407;
 
+  category: string;
   searchResults: ASISearchResults;
   errorMessage: string;
   quantity = 500;
@@ -21,6 +22,15 @@ export class ProductComponent {
   constructor(public productService: ProductService, public asiProductService: ASIProductService) {
   }
 
+
+  public getUnitPrice(): ASIPrice {
+    return this.product.Prices.reduce((a, b) =>
+      a.Quantity.From <= this.quantity && a.Quantity.To >= this.quantity ? a : b);
+  }
+
+  public getTotalPrice(): number {
+    return this.getUnitPrice().Price * this.quantity;
+  }
 
   getProduct(): boolean {
     this.asiProductService.getProduct(this.productId)
@@ -35,7 +45,8 @@ export class ProductComponent {
   }
 
   search(): boolean {
-    this.asiProductService.searchProducts()
+    const filter = new SearchFilters(this.category, '', '', this.quantity, 'supplier,category');
+    this.asiProductService.searchProducts(filter)
       .subscribe(
         searchResults => {
           this.searchResults = searchResults;
