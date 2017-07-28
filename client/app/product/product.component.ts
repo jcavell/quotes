@@ -1,8 +1,11 @@
-import {Component} from "@angular/core";
+import {Component, ViewContainerRef} from "@angular/core";
 import {ProductService} from "../shared/product/product.service";
 import {ASIProductService, SearchFilters} from "../shared/product/ASIProduct.service";
 import {ASIPrice, ASIProduct} from "../shared/product/ASIProduct.model";
 import {ASISearchResults} from "../shared/product/ASISearchResults.model";
+import {BSModalContext} from "angular2-modal/plugins/bootstrap";
+import {Modal, Overlay, overlayConfigFactory} from "angular2-modal";
+import {ProductModalComponent} from "./productOverlay.component";
 
 @Component({
   moduleId: module.id,
@@ -19,10 +22,17 @@ export class ProductComponent {
   quantity = 500;
 
 
-  constructor(public productService: ProductService, public asiProductService: ASIProductService) {
+  constructor(public productService: ProductService, public asiProductService: ASIProductService, overlay: Overlay, vcRef: ViewContainerRef, public modal: Modal) {
+    overlay.defaultViewContainer = vcRef;
   }
 
+  openProductModal(productId: number) {
+    return this.modal.open(ProductModalComponent,  overlayConfigFactory({ productId : productId }, BSModalContext));
+  }
 
+  public getTotalPages(): number {
+    return Math.ceil(this.searchResults.ResultsTotal / this.searchResults.ResultsPerPage);
+  }
   public getUnitPrice(): ASIPrice {
     return this.product.Prices.reduce((a, b) =>
       a.Quantity.From <= this.quantity && a.Quantity.To >= this.quantity ? a : b);
@@ -44,9 +54,21 @@ export class ProductComponent {
     return false;
   }
 
+  searchWithQs(qs: string): boolean {
+    this.asiProductService.searchProductsUsingQs(qs)
+      .subscribe(
+        searchResults => {
+          this.searchResults = searchResults;
+          console.log(`AIP Producta: ${JSON.stringify(this.searchResults)}`);
+        },
+        error => this.errorMessage = <any>error
+      );
+    return false;
+  }
+
   search(): boolean {
-    const filter = new SearchFilters(this.category, '', '', this.quantity, 'supplier,category');
-    this.asiProductService.searchProducts(filter)
+    const filters = new SearchFilters(this.category, '', '', this.quantity, 'PRLH', 'supplier,category');
+    this.asiProductService.searchProductsUsingFilters(filters)
       .subscribe(
         searchResults => {
           this.searchResults = searchResults;

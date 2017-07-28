@@ -1,0 +1,28 @@
+<div *ngIf="product" class="card-block">
+
+  <table class="table table-bordered table-responsive table-striped table-hover">
+    <tr>
+      <td>Name</td>
+      <td>{{product.Name}}</td>
+    </tr>
+    <tr>
+      <td>Supplier</td>
+      <td>{{product.Supplier.Name}}</td>
+    </tr>
+    <tr>
+      <td>Description</td>
+      <td>{{product.Description}}</td>
+    </tr>
+    <tr>
+      <td>Prices</td>
+      <td><span
+        *ngFor="let price of product.Prices">{{price.Quantity.From}} to {{price.Quantity.To}}: ${{price.Price}}<br></span>
+      </td>
+    </tr>
+    <tr>
+      <td>Images</td>
+      <td><span *ngFor="let image of product.Images"><img src="https://api.asicentral.com/v1/{{image}}"></span>
+      </td>
+    </tr>
+  </table>
+</div>

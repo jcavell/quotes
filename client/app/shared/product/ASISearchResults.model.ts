@@ -50,6 +50,7 @@ export class ASISearchPrice {
 
 export class ASISearchLinks {
   constructor(
+              public Previous: string,
               public Self: string,
               public Next: string) {
   }
@@ -68,18 +69,19 @@ export class ASISearchResult {
               public Supplier: ASISearchSupplier,
               public Categories: [ASISearchCategory],
               public Price: ASISearchPrice,
-              public IsConfirmed: boolean,
-              public Query: string,
-              public Breadcrumb: string,
-              public Page: number,
-              public ResultsPerPage: number,
-              public ResultsTotal: number
+              public IsConfirmed: boolean
 
   ) {
   }
 }
 
 export class ASISearchResults {
-  constructor(public Results: [ASISearchResult]) {
+  constructor(public Results: [ASISearchResult],
+              public Links: ASISearchLinks,
+              public Query: string,
+              public Breadcrumb: string,
+              public Page: number,
+              public ResultsPerPage: number,
+              public ResultsTotal: number) {
   }
 }

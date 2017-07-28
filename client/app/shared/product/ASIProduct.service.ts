@@ -12,6 +12,7 @@ export class SearchFilters {
               public category: string,
               public supplier: string,
               public quantity: number,
+              public sort: string,
               public dl: string) {
   }
 
@@ -24,10 +25,19 @@ export class SearchFilters {
       q += ` category:${this.category}`;
     }
     if (this.quantity) {
-      q += ` quantity: ${this.quantity}`
+      q += ` quantity: ${this.quantity}`;
     }
-    ;
-    const params = {'q': q, 'dl': this.dl};
+
+
+    const params = {'q': q};
+
+    if (this.dl) {
+      params['dl'] = this.dl;
+    }
+
+    if (this.sort) {
+      params['sort'] = this.sort;
+    }
     console.log("PARAMS: " + JSON.stringify(params));
     return params;
   };
@@ -75,7 +85,16 @@ export class ASIProductService {
       .catch(this.handleError);
   }
 
-  searchProducts(filters: SearchFilters): Observable<ASISearchResults> {
+  searchProductsUsingQs(qs: string): Observable<ASISearchResults> {
+    return this.http.get(`https://api.asicentral.com/v1/products/search.json${qs}`,
+      {
+        headers: this.headers
+      })
+      .map((res: Response) => res.json())
+      .catch(this.handleError);
+  }
+
+  searchProductsUsingFilters(filters: SearchFilters): Observable<ASISearchResults> {
     return this.http.get(`https://api.asicentral.com/v1/products/search.json`,
       {
         headers: this.headers,

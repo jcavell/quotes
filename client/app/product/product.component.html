@@ -72,6 +72,10 @@
 
 
     <div *ngIf="searchResults" class="col-md-6">
+      Page {{searchResults.Page}} of {{getTotalPages()}}<br>
+      <button *ngIf="searchResults.Links.Previous" type = "button" class="btn btn-sm btn-warning" (click)="searchWithQs(searchResults.Links.Previous)"><i class="fa fa-step-backward"></i> Previous</button>
+      <button *ngIf="searchResults.Links.Next" type = "button" class="btn btn-sm btn-warning" (click)="searchWithQs(searchResults.Links.Next)">Next <i class="fa fa-step-forward"></i></button>
+
       <table class="table table-bordered table-responsive table-striped table-hover">
         <thead>
         <tr>
@@ -82,7 +86,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let product of searchResults.Results">
+        <tr *ngFor="let product of searchResults.Results" (click)="openProductModal(product.Id)">
           <td>{{product.Id}}</td>
           <td>{{product.Name}}</td>
           <td><img src="https://api.asicentral.com/v1/{{product.ImageUrl}}"></td>

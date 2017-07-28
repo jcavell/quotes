@@ -30,7 +30,7 @@ export class SearchModalComponent implements CloseGuard, ModalComponent<SearchMo
   colour = '';
   leadTime = 0;
   priceKey = 'tbc';
-  leadTimes: string[] = ['1-4 working days', '5-10 working days', '11-20 working days']
+  leadTimes: string[] = ['1-4 working days', '5-10 working days', '11-20 working days'];
   inkColours: string[] = ['', 'Blue', 'Black', 'Green', 'Red'];
   colours: string[] = ['', 'Blue', 'Black', 'Green', 'Red'];
 
