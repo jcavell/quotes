@@ -10,26 +10,42 @@ import {ASISearchResults} from "./ASISearchResults.model";
 export class SearchFilters {
   constructor(public q: string,
               public category: string,
-              public supplier: string,
+              public asi: string,
               public quantity: number,
+              public color: string,
+              public cost: string,
+              public production_time: number,
+              public page: number,
               public sort: string,
               public dl: string) {
   }
 
   public getParams() {
     let q = this.q;
-    if (this.category) {
-      q += ` supplier:${this.supplier}`;
+    if (this.asi) {
+      q += ` asi:${this.asi}`;
     }
-    if (this.supplier) {
+    if (this.cost) {
+      q += ` cost: ${this.cost}`;
+    }
+    if (this.color) {
+      q += ` color: ${this.color}`;
+    }
+    if (this.category) {
       q += ` category:${this.category}`;
     }
     if (this.quantity) {
       q += ` quantity: ${this.quantity}`;
     }
-
+    if (this.production_time) {
+      q += ` production_time: ${this.production_time}`;
+    }
 
     const params = {'q': q};
+
+    if (this.page) {
+      params['page'] = this.page;
+    }
 
     if (this.dl) {
       params['dl'] = this.dl;

@@ -10,7 +10,14 @@ export class ASISearchVirtualSampleImage {
 export class ASISearchSupplier {
   constructor(public Id: number,
               public Name: string,
-              public ASISearchNumber: string,) {
+              public ASISearchNumber: string) {
+  }
+}
+
+export class ASISearchDimensionItem {
+  constructor(public Id: number,
+              public Name: string,
+              public Products: number) {
   }
 }
 
@@ -38,7 +45,6 @@ export class ASISearchCharge {
 }
 
 
-
 export class ASISearchPrice {
   constructor(public Quantity: number,
               public Price: number,
@@ -49,8 +55,7 @@ export class ASISearchPrice {
 }
 
 export class ASISearchLinks {
-  constructor(
-              public Previous: string,
+  constructor(public Previous: string,
               public Self: string,
               public Next: string) {
   }
@@ -69,14 +74,19 @@ export class ASISearchResult {
               public Supplier: ASISearchSupplier,
               public Categories: [ASISearchCategory],
               public Price: ASISearchPrice,
-              public IsConfirmed: boolean
-
-  ) {
+              public IsConfirmed: boolean) {
   }
 }
 
 export class ASISearchResults {
   constructor(public Results: [ASISearchResult],
+              public Dimensions: {
+                'Categories': [ASISearchDimensionItem],
+                'Suppliers': [ASISearchDimensionItem],
+                'Prices': [ASISearchDimensionItem],
+                'Colors': [ASISearchDimensionItem]
+              },
+              public Categories: [ASISearchCategory],
               public Links: ASISearchLinks,
               public Query: string,
               public Breadcrumb: string,
