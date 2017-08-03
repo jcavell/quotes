@@ -10,6 +10,7 @@ import {ASISearchResults} from "./ASISearchResults.model";
 export class SearchFilters {
   constructor(public q: string,
               public category: string,
+              public supplier: string,
               public asi: string,
               public quantity: number,
               public color: string,
@@ -33,6 +34,9 @@ export class SearchFilters {
     }
     if (this.category) {
       q += ` category:${this.category}`;
+    }
+    if (this.supplier) {
+      q += ` supplier:${this.supplier}`;
     }
     if (this.quantity) {
       q += ` quantity: ${this.quantity}`;

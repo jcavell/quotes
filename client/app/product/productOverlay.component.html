@@ -16,12 +16,12 @@
     <tr>
       <td>Prices</td>
       <td><span
-        *ngFor="let price of product.Prices">{{price.Quantity.From}} to {{price.Quantity.To}}: ${{price.Price}}<br></span>
+        *ngFor="let price of product.Prices">{{price.Quantity.From}} to {{price.Quantity.To}}: ${{price.Cost}}<br></span>
       </td>
     </tr>
     <tr>
       <td>Images</td>
-      <td><span *ngFor="let image of product.Images"><img src="https://api.asicentral.com/v1/{{image}}"></span>
+      <td><span *ngFor="let image of product.VirtualSampleImages"><img src="https://api.asicentral.com/v1/{{image.ImageUrl}}"></span>
       </td>
     </tr>
   </table>

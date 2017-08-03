@@ -2,52 +2,18 @@
 
   <div class="row">
     <div class="col-md-6">
-      <form (submit)="getProduct()">
-        Product ID<br>
-        <input name="productId" [(ngModel)]="productId">
-        <br>
-        Quantity<br>
-        <input [(ngModel)]="quantity" name="quantity" placeholder="Quantity" class="input-sm">
-        <button type="submit" class="btn btn-sm btn-warning">Get product</button>
-      </form>
-
-      <div *ngIf="product">
-        <form (submit)="search(1)">
-
-          <div class="form-group">
-            Categories
-            <select [(ngModel)]="category" class="form-control" name="Category" placeholder="Category">
-              <option selected value = "">--Choose category--</option>
-              <option *ngFor="let category of product.Categories" [attr.value]="category.Name">{{category.Name}}
-              </option>
-            </select>
-          </div>
-
-          <div class="form-group">
-          Colors: <select [disabled] = "!searchResults" [(ngModel)]="color" class="form-control" name="color" placeholder="Color">
-          <option *ngFor="let color of colors()" [attr.value]="color">{{color}}
-          </option>
-        </select>
-          </div>
-
-          <div class="form-group">
-            Production time {{production_time}} days
-            <input type = "range" min = "1" max = "10" step = "1" [(ngModel)]="production_time" class="form-control" name="ProductionTime" placeholder="ProductionTime">
-          </div>
-
-          <div class="form-group">
-            Cost from ${{costMin}} to ${{costMax}}
-            <input type = "range" min = "0.1" max = "10" step = "0.1" [(ngModel)]="costMin" class="form-control" name="MinCost" placeholder="MinCost">
-            <input type = "range" min = "0.1" max = "10" step = "0.1" [(ngModel)]="costMax" class="form-control" name="MaxCost" placeholder="MaxCost">
+      <div *ngIf="!product">
+        <form (submit)="getProduct()">
+          Product ID<br>
+          <input name="productId" [(ngModel)]="productId">
+          <br>
+          Quantity<br>
+          <input [(ngModel)]="quantity" name="quantity" placeholder="Quantity" class="input-sm">
+          <button type="submit" class="btn btn-sm btn-warning">Get product</button>
+        </form>
       </div>
 
-          <div>
-            <button type="submit" class="btn btn-sm btn-warning">Search for matching products</button>
-          </div>
-
-        </form>
-
-<br>
+      <div *ngIf="product">
 
         <table class="table table-bordered table-responsive table-striped table-hover">
           <tr>
@@ -82,31 +48,91 @@
     </div>
 
 
-    <div *ngIf="searchResults" class="col-md-6">
-      {{searchResults.Breadcrumb}}<br>
-      Page {{searchResults.Page}} of {{getTotalPages()}}<br>
-      <button *ngIf="searchResults.Links.Previous" type = "button" class="btn btn-sm btn-warning" (click)="search(searchResults.Page - 1)"><i class="fa fa-step-backward"></i> Previous</button>
-      <button *ngIf="searchResults.Links.Next" type = "button" class="btn btn-sm btn-warning" (click)="search(searchResults.Page + 1)">Next <i class="fa fa-step-forward"></i></button>
+    <div *ngIf="product" class="col-md-6">
+
+      <form (submit)="search(1)">
+
+        Quantity<br>
+        <input [(ngModel)]="quantity" name="quantity" placeholder="Quantity" class="input-sm">
+
+        <div class="form-group">
+          Categories
+          <select [(ngModel)]="category" class="form-control" name="Category" placeholder="Category">
+            <option selected value="">--Choose category--</option>
+            <option *ngFor="let category of product.Categories" [attr.value]="category.Name">{{category.Name}}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          Suppliers
+          <select [disabled]="!searchResults" [(ngModel)]="supplier" class="form-control" name="Supplier" placeholder="Supplier">
+            <option selected value=""></option>
+            <option *ngFor="let supplier of suppliers()" [attr.value]="supplier">{{supplier}}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          Colors: <select [disabled]="!searchResults" [(ngModel)]="color" class="form-control" name="color"
+                          placeholder="Color">
+          <option *ngFor="let color of colors()" [attr.value]="color">{{color}}
+          </option>
+        </select>
+        </div>
+
+        <div class="form-group">
+          Production time {{production_time}} days
+          <input type="range" min="1" max="10" step="1" [(ngModel)]="production_time" class="form-control"
+                 name="ProductionTime" placeholder="ProductionTime">
+        </div>
+
+        <div class="form-group">
+          Cost from ${{costMin}} to ${{costMax}}
+          <input type="range" min="0.1" max="10" step="0.1" [(ngModel)]="costMin" class="form-control" name="MinCost"
+                 placeholder="MinCost">
+          <input type="range" min="0.1" max="10" step="0.1" [(ngModel)]="costMax" class="form-control" name="MaxCost"
+                 placeholder="MaxCost">
+        </div>
+
+        <div>
+          <button type="submit" class="btn btn-sm btn-warning">Search for matching products</button>
+        </div>
+
+      </form>
 
 
-      <table class="table table-bordered table-responsive table-striped table-hover">
-        <thead>
-        <tr>
-          <th>ID</th>
-          <th>Product name</th>
-          <th>Image</th>
-          <th>Cost</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let product of searchResults.Results" (click)="openProductModal(product.Id)">
-          <td>{{product.Id}}</td>
-          <td>{{product.Name}}</td>
-          <td><img src="https://api.asicentral.com/v1/{{product.ImageUrl}}"></td>
-          <td>${{product.Price.Cost}}</td>
-        </tr>
-        </tbody>
-      </table>
+      <div [ngBusy]="searchSubscription">
+      <div *ngIf="searchResults">
+        <!--{{searchResults.Breadcrumb}}-->
+        Page {{searchResults.Page}} of {{getTotalPages()}}
+        <button *ngIf="searchResults.Links.Previous" type="button" class="btn btn-sm btn-warning"
+                (click)="search(searchResults.Page - 1)"><i class="fa fa-step-backward"></i> Previous
+        </button>
+        <button *ngIf="searchResults.Links.Next" type="button" class="btn btn-sm btn-warning"
+                (click)="search(searchResults.Page + 1)">Next <i class="fa fa-step-forward"></i></button>
+
+
+        <table class="table table-bordered table-responsive table-striped table-hover">
+          <thead>
+          <tr>
+            <th>Product name</th>
+            <th>Supplier</th>
+            <th>Image</th>
+            <th>Unit cost</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let product of searchResults.Results" (click)="openProductModal(product.Id)">
+            <td>{{product.Name}}</td>
+            <td>{{product.Supplier.Name}}</td>
+            <td><img src="https://api.asicentral.com/v1/{{product.ImageUrl}}"></td>
+            <td>${{product.Price.Cost}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      </div>
     </div>
   </div>
 </div>
