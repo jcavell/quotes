@@ -125,9 +125,9 @@ export class ASIProduct {
               public Description: string,
               public ShortDescription: string,
               public Number: string,
-              public Numbers: [String],
-              public ImageUrl: String,
-              public Images: [String],
+              public Numbers: [string],
+              public ImageUrl: string,
+              public Images: [string],
               public VirtualSampleImages: [ASIVirtualSampleImage],
               public Supplier: ASISupplier,
               public Categories: [ASICategory],
@@ -141,8 +141,8 @@ export class ASIProduct {
               public IsConfirmed: boolean,
               public Themes: [string],
               public ProductionTime: [ASIProductionTimeItem],
-              public Origin: [String],
-              public TradeNames: [String],
+              public Origin: [string],
+              public TradeNames: [string],
               public AdditionalInfo: string) {
   }
 }

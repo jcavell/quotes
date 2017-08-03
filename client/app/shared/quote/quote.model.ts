@@ -5,6 +5,27 @@ export enum QuoteStatus {
   Invoiced = 3
 }
 
+
+export class ASIQuoteProduct {
+  constructor(public product_id: number,
+              public name: string,
+              public quantity: number,
+              public image_url: string) {
+
+  }
+}
+
+export class ASIQuote {
+  constructor(public _id: String,
+              public quote_request_id: number,
+              public quote_created: Date,
+              public quote_status: QuoteStatus,
+              public quote_products: ASIQuoteProduct[]) {
+
+  }
+}
+
+
 export class QuoteProduct {
   constructor(public product_id: number,
               public name: string,

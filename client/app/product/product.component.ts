@@ -1,5 +1,4 @@
 import {Component, ViewContainerRef} from "@angular/core";
-import {ProductService} from "../shared/product/product.service";
 import {ASIProductService, SearchFilters} from "../shared/product/ASIProduct.service";
 import {ASIPrice, ASIProduct} from "../shared/product/ASIProduct.model";
 import {ASISearchResults} from "../shared/product/ASISearchResults.model";
@@ -32,7 +31,7 @@ export class ProductComponent {
   errorMessage: string;
 
 
-  constructor(public productService: ProductService, public asiProductService: ASIProductService, overlay: Overlay, vcRef: ViewContainerRef, public modal: Modal) {
+  constructor(public asiProductService: ASIProductService, overlay: Overlay, vcRef: ViewContainerRef, public modal: Modal) {
     overlay.defaultViewContainer = vcRef;
   }
 

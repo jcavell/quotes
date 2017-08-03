@@ -7,9 +7,9 @@ import {Subscription} from "rxjs/Rx";
 import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
 import {SelectedQuoteRequestService} from "../shared/quote-request/selectedQuoteRequest.service";
 import {QuoteRequestService} from "../shared/quote-request/quoteRequest.service";
-import {ProductService} from "../shared/product/product.service";
-import {Quote, QuoteProduct, QuoteStatus} from "../shared/quote/quote.model";
+import {ASIQuote, ASIQuoteProduct, QuoteProduct, QuoteStatus} from "../shared/quote/quote.model";
 import {isNullOrUndefined} from "util";
+import {ASIProductService} from "../shared/product/ASIProduct.service";
 
 /**
  * This class represents the lazy loaded QuoteRequestComponent.
@@ -23,14 +23,13 @@ import {isNullOrUndefined} from "util";
 
 export class SelectedQuoteRequestComponent implements OnInit, OnDestroy {
   quoteRequest: QuoteRequest;
-  quote: Quote;
+  quote: ASIQuote;
   subscription: Subscription;
   errorMessage: any;
-  colours: string[] = ['', 'Blue', 'Black', 'Green', 'Red'];
 
   constructor(public selectedQuoteRequestService: SelectedQuoteRequestService,
               public quoteRequestService: QuoteRequestService,
-              public productService: ProductService, overlay: Overlay, vcRef: ViewContainerRef, public modal: Modal) {
+              public asiProductService: ASIProductService, overlay: Overlay, vcRef: ViewContainerRef, public modal: Modal) {
     overlay.defaultViewContainer = vcRef;
   }
 
@@ -67,20 +66,34 @@ export class SelectedQuoteRequestComponent implements OnInit, OnDestroy {
 
   setSelectedQuoteRequest(quoteRequest: QuoteRequest): boolean {
     this.quoteRequest = quoteRequest;
-    this.productService.getMultiple(this.quoteRequest.sku)
-      .subscribe(
-        products => {
-          const quoteProducts = products.map(product =>
-            new QuoteProduct(product.id, product.name, product.sku, product.sage_sku,
-              this.quoteRequest.quantity, product.origination_price, product.prices, 0, 0, product.image_url));
-          this.quote = new Quote(undefined, this.quoteRequest.id, new Date(), QuoteStatus.New, quoteProducts);
-          // console.log('Set quote to: ' + JSON.stringify(this.quote));
-        },
-        error => {
-          this.errorMessage = <any>error;
-          console.log(`ERROR ${JSON.stringify(error)}`);
-        }
-      );
-    return false;
-  }
+
+      this.asiProductService.getProduct(quoteRequest.product_id)
+        .subscribe(
+          product => {
+            const quoteProduct = new ASIQuoteProduct(product.Id, product.Name, this.quoteRequest.quantity, product.ImageUrl);
+            this.quote = new ASIQuote(undefined, this.quoteRequest.id, new Date(), QuoteStatus.New, [quoteProduct]);
+            console.log(`AIP Product: ${JSON.stringify(quoteRequest.product_id)}`);
+          },
+          error => this.errorMessage = <any>error
+        );
+      return false;
+    }
+
+
+  //   this.productService.getMultiple(this.quoteRequest.sku)
+  //     .subscribe(
+  //       products => {
+  //         const quoteProducts = products.map(product =>
+  //           new QuoteProduct(product.id, product.name, product.sku, product.sage_sku,
+  //             this.quoteRequest.quantity, product.origination_price, product.prices, 0, 0, product.image_url));
+  //         this.quote = new Quote(undefined, this.quoteRequest.id, new Date(), QuoteStatus.New, quoteProducts);
+  //         // console.log('Set quote to: ' + JSON.stringify(this.quote));
+  //       },
+  //       error => {
+  //         this.errorMessage = <any>error;
+  //         console.log(`ERROR ${JSON.stringify(error)}`);
+  //       }
+  //     );
+  //   return false;
+  // }
 }

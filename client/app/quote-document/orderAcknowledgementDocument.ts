@@ -23,8 +23,8 @@ export class OrderAcknowledgementDocument {
     doc.setFontSize(12);
     doc.text(20, 10, 'ORDER ACKNOWLEDGEMENT');
     doc.text(20, 20, quoteRequest.customer_name);
-    doc.text(20, 30, quoteRequest.customer_company);
-    doc.text(20, 40, quoteRequest.customer_address);
+    doc.text(20, 30, quoteRequest.company);
+    doc.text(20, 40, 'quoteRequest.customer_address needs to be added');
     doc.text(20, 60, quoteRequest.customer_email);
     doc.text(20, 70, 'Tel ' + quoteRequest.customer_telephone);
 
