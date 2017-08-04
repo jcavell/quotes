@@ -1,4 +1,4 @@
-import {Quote, QuoteStatus} from "../shared/quote/quote.model";
+import {ASIQuote, QuoteStatus} from "../shared/quote/quote.model";
 import {QuoteService} from "../shared/quote/quote.service";
 import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
 
@@ -14,7 +14,7 @@ export class OrderAcknowledgementDocument {
 
   constructor(private quoteService: QuoteService) { }
 
-  public save(quoteRequest: QuoteRequest, quote: Quote) {
+  public save(quoteRequest: QuoteRequest, quote: ASIQuote) {
     const doc = new jsPDF();
 
     const columns = ['Product', 'Quantity', 'Origination', 'Unit price', 'Cost'];
@@ -32,13 +32,13 @@ export class OrderAcknowledgementDocument {
 
     for (const product of quote.quote_products) {
       // console.log('Quote product: ' + JSON.stringify(product));
-      const originationPrice = product.origination_price;
+      const originationPrice = 0;
 
-      const totalPriceForProduct = product.quantity * product.unit_price * (1 + product.markup / 100) + originationPrice;
+      const totalPriceForProduct = product.getMarkedUpTotalCost() + originationPrice;
       totalPriceForProducts.push(totalPriceForProduct);
       data.push([
         product.name, product.quantity,
-        this.formatter.format(originationPrice), this.formatter.format(product.unit_price * (1 + product.markup / 100)),
+        this.formatter.format(originationPrice), this.formatter.format(product.getMarkedUpUnitCost()),
         this.formatter.format(totalPriceForProduct)
       ]);
     }

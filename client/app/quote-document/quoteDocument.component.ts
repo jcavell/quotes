@@ -1,6 +1,6 @@
 import {Component, Input} from "@angular/core";
 import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
-import {Quote} from "../shared/quote/quote.model";
+import {ASIQuote} from "../shared/quote/quote.model";
 import {QuoteService} from "../shared/quote/quote.service";
 import {QuoteDocument} from "./quoteDocument";
 import {OrderAcknowledgementDocument} from "./orderAcknowledgementDocument";
@@ -25,7 +25,7 @@ class ImageGet {
 `
 })
 export class QuoteDocumentComponent {
-  @Input() quote: Quote;
+  @Input() quote: ASIQuote;
   @Input() quoteRequest: QuoteRequest;
   @Input() buttonName = 'Create quote';
   @Input() documentType = 'quote';

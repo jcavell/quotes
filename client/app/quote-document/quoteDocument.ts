@@ -1,4 +1,4 @@
-import {Quote, QuoteProduct, QuoteStatus} from "../shared/quote/quote.model";
+import {ASIQuote, QuoteStatus} from "../shared/quote/quote.model";
 import {QuoteService} from "../shared/quote/quote.service";
 import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
 
@@ -15,23 +15,7 @@ export class QuoteDocument {
   constructor(private quoteService: QuoteService) {
   }
 
-  private setUnitPrice(quoteProduct: QuoteProduct) {
-    let priceKey: number;
-    if (quoteProduct.quantity <= 999) {
-      priceKey = 500;
-    } else if (quoteProduct.quantity <= 1999) {
-      priceKey = 1000;
-    } else if (quoteProduct.quantity <= 4999) {
-      priceKey = 2000;
-    } else if (quoteProduct.quantity <= 9999) {
-      priceKey = 5000;
-    } else {
-      priceKey = 10000;
-    }
-    quoteProduct.unit_price = quoteProduct.prices[priceKey];
-  }
-
-  public save(quoteRequest: QuoteRequest, quote: Quote, productImages: Array<[string, any]>) {
+  public save(quoteRequest: QuoteRequest, quote: ASIQuote, productImages: Array<[string, any]>) {
     const doc = new jsPDF();
 
     const columns = ['Product', 'Quantity', 'Origination', 'Unit price', 'Price (pre VAT)', 'VAT', 'Price (incl. VAT)'];
@@ -47,16 +31,16 @@ export class QuoteDocument {
 
     for (const product of quote.quote_products) {
       // console.log('Quote product: ' + JSON.stringify(product));
-      const originationPrice = product.origination_price;
-      this.setUnitPrice(product);
-      const unitPrice = product.unit_price * (1 + product.markup / 100);
-      const preVatTotal = product.quantity * unitPrice + originationPrice;
+      const originationCost = 0; // TODO - add these setup costs
+      // TODO Add shipping and printing costs
+      const unitCost = product.getMarkedUpUnitCost();
+      const preVatTotal = product.getMarkedUpTotalCost();
       const vat = preVatTotal * 0.2;
       const totalInclVat = preVatTotal + vat;
 
       data.push([product.name, product.quantity,
-        this.formatter.format(originationPrice),
-        this.formatter.format(unitPrice),
+        this.formatter.format(originationCost),
+        this.formatter.format(unitCost),
         this.formatter.format(preVatTotal),
         this.formatter.format(vat),
         this.formatter.format(totalInclVat)

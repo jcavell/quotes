@@ -1,3 +1,4 @@
+import {ASIPrice} from "../product/ASIProduct.model";
 export enum QuoteStatus {
   New = 0,
   Quoted = 1,
@@ -10,9 +11,26 @@ export class ASIQuoteProduct {
   constructor(public product_id: number,
               public name: string,
               public quantity: number,
-              public image_url: string) {
+              public image_url: string,
+              public prices: [ASIPrice],
+              public markup: number) {
 
   }
+
+  public getPreMarkupPrice(): ASIPrice {
+    return this.prices.reduce((a, b) =>
+      a.Quantity.From <= this.quantity && a.Quantity.To >= this.quantity ? a : b);
+  }
+
+  public getMarkedUpUnitCost(): number {
+    return this.getPreMarkupPrice().Cost * (1 + this.markup / 100);
+  }
+
+  public getMarkedUpTotalCost(): number {
+    return this.getMarkedUpUnitCost() * this.quantity;
+  }
+
+
 }
 
 export class ASIQuote {

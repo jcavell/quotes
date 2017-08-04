@@ -7,7 +7,7 @@ import {Subscription} from "rxjs/Rx";
 import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
 import {SelectedQuoteRequestService} from "../shared/quote-request/selectedQuoteRequest.service";
 import {QuoteRequestService} from "../shared/quote-request/quoteRequest.service";
-import {ASIQuote, ASIQuoteProduct, QuoteProduct, QuoteStatus} from "../shared/quote/quote.model";
+import {ASIQuote, ASIQuoteProduct, QuoteStatus} from "../shared/quote/quote.model";
 import {isNullOrUndefined} from "util";
 import {ASIProductService} from "../shared/product/ASIProduct.service";
 
@@ -60,7 +60,7 @@ export class SelectedQuoteRequestComponent implements OnInit, OnDestroy {
     this.selectedQuoteRequestService.setEditing(false);
   }
 
-  remove(product: QuoteProduct) {
+  remove(product: ASIQuoteProduct) {
     this.quote.quote_products.splice(this.quote.quote_products.indexOf(product), 1);
   }
 
@@ -70,7 +70,7 @@ export class SelectedQuoteRequestComponent implements OnInit, OnDestroy {
       this.asiProductService.getProduct(quoteRequest.product_id)
         .subscribe(
           product => {
-            const quoteProduct = new ASIQuoteProduct(product.Id, product.Name, this.quoteRequest.quantity, product.ImageUrl);
+            const quoteProduct = new ASIQuoteProduct(product.Id, product.Name, this.quoteRequest.quantity, product.ImageUrl, product.Prices, quoteRequest.quantity);
             this.quote = new ASIQuote(undefined, this.quoteRequest.id, new Date(), QuoteStatus.New, [quoteProduct]);
             console.log(`AIP Product: ${JSON.stringify(quoteRequest.product_id)}`);
           },

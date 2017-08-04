@@ -3,7 +3,7 @@ import {Headers, Http, RequestOptions} from "@angular/http";
 
 import {Observable} from "rxjs/Observable";
 import "rxjs/add/operator/map";
-import {Quote} from "./quote.model";
+import {ASIQuote} from "./quote.model";
 
 @Injectable()
 export class QuoteService {
@@ -13,17 +13,17 @@ export class QuoteService {
 
   constructor(private http: Http) { }
 
-  addQuote(quote: Quote): Observable<any> {
+  addQuote(quote: ASIQuote): Observable<any> {
     console.log(`Creating quote ${quote}`);
     return this.http.post('/api/quote', JSON.stringify(quote), this.options);
   }
 
-  updateQuote(quote: Quote): Observable<any> {
+  updateQuote(quote: ASIQuote): Observable<any> {
     console.log(`Updating quote ${quote}`);
     return this.http.put(`/api/quote/${quote._id}`, JSON.stringify(quote), this.options);
   }
 
-  sendQuoteEmail(quote: Quote, attachment: any): Observable<any> {
+  sendQuoteEmail(quote: ASIQuote, attachment: any): Observable<any> {
     console.log(`Sending email for quote ${quote}`);
     return this.http.post(`/api/sendQuoteEmail`, JSON.stringify(quote), this.options).map(res => res.json());
   }

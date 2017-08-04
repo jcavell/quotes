@@ -120,6 +120,19 @@ export class ASIPrice {
 
 export class ASIProduct {
 
+  public getUnitPrice(quantity: number): ASIPrice {
+    return this.Prices.reduce((a, b) =>
+      a.Quantity.From <= quantity && a.Quantity.To >= quantity ? a : b);
+  }
+
+  public getTotalPrice(quantity: number): number {
+    return this.getUnitPrice(quantity).Price * quantity;
+  }
+
+  public getTotalCost(quantity: number): number {
+    return this.getUnitPrice(quantity).Cost * quantity;
+  }
+
   constructor(public Id: number,
               public Name: string,
               public Description: string,
