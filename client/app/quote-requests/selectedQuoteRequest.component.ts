@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit, ViewContainerRef} from "@angular/core";
 import {Overlay, overlayConfigFactory} from "angular2-modal";
 import {BSModalContext, Modal} from "angular2-modal/plugins/bootstrap";
-import {SearchModalComponent} from "./search.component";
 
 import {Observable, Subscription} from "rxjs/Rx";
 import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
@@ -11,6 +10,8 @@ import {ASIQuote, ASIQuoteProduct, QuoteStatus} from "../shared/quote/quote.mode
 import {isNullOrUndefined} from "util";
 import {ASIProductService} from "../shared/product/ASIProduct.service";
 import {ASIProduct} from "../shared/product/ASIProduct.model";
+import {ProductComponent} from "../product/product.component";
+import {DataService} from "../services/data.service";
 
 /**
  * This class represents the lazy loaded QuoteRequestComponent.
@@ -28,15 +29,17 @@ export class SelectedQuoteRequestComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   errorMessage: any;
 
-  constructor(public selectedQuoteRequestService: SelectedQuoteRequestService,
+  constructor(private dataService: DataService,
+              public selectedQuoteRequestService: SelectedQuoteRequestService,
               public quoteRequestService: QuoteRequestService,
               public asiProductService: ASIProductService, overlay: Overlay, vcRef: ViewContainerRef, public modal: Modal) {
     overlay.defaultViewContainer = vcRef;
   }
 
   openSearchModal() {
-    return this.modal.open(SearchModalComponent, overlayConfigFactory({
-      quoteRequest: this.quoteRequest,
+    return this.modal.open(ProductComponent, overlayConfigFactory({
+      productId: this.quoteRequest.product_id,
+      quantity: this.quoteRequest.quantity,
       quote: this.quote
     }, BSModalContext));
   }
@@ -69,18 +72,26 @@ export class SelectedQuoteRequestComponent implements OnInit, OnDestroy {
   }
 
   setSelectedQuoteRequest(quoteRequest: QuoteRequest): boolean {
+
     this.quoteRequest = quoteRequest;
 
-    const productObservables: Observable<ASIProduct>[] = [quoteRequest.product_id, 5399926, 6910890].map(pid => this.asiProductService.getProduct(pid));
+    this.dataService.getXsells().subscribe(
+      data => {
+        const productIds: number[] = data.map(d => d.productId);
+        productIds.unshift(quoteRequest.product_id);
+        const productObservables: Observable<ASIProduct >[] = productIds.map(pid => this.asiProductService.getProduct(pid));
 
-    Observable.forkJoin(productObservables).subscribe(
-      products => {
-        const quoteProducts = products.map(product =>
-          new ASIQuoteProduct(product.Id, product.Name, this.quoteRequest.quantity, product.ImageUrl, product.Prices, quoteRequest.quantity));
-        this.quote = new ASIQuote(undefined, this.quoteRequest.id, new Date(), QuoteStatus.New, quoteProducts);
-        console.log(`AIP Product: ${JSON.stringify(quoteRequest.product_id)}`);
+        Observable.forkJoin(productObservables).subscribe(
+          products => {
+            const quoteProducts = products.map(product =>
+              new ASIQuoteProduct(product.Id, product.Name, this.quoteRequest.quantity, product.ImageUrl, product.Prices, quoteRequest.quantity));
+            this.quote = new ASIQuote(undefined, this.quoteRequest.id, new Date(), QuoteStatus.New, quoteProducts);
+            console.log(`AIP Product: ${JSON.stringify(quoteRequest.product_id)}`);
+          },
+          error => this.errorMessage = <any>error
+        );
       },
-      error => this.errorMessage = <any>error
+      error => console.log(error)
     );
 
     return false;

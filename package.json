@@ -9,7 +9,6 @@
     "ng": "ng",
     "build": "ng build",
     "start": "ng serve -H 0.0.0.0",
-    "predev": "tsc -p server",
     "dev": "concurrently \"ng serve -pc proxy.conf.json -H 0.0.0.0 \" \"tsc -w -p server\" \"nodemon\"",
     "prod": "concurrently \"ng build -aot -prod && tsc -p server && node dist/server/app.js\"",
     "test": "ng test",

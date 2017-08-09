@@ -4,9 +4,12 @@ import {CloseGuard, DialogRef, ModalComponent} from "angular2-modal";
 import {BSModalContext} from "angular2-modal/plugins/bootstrap";
 import {ASIProductService} from "../shared/product/ASIProduct.service";
 import {ASIProduct} from "../shared/product/ASIProduct.model";
+import {ASIQuote, ASIQuoteProduct} from "../shared/quote/quote.model";
 
 export class ProductModalContext extends BSModalContext {
   public productId: number;
+  public quantity: number;
+  public quote: ASIQuote;
 }
 
 /**
@@ -53,5 +56,11 @@ export class ProductModalComponent implements CloseGuard, ModalComponent<Product
 
   dismiss() {
     this.dialog.dismiss();
+  }
+
+  add(product: ASIProduct) {
+    // console.log(`Adding product ${JSON.stringify(product)} with prices ${product.Prices}`);
+    const quoteProduct = new ASIQuoteProduct(product.Id, product.Name, this.context.quantity, product.ImageUrl, product.Prices, 0);
+    this.context.quote.quote_products.unshift(quoteProduct);
   }
 }

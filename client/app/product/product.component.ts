@@ -3,18 +3,27 @@ import {ASIProductService, SearchFilters} from "../shared/product/ASIProduct.ser
 import {ASIPrice, ASIProduct} from "../shared/product/ASIProduct.model";
 import {ASISearchResults} from "../shared/product/ASISearchResults.model";
 import {BSModalContext} from "angular2-modal/plugins/bootstrap";
-import {Modal, Overlay, overlayConfigFactory} from "angular2-modal";
+import {CloseGuard, DialogRef, Modal, ModalComponent, Overlay, overlayConfigFactory} from "angular2-modal";
 import {ProductModalComponent} from "./productOverlay.component";
 import {Subscription} from "rxjs";
+import {ASIQuote} from "../shared/quote/quote.model";
+
+export class ProductSearchModalContext extends BSModalContext {
+  public productId: number;
+  public quantity: number;
+  public quote: ASIQuote;
+}
 
 @Component({
   moduleId: module.id,
   selector: 'sd-rep',
   templateUrl: 'product.component.html'
 })
-export class ProductComponent {
-  productId = 550517407;
-  quantity = 500;
+export class ProductComponent implements CloseGuard, ModalComponent<ProductSearchModalContext> {
+  context: ProductSearchModalContext;
+
+  productId: number;
+  quantity: number;
   category = '';
   color = '';
   production_time = 4;
@@ -31,12 +40,23 @@ export class ProductComponent {
   errorMessage: string;
 
 
-  constructor(public asiProductService: ASIProductService, overlay: Overlay, vcRef: ViewContainerRef, public modal: Modal) {
+  constructor(public dialog: DialogRef<ProductSearchModalContext>, public asiProductService: ASIProductService, overlay: Overlay, vcRef: ViewContainerRef, public modal: Modal) {
     overlay.defaultViewContainer = vcRef;
+    this.context = dialog.context;
+    this.context.dialogClass = 'modal-dialog modal-lg';
+    this.productId = this.context.productId;
+    this.quantity = this.context.quantity;
+    this.getProduct();
+    dialog.setCloseGuard(this);
   }
 
   openProductModal(productId: number) {
-    return this.modal.open(ProductModalComponent,  overlayConfigFactory({ productId : productId }, BSModalContext));
+    return this.modal.open(ProductModalComponent,  overlayConfigFactory(
+      {
+        productId : productId,
+        quote: this.context.quote,
+        quantity: this.context.quantity
+      }, BSModalContext));
   }
 
   public getTotalPages(): number {
@@ -101,5 +121,19 @@ export class ProductComponent {
     return suppliers;
   }
 
+  beforeDismiss(): boolean {
+    return false;
+  }
+
+  beforeClose(): boolean {
+    return false;
+  }
+
+  close() {
+    this.dialog.close();
+  }
+  dismiss() {
+    this.dialog.dismiss();
+  }
 }
 

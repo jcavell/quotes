@@ -12,28 +12,28 @@ export class DataService {
 
   constructor(private http: Http) { }
 
-  getReps(): Observable<any> {
-    return this.http.get('/api/reps').map(res => res.json());
+  getXsells(): Observable<any> {
+    return this.http.get('/api/xsells').map(res => res.json());
   }
 
-  countReps(): Observable<any> {
-    return this.http.get('/api/reps/count').map(res => res.json());
+  countXsells(): Observable<any> {
+    return this.http.get('/api/xsells/count').map(res => res.json());
   }
 
-  addRep(rep): Observable<any> {
-    return this.http.post('/api/rep', JSON.stringify(rep), this.options);
+  addXsell(xsell): Observable<any> {
+    return this.http.post('/api/xsell', JSON.stringify(xsell), this.options);
   }
 
-  getRep(rep): Observable<any> {
-    return this.http.get(`/api/rep/${rep._id}`, this.options);
+  getXsell(xsell): Observable<any> {
+    return this.http.get(`/api/xsell/${xsell._id}`, this.options);
   }
 
-  editRep(rep): Observable<any> {
-    return this.http.put(`/api/rep/${rep._id}`, JSON.stringify(rep), this.options);
+  editXsell(xsell): Observable<any> {
+    return this.http.put(`/api/xsell/${xsell._id}`, JSON.stringify(xsell), this.options);
   }
 
-  deleteRep(rep): Observable<any> {
-    return this.http.delete(`/api/rep/${rep._id}`, this.options);
+  deleteXsell(xsell): Observable<any> {
+    return this.http.delete(`/api/xsell/${xsell._id}`, this.options);
   }
 
 }

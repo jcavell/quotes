@@ -1,0 +1,60 @@
+<div class="card" *ngIf="isLoading">
+  <h4 class="card-header">Loading...</h4>
+  <div class="card-block text-xs-center">
+    <i class="fa fa-circle-o-notch fa-spin fa-3x"></i>
+  </div>
+</div>
+
+<app-toast [message]="toast.message"></app-toast>
+
+<div class="card" *ngIf="!isLoading">
+  <h4 class="card-header">Current cross sell products ({{xsells.length}})</h4>
+  <div class="card-block">
+    <table class="table table-bordered table-striped">
+      <thead class="thead-default">
+        <tr>
+          <th>Product ID</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="xsells.length === 0">
+        <tr>
+          <td colspan="4">There are no cross sell products in the DB. Add a new xsell below.</td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="!isEditing">
+        <tr *ngFor="let xsell of xsells">
+          <td>{{xsell.productId}}</td>
+          <td>
+            <button class="btn btn-sm btn-warning" (click)="enableEditing(xsell)"><i class="fa fa-pencil"></i> Edit</button> <button class="btn btn-sm btn-danger" (click)="deleteXsell(xsell)"><i class="fa fa-trash"></i> Delete</button>
+          </td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="isEditing">
+        <tr>
+          <td colspan="4">
+            <form class="form-inline" #form="ngForm" (ngSubmit)="editXsell(xsell)" style="display:inline">
+              <div class="form-group">
+                  <input class="form-control" type="text" name="name" [(ngModel)]="xsell.productId" placeholder="ProductId" required>
+              </div>
+              <button class="btn btn-sm btn-primary" type="submit" [disabled]="!form.form.valid"><i class="fa fa-floppy-o"></i> Save</button>
+            </form>
+            <button class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card" *ngIf="!isEditing">
+  <h4 class="card-header">Add new cross sell product</h4>
+  <div class="card-block">
+    <form class="form-inline" [formGroup]="addXsellForm" (ngSubmit)="addXsell()" style="text-align:center">
+      <div class="form-group">
+          <input class="form-control" type="text" name="productId" formControlName="productId" placeholder="ProductId">
+      </div>
+      <button class="btn btn-primary" type="submit" [disabled]="!addXsellForm.valid"><i class="fa fa-floppy-o"></i> Add</button>
+    </form>
+  </div>
+</div>

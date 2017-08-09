@@ -23,6 +23,7 @@
       <td>Images</td>
       <td><span *ngFor="let image of product.VirtualSampleImages"><img src="https://api.asicentral.com/v1/{{image.ImageUrl}}"></span>
       </td>
+     <td> <button type="button" (click) = "add(product)" class="btn btn-warning">Add product</button></td>
     </tr>
   </table>
 </div>
