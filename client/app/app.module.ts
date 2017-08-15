@@ -1,7 +1,7 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from "@angular/core";
 import {SharedModule} from "./shared/shared.module";
 import {AppComponent} from "./app.component";
-import {DataService} from "./services/data.service";
+import {XsellService} from "./shared/xsell/xsell.service";
 import {QuoteRequestsModule} from "./quote-requests/quoteRequests.module";
 import {ProductModule} from "./product/product.module";
 import {QuotesModule} from "./quotes/quotes.module";
@@ -25,7 +25,7 @@ import {XsellComponent} from "./xsell/xsell.component";
     AuthModule
   ],
   providers: [
-    DataService
+    XsellService
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]

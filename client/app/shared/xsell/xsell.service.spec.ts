@@ -3,11 +3,11 @@
 /*describe('Service: Data', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [DataService]
+      providers: [Xsellservice]
     });
   });
 
-  it('should ...', inject([DataService], (service: DataService) => {
+  it('should ...', inject([Xsellservice], (service: Xsellservice) => {
     expect(service).toBeTruthy();
   }));
 });*/

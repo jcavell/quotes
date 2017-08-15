@@ -11,7 +11,7 @@ import {isNullOrUndefined} from "util";
 import {ASIProductService} from "../shared/product/ASIProduct.service";
 import {ASIProduct} from "../shared/product/ASIProduct.model";
 import {ProductComponent} from "../product/product.component";
-import {DataService} from "../services/data.service";
+import {XsellService} from "../shared/xsell/xsell.service";
 
 /**
  * This class represents the lazy loaded QuoteRequestComponent.
@@ -29,7 +29,7 @@ export class SelectedQuoteRequestComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   errorMessage: any;
 
-  constructor(private dataService: DataService,
+  constructor(private xsellservice: XsellService,
               public selectedQuoteRequestService: SelectedQuoteRequestService,
               public quoteRequestService: QuoteRequestService,
               public asiProductService: ASIProductService, overlay: Overlay, vcRef: ViewContainerRef, public modal: Modal) {
@@ -75,7 +75,7 @@ export class SelectedQuoteRequestComponent implements OnInit, OnDestroy {
 
     this.quoteRequest = quoteRequest;
 
-    this.dataService.getXsells().subscribe(
+    this.xsellservice.getXsells().subscribe(
       data => {
         const productIds: number[] = data.map(d => d.productId);
         productIds.unshift(quoteRequest.product_id);

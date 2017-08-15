@@ -1,9 +1,9 @@
 import {Component, OnInit} from "@angular/core";
 import {Http} from "@angular/http";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-
-import {DataService} from "../services/data.service";
 import {ToastComponent} from "../shared/toast/toast.component";
+import {XsellService} from "../shared/xsell/xsell.service";
+import {Xsell} from "../shared/xsell/xsell.model";
 
 @Component({
   selector: 'app-xsell',
@@ -22,7 +22,7 @@ export class XsellComponent implements OnInit {
   productId = new FormControl('', Validators.pattern('\\d+'));
 
   constructor(private http: Http,
-              private dataService: DataService,
+              private xsellservice: XsellService,
               public toast: ToastComponent,
               private formBuilder: FormBuilder) { }
 
@@ -35,7 +35,7 @@ export class XsellComponent implements OnInit {
   }
 
   getXsells() {
-    this.dataService.getXsells().subscribe(
+    this.xsellservice.getXsells().subscribe(
       data => this.xsells = data,
       error => console.log(error),
       () => this.isLoading = false
@@ -43,7 +43,8 @@ export class XsellComponent implements OnInit {
   }
 
   addXsell() {
-    this.dataService.addXsell(this.addXsellForm.value).subscribe(
+    const xsell = new Xsell(0, parseInt(this.addXsellForm.value.productId, 10));
+    this.xsellservice.addXsell(xsell).subscribe(
       res => {
         const newXsell = res.json();
         this.xsells.push(newXsell);
@@ -68,7 +69,8 @@ export class XsellComponent implements OnInit {
   }
 
   editXsell(xsell) {
-    this.dataService.editXsell(xsell).subscribe(
+    xsell.productId = parseInt(xsell.productId, 10);
+    this.xsellservice.editXsell(xsell).subscribe(
       res => {
         this.isEditing = false;
         this.xsell = xsell;
@@ -80,7 +82,7 @@ export class XsellComponent implements OnInit {
 
   deleteXsell(xsell) {
     if (window.confirm('Are you sure you want to permanently delete this item?')) {
-      this.dataService.deleteXsell(xsell).subscribe(
+      this.xsellservice.deleteXsell(xsell).subscribe(
         res => {
           const pos = this.xsells.map(elem => { return elem._id; }).indexOf(xsell._id);
           this.xsells.splice(pos, 1);
