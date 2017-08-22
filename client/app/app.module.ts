@@ -9,10 +9,16 @@ import {QuoteDocumentModule} from "./quote-document/quoteDocument.module";
 import {AuthModule} from "./shared/auth/auth.module";
 import {routing} from "./app-routes";
 import {XsellComponent} from "./xsell/xsell.component";
+import {CompanyComponent} from "./company/company.component";
+import {CompanyService} from "./shared/company/company.service";
+import {PersonComponent} from "./person/person.component";
+import {PersonService} from "./shared/person/person.service";
 
 @NgModule({
   declarations: [
     AppComponent,
+    CompanyComponent,
+    PersonComponent,
     XsellComponent
   ],
   imports: [
@@ -25,6 +31,8 @@ import {XsellComponent} from "./xsell/xsell.component";
     AuthModule
   ],
   providers: [
+    CompanyService,
+    PersonService,
     XsellService
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

@@ -1,0 +1,60 @@
+<div class="card" *ngIf="isLoading">
+  <h4 class="card-header">Loading...</h4>
+  <div class="card-block text-xs-center">
+    <i class="fa fa-circle-o-notch fa-spin fa-3x"></i>
+  </div>
+</div>
+
+<app-toast [message]="toast.message"></app-toast>
+
+<div class="card" *ngIf="!isLoading">
+  <h4 class="card-header">Current people ({{people.length}})</h4>
+  <div class="card-block">
+    <table class="table table-bordered table-striped">
+      <thead class="thead-default">
+        <tr>
+          <th>Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="people.length === 0">
+        <tr>
+          <td colspan="4">There are no people in the DB. Add a new person below.</td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="!isEditing">
+        <tr *ngFor="let person of people">
+          <td>{{person.name}}</td>
+          <td>
+            <button class="btn btn-sm btn-warning" (click)="enableEditing(person)"><i class="fa fa-pencil"></i> Edit</button> <button class="btn btn-sm btn-danger" (click)="deletePerson(person)"><i class="fa fa-trash"></i> Delete</button>
+          </td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="isEditing">
+        <tr>
+          <td colspan="4">
+            <form class="form-inline" #form="ngForm" (ngSubmit)="editPerson(person)" style="display:inline">
+              <div class="form-group">
+                  <input class="form-control" type="text" name="name" [(ngModel)]="person.name" placeholder="name" required>
+              </div>
+              <button class="btn btn-sm btn-primary" type="submit" [disabled]="!form.form.valid"><i class="fa fa-floppy-o"></i> Save</button>
+            </form>
+            <button class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card" *ngIf="!isEditing">
+  <h4 class="card-header">Add new person</h4>
+  <div class="card-block">
+    <form class="form-inline" [formGroup]="addPersonForm" (ngSubmit)="addPerson()" style="text-align:center">
+      <div class="form-group">
+          <input class="form-control" type="text" name="name" formControlName="name" placeholder="name">
+      </div>
+      <button class="btn btn-primary" type="submit" [disabled]="!addPersonForm.valid"><i class="fa fa-floppy-o"></i> Add</button>
+    </form>
+  </div>
+</div>

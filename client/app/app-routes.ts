@@ -4,9 +4,13 @@ import {AuthForAdminGuard} from "./shared/auth/authForAdmin.guard";
 import {UnauthorizedComponent} from "./shared/auth/unauthorized.component";
 import {AuthForRepGuard} from "./shared/auth/authForRep.guard";
 import {XsellComponent} from "./xsell/xsell.component";
+import {CompanyComponent} from "./company/company.component";
+import {PersonComponent} from "./person/person.component";
 
 const appRoutes: Routes = [
-  { path: 'xsell', component: XsellComponent, canActivate: [AuthForAdminGuard] },
+  { path: 'companies', component: CompanyComponent, canActivate: [AuthForAdminGuard] },
+  { path: 'people', component: PersonComponent, canActivate: [AuthForAdminGuard] },
+  { path: 'xsells', component: XsellComponent, canActivate: [AuthForAdminGuard] },
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: '**', redirectTo: '' }
 ];
