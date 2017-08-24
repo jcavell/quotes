@@ -36,6 +36,7 @@ export class PersonComponent implements OnInit {
     this.getPeople();
     this.getCompanies();
 
+
     this.addPersonForm = this.formBuilder.group({
       name: this.name,
       email: this.email,
@@ -54,7 +55,7 @@ export class PersonComponent implements OnInit {
 
   getCompanies() {
     this.companyService.getCompanies().subscribe(
-      data => this.companies = data,
+      data => {this.companies = data; this.companies.unshift({'id' : '', 'name' : 'company'});},
       error => console.log(error),
       () => this.isLoading = false
     );
@@ -75,7 +76,7 @@ export class PersonComponent implements OnInit {
         this.addPersonForm.reset();
         this.toast.setMessage('item added successfully.', 'success');
       },
-      error => console.log(error)
+      error =>  this.toast.setMessage('Error inserting person: ' + JSON.stringify(error).substr(0, 200), 'danger')
     );
   }
 
@@ -97,9 +98,12 @@ export class PersonComponent implements OnInit {
       res => {
         this.isEditing = false;
         this.personCompany = personCompany;
+        const companyIndex = this.companies.map(elem => { return elem.id; }).indexOf(personCompany._1.companyId)
+        const companyName = this.companies[companyIndex].name;
+        personCompany._2.name = companyName;
         this.toast.setMessage('item edited successfully.', 'success');
       },
-      error => console.log(error)
+      error =>  this.toast.setMessage('Error editing person: ' + JSON.stringify(error).substr(0, 200), 'danger')
     );
   }
 
@@ -111,7 +115,7 @@ export class PersonComponent implements OnInit {
           this.people.splice(pos, 1);
           this.toast.setMessage('item deleted successfully.', 'success');
         },
-        error => console.log(error)
+        error =>  this.toast.setMessage('Error deleting person: ' + JSON.stringify(error).substr(0, 200), 'danger')
       );
     }
   }

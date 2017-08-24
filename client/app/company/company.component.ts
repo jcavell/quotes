@@ -51,7 +51,7 @@ export class CompanyComponent implements OnInit {
         this.addCompanyForm.reset();
         this.toast.setMessage('item added successfully.', 'success');
       },
-      error => console.log(error)
+      error =>  this.toast.setMessage('Error inserting company: ' + JSON.stringify(error).substr(0, 200), 'danger')
     );
   }
 
@@ -75,7 +75,7 @@ export class CompanyComponent implements OnInit {
         this.company = company;
         this.toast.setMessage('item edited successfully.', 'success');
       },
-      error => console.log(error)
+      error =>  this.toast.setMessage('Error updating company: ' + JSON.stringify(error).substr(0, 200), 'danger')
     );
   }
 
@@ -87,7 +87,7 @@ export class CompanyComponent implements OnInit {
           this.companies.splice(pos, 1);
           this.toast.setMessage('item deleted successfully.', 'success');
         },
-        error => console.log(error)
+        error =>  this.toast.setMessage('Error deleting company: ' + JSON.stringify(error).substr(0, 200), 'danger')
       );
     }
   }
