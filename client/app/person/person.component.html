@@ -14,28 +14,45 @@
       <thead class="thead-default">
         <tr>
           <th>Name</th>
+          <th>Email</th>
+          <th>Tel</th>
+          <th>Company</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody *ngIf="people.length === 0">
         <tr>
-          <td colspan="4">There are no people in the DB. Add a new person below.</td>
+          <td colspan="5">There are no people in the DB. Add a new Person below.</td>
         </tr>
       </tbody>
       <tbody *ngIf="!isEditing">
-        <tr *ngFor="let person of people">
-          <td>{{person.name}}</td>
+        <tr *ngFor="let personCompany of people">
+          <td>{{personCompany._1.name}}</td>
+          <td>{{personCompany._1.email}}</td>
+          <td>{{personCompany._1.tel}}</td>
+          <td>{{personCompany._2.name}}</td>
           <td>
-            <button class="btn btn-sm btn-warning" (click)="enableEditing(person)"><i class="fa fa-pencil"></i> Edit</button> <button class="btn btn-sm btn-danger" (click)="deletePerson(person)"><i class="fa fa-trash"></i> Delete</button>
+            <button class="btn btn-sm btn-warning" (click)="enableEditing(personCompany)"><i class="fa fa-pencil"></i> Edit</button> <button class="btn btn-sm btn-danger" (click)="deletePerson(personCompany)"><i class="fa fa-trash"></i> Delete</button>
           </td>
         </tr>
       </tbody>
       <tbody *ngIf="isEditing">
         <tr>
           <td colspan="4">
-            <form class="form-inline" #form="ngForm" (ngSubmit)="editPerson(person)" style="display:inline">
+            <form class="form-inline" #form="ngForm" (ngSubmit)="editPerson(personCompany)" style="display:inline">
               <div class="form-group">
-                  <input class="form-control" type="text" name="name" [(ngModel)]="person.name" placeholder="name" required>
+                  <input class="form-control" type="text" name="name" [(ngModel)]="personCompany._1.name" placeholder="name" required>
+              </div>
+              <div class="form-group">
+                <input class="form-control" type="text" name="email" [(ngModel)]="personCompany._1.email" placeholder="email" required>
+              </div>
+              <div class="form-group">
+                <input class="form-control" type="text" name="tel" [(ngModel)]="personCompany._1.tel" placeholder="tel" required>
+              </div>
+              <div class="form-group">
+                <select class="form-control" name="companyId" [(ngModel)]="personCompany._1.companyId" placeholder="companyId">
+                  <option *ngFor="let c of companies" [ngValue]="c.id">{{c.name}}</option>
+                </select>
               </div>
               <button class="btn btn-sm btn-primary" type="submit" [disabled]="!form.form.valid"><i class="fa fa-floppy-o"></i> Save</button>
             </form>
@@ -48,11 +65,22 @@
 </div>
 
 <div class="card" *ngIf="!isEditing">
-  <h4 class="card-header">Add new person</h4>
+  <h4 class="card-header">Add new Person</h4>
   <div class="card-block">
     <form class="form-inline" [formGroup]="addPersonForm" (ngSubmit)="addPerson()" style="text-align:center">
       <div class="form-group">
           <input class="form-control" type="text" name="name" formControlName="name" placeholder="name">
+      </div>
+      <div class="form-group">
+        <input class="form-control" type="text" name="email" formControlName="email" placeholder="email">
+      </div>
+      <div class="form-group">
+        <input class="form-control" type="text" name="tel" formControlName="tel" placeholder="tel">
+      </div>
+      <div class="form-group">
+        <select class="form-control" name="companyId" formControlName="companyId" placeholder="companyId">
+          <option *ngFor="let c of companies" [ngValue]="c.id">{{c.name}}</option>
+        </select>
       </div>
       <button class="btn btn-primary" type="submit" [disabled]="!addPersonForm.valid"><i class="fa fa-floppy-o"></i> Add</button>
     </form>

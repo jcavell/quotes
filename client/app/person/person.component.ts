@@ -1,9 +1,10 @@
 import {Component, OnInit} from "@angular/core";
 import {Http} from "@angular/http";
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ToastComponent} from "../shared/toast/toast.component";
 import {PersonService} from "../shared/person/person.service";
 import {Person} from "../shared/person/person.model";
+import {CompanyService} from "../shared/company/company.service";
 
 @Component({
   selector: 'app-person',
@@ -13,24 +14,33 @@ import {Person} from "../shared/person/person.model";
 export class PersonComponent implements OnInit {
 
   people = [];
+  companies = [];
   isLoading = true;
 
-  person = {};
+  personCompany = {};
   isEditing = false;
 
   addPersonForm: FormGroup;
-  name = new FormControl('');
+  name = new FormControl('', Validators.minLength(3));
+  email = new FormControl('', Validators.minLength(6));
+  tel = new FormControl('', Validators.minLength(8));
+  companyId = new FormControl('', Validators.pattern('\\d+'));
 
   constructor(private http: Http,
               private personService: PersonService,
+              private companyService: CompanyService,
               public toast: ToastComponent,
               private formBuilder: FormBuilder) { }
 
   ngOnInit() {
     this.getPeople();
+    this.getCompanies();
 
     this.addPersonForm = this.formBuilder.group({
-      name: this.name
+      name: this.name,
+      email: this.email,
+      tel: this.tel,
+      companyId: this.companyId
     });
   }
 
@@ -42,8 +52,22 @@ export class PersonComponent implements OnInit {
     );
   }
 
+  getCompanies() {
+    this.companyService.getCompanies().subscribe(
+      data => this.companies = data,
+      error => console.log(error),
+      () => this.isLoading = false
+    );
+  }
+
   addPerson() {
-    const person = new Person(0, this.addPersonForm.value.name);
+    const person = new Person(
+      0,
+      this.addPersonForm.value.name,
+      this.addPersonForm.value.email,
+      this.addPersonForm.value.tel,
+      parseInt(this.addPersonForm.value.companyId, 10)
+    );
     this.personService.addPerson(person).subscribe(
       res => {
         const newperson = res.json();
@@ -55,35 +79,35 @@ export class PersonComponent implements OnInit {
     );
   }
 
-  enableEditing(person) {
+  enableEditing(personCompany) {
     this.isEditing = true;
-    this.person = person;
+    this.personCompany = personCompany;
   }
 
   cancelEditing() {
     this.isEditing = false;
-    this.person = {};
+    this.personCompany = {};
     this.toast.setMessage('item editing cancelled.', 'warning');
     // reload the people to reset the editing
     this.getPeople();
   }
 
-  editPerson(person) {
-    this.personService.editPerson(person).subscribe(
+  editPerson(personCompany) {
+    this.personService.editPerson(personCompany._1).subscribe(
       res => {
         this.isEditing = false;
-        this.person = person;
+        this.personCompany = personCompany;
         this.toast.setMessage('item edited successfully.', 'success');
       },
       error => console.log(error)
     );
   }
 
-  deletePerson(person) {
+  deletePerson(personCompany) {
     if (window.confirm('Are you sure you want to permanently delete this item?')) {
-      this.personService.deletePerson(person).subscribe(
+      this.personService.deletePerson(personCompany._1).subscribe(
         res => {
-          const pos = this.people.map(elem => { return elem._id; }).indexOf(person._id);
+          const pos = this.people.map(elem => { return elem._id; }).indexOf(personCompany._1._id);
           this.people.splice(pos, 1);
           this.toast.setMessage('item deleted successfully.', 'success');
         },

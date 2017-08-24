@@ -18,6 +18,7 @@ export class PersonService {
   }
 
   addPerson(person: Person): Observable<any> {
+    console.log("Adding person "+ JSON.stringify(person));
     return this.http.post('http://localhost:9000/people', person, this.options);
   }
 
