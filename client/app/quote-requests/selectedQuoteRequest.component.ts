@@ -3,7 +3,7 @@ import {Overlay, overlayConfigFactory} from "angular2-modal";
 import {BSModalContext, Modal} from "angular2-modal/plugins/bootstrap";
 
 import {Observable, Subscription} from "rxjs/Rx";
-import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
+import {NQuoteWithProducts} from "../shared/quote-request/quoteRequest.model";
 import {SelectedQuoteRequestService} from "../shared/quote-request/selectedQuoteRequest.service";
 import {QuoteRequestService} from "../shared/quote-request/quoteRequest.service";
 import {ASIQuote, ASIQuoteProduct, QuoteStatus} from "../shared/quote/quote.model";
@@ -24,7 +24,7 @@ import {XsellService} from "../shared/xsell/xsell.service";
 })
 
 export class SelectedQuoteRequestComponent implements OnInit, OnDestroy {
-  quoteRequest: QuoteRequest;
+  quoteRequest: NQuoteWithProducts;
   quote: ASIQuote;
   subscription: Subscription;
   errorMessage: any;
@@ -38,8 +38,8 @@ export class SelectedQuoteRequestComponent implements OnInit, OnDestroy {
 
   openSearchModal() {
     return this.modal.open(ProductComponent, overlayConfigFactory({
-      productId: this.quoteRequest.product_id,
-      quantity: this.quoteRequest.quantity,
+      productId: this.quoteRequest.quote.requestProductId,
+      quantity: this.quoteRequest.quote.requestQuantity,
       quote: this.quote
     }, BSModalContext));
   }
@@ -71,22 +71,22 @@ export class SelectedQuoteRequestComponent implements OnInit, OnDestroy {
     this.quote.quote_products.splice(this.quote.quote_products.indexOf(product), 1);
   }
 
-  setSelectedQuoteRequest(quoteRequest: QuoteRequest): boolean {
+  setSelectedQuoteRequest(quoteRequest: NQuoteWithProducts): boolean {
 
     this.quoteRequest = quoteRequest;
 
     this.xsellservice.getXsells().subscribe(
       data => {
         const productIds: number[] = data.map(d => d.productId);
-        productIds.unshift(quoteRequest.product_id);
+        productIds.unshift(quoteRequest.quote.requestProductId);
         const productObservables: Observable<ASIProduct >[] = productIds.map(pid => this.asiProductService.getProduct(pid));
 
         Observable.forkJoin(productObservables).subscribe(
           products => {
             const quoteProducts = products.map(product =>
-              new ASIQuoteProduct(product.Id, product.Name, this.quoteRequest.quantity, product.ImageUrl, product.Prices, quoteRequest.quantity));
-            this.quote = new ASIQuote(undefined, this.quoteRequest.id, new Date(), QuoteStatus.New, quoteProducts);
-            console.log(`AIP Product: ${JSON.stringify(quoteRequest.product_id)}`);
+              new ASIQuoteProduct(product.Id, product.Name, this.quoteRequest.quote.requestQuantity, product.ImageUrl, product.Prices, quoteRequest.quote.requestQuantity));
+            this.quote = new ASIQuote(undefined, this.quoteRequest.quote.id, new Date(), QuoteStatus.New, quoteProducts);
+            console.log(`AIP Product: ${JSON.stringify(quoteRequest.quote.requestProductId)}`);
           },
           error => this.errorMessage = <any>error
         );

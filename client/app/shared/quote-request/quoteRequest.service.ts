@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Http, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
-import {QuoteRequest} from "./quoteRequest.model";
+import {NQuotes} from "./quoteRequest.model";
 // import 'rxjs/add/operator/do';  // for debugging
 
 /**
@@ -21,8 +21,8 @@ export class QuoteRequestService {
    * Returns an Observable for the HTTP GET request for the JSON resource.
    * @return {Product[]} The Observable for the HTTP request.
    */
-getNew(): Observable<QuoteRequest[]> {
-    return this.http.get('http://localhost:3001/quote-requests')
+getNew(): Observable<NQuotes> {
+    return this.http.get('http://localhost:9000/quotes')
                     .map((res: Response) => res.json())
     //              .do(data => console.log('server data:', data))  // debug
                     .catch(this.handleError);

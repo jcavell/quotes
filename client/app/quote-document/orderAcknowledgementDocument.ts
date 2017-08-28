@@ -1,6 +1,6 @@
 import {ASIQuote, QuoteStatus} from "../shared/quote/quote.model";
 import {QuoteService} from "../shared/quote/quote.service";
-import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
+import {NQuote} from "../shared/quote-request/quoteRequest.model";
 
 declare var jsPDF: any;
 
@@ -14,7 +14,7 @@ export class OrderAcknowledgementDocument {
 
   constructor(private quoteService: QuoteService) { }
 
-  public save(quoteRequest: QuoteRequest, quote: ASIQuote) {
+  public save(quoteRequest: NQuote, quote: ASIQuote) {
     const doc = new jsPDF();
 
     const columns = ['Product', 'Quantity', 'Origination', 'Unit price', 'Cost'];
@@ -22,11 +22,11 @@ export class OrderAcknowledgementDocument {
 
     doc.setFontSize(12);
     doc.text(20, 10, 'ORDER ACKNOWLEDGEMENT');
-    doc.text(20, 20, quoteRequest.customer_name);
-    doc.text(20, 30, quoteRequest.company);
+    doc.text(20, 20, quoteRequest.requestCustomerName);
+    doc.text(20, 30, quoteRequest.requestCompany);
     doc.text(20, 40, 'quoteRequest.customer_address needs to be added');
-    doc.text(20, 60, quoteRequest.customer_email);
-    doc.text(20, 70, 'Tel ' + quoteRequest.customer_telephone);
+    doc.text(20, 60, quoteRequest.requestCustomerEmail);
+    doc.text(20, 70, 'Tel ' + quoteRequest.requestCustomerTel);
 
     const totalPriceForProducts: number[] = [];
 

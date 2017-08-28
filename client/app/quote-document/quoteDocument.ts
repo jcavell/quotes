@@ -1,6 +1,6 @@
 import {ASIQuote, QuoteStatus} from "../shared/quote/quote.model";
 import {QuoteService} from "../shared/quote/quote.service";
-import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
+import {NQuote} from "../shared/quote-request/quoteRequest.model";
 
 declare var jsPDF: any;
 
@@ -15,19 +15,20 @@ export class QuoteDocument {
   constructor(private quoteService: QuoteService) {
   }
 
-  public save(quoteRequest: QuoteRequest, quote: ASIQuote, productImages: Array<[string, any]>) {
+  public save(quoteRequest: NQuote, quote: ASIQuote, productImages: Array<[string, any]>) {
     const doc = new jsPDF();
 
     const columns = ['Product', 'Quantity', 'Origination', 'Unit price', 'Price (pre VAT)', 'VAT', 'Price (incl. VAT)'];
     const data = [];
 
+    console.log("Creating document for quote request " + JSON.stringify(quoteRequest))
     doc.setFontSize(12);
     doc.text(20, 10, 'QUOTE');
-    doc.text(20, 20, quoteRequest.customer_name);
-    doc.text(20, 30, quoteRequest.company);
+    doc.text(20, 20, quoteRequest.requestCustomerName);
+    doc.text(20, 30, quoteRequest.requestCompany);
     doc.text(20, 40, 'quoteRequest.customer_address needs to be added');
-    doc.text(20, 60, quoteRequest.customer_email);
-    doc.text(20, 70, 'Tel ' + quoteRequest.customer_telephone);
+    doc.text(20, 60, quoteRequest.requestCustomerEmail);
+    doc.text(20, 70, 'Tel ' + quoteRequest.requestCustomerTel);
 
     for (const product of quote.quote_products) {
       // console.log('Quote product: ' + JSON.stringify(product));

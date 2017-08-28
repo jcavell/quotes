@@ -18,14 +18,14 @@
       <tbody>
       <tr *ngFor="let quoteRequest of quoteRequests">
         <ng-container *ngIf="!isEditing || selectedQuoteRequest == quoteRequest">
-          <td>{{quoteRequest.customer_name}}</td>
-          <td>{{quoteRequest.customer_telephone}}</td>
-          <td>{{quoteRequest.customer_email}}</td>
-          <td>{{quoteRequest.company}}</td>
-          <td>{{quoteRequest.product_id}}</td>
-          <td>{{quoteRequest.quantity}}</td>
-          <td>{{quoteRequest.date_required}}</td>
-          <td>{{quoteRequest.other_requirements}}</td>
+          <td>{{quoteRequest.quote.requestCustomerName}}</td>
+          <td>{{quoteRequest.quote.requestCustomerTel}}</td>
+          <td>{{quoteRequest.quote.requestCustomerEmail}}</td>
+          <td>{{quoteRequest.quote.requestCompany}}</td>
+          <td>{{quoteRequest.quote.requestProductId}}</td>
+          <td>{{quoteRequest.quote.requestQuantity}}</td>
+          <td>{{quoteRequest.quote.requestDateRequired}}</td>
+          <td>{{quoteRequest.quote.requestOtherRequirements}}</td>
           <td>
             <button type="button" class="btn btn-sm btn-warning"
                     (click)="displaySelectedQuoteRequest($event, quoteRequest)"><i class="fa fa-pencil"></i> Quote

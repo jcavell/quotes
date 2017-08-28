@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
 import {QuoteRequestService} from "../shared/quote-request/quoteRequest.service";
-import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
+import {NQuoteWithProducts} from "../shared/quote-request/quoteRequest.model";
 import {SelectedQuoteRequestService} from "../shared/quote-request/selectedQuoteRequest.service";
 import {Subscription} from "rxjs";
 
@@ -12,8 +12,8 @@ import {Subscription} from "rxjs";
 })
 
 export class QuoteRequestsComponent implements OnInit, OnDestroy {
-  quoteRequests: QuoteRequest[];
-  selectedQuoteRequest: QuoteRequest;
+  quoteRequests: NQuoteWithProducts[];
+  selectedQuoteRequest: NQuoteWithProducts;
   errorMessage: string;
   isEditing = false;
   subscription: Subscription;
@@ -46,7 +46,7 @@ export class QuoteRequestsComponent implements OnInit, OnDestroy {
   /*
    Quote button clicked - inform listeners and set edit mode
    */
-  displaySelectedQuoteRequest(event: Event, quoteRequest: QuoteRequest) {
+  displaySelectedQuoteRequest(event: Event, quoteRequest: NQuoteWithProducts) {
     console.log('Changing selected quoteRequest');
     this.selectedQuoteRequestService.changeQuoteRequest(quoteRequest);
     this.selectedQuoteRequestService.setEditing(true);
@@ -58,8 +58,8 @@ export class QuoteRequestsComponent implements OnInit, OnDestroy {
   getQuoteRequests(): boolean {
     this.quoteRequestService.getNew()
       .subscribe(
-        quotes => {
-          this.quoteRequests = quotes;
+        nquotes => {
+          this.quoteRequests = nquotes.quotes;
         },
         error => this.errorMessage = <any>error
       );

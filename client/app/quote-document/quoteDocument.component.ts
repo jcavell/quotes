@@ -1,5 +1,5 @@
 import {Component, Input} from "@angular/core";
-import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
+import {NQuoteWithProducts} from "../shared/quote-request/quoteRequest.model";
 import {ASIQuote} from "../shared/quote/quote.model";
 import {QuoteService} from "../shared/quote/quote.service";
 import {QuoteDocument} from "./quoteDocument";
@@ -26,7 +26,7 @@ class ImageGet {
 })
 export class QuoteDocumentComponent {
   @Input() quote: ASIQuote;
-  @Input() quoteRequest: QuoteRequest;
+  @Input() quoteRequest: NQuoteWithProducts;
   @Input() buttonName = 'Create quote';
   @Input() documentType = 'quote';
 
@@ -41,13 +41,13 @@ export class QuoteDocumentComponent {
 
     if (this.documentType === 'quote') {
       const quoteDocument = new QuoteDocument(this.quoteService);
-      quoteDocument.save(this.quoteRequest, this.quote, this.productImages);
+      quoteDocument.save(this.quoteRequest.quote, this.quote, this.productImages);
       // this.quoteService.sendQuoteEmail(this.quote).subscribe(
       //   (data) => console.log(data));
     } else if (this.documentType === 'order_acknowledgement') {
-      new OrderAcknowledgementDocument(this.quoteService).save(this.quoteRequest, this.quote);
+      new OrderAcknowledgementDocument(this.quoteService).save(this.quoteRequest.quote, this.quote);
     } else if (this.documentType === 'invoice') {
-      new InvoiceDocument(this.quoteService).save(this.quoteRequest, this.quote);
+      new InvoiceDocument(this.quoteService).save(this.quoteRequest.quote, this.quote);
     }
 
     //
