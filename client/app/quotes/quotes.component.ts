@@ -81,7 +81,7 @@ export class QuotesComponent implements OnInit {
   combineQuotesAndQuoteRequests(): Observable<[[QuoteRequest, Quote]]> {
     const combined = this.quoteService.getQuotes().combineLatest(this.quoteRequestService.getNew(),
       (quotes, quoteRequests) => {
-            return quotes.map(quote => [quoteRequests.find(qr => qr.id == quote.quote_request_id), quote]);
+            return quotes.map(quote => [quoteRequests.quotes.find(qr => qr.quote.id == quote.quote_request_id), quote]);
       });
     return combined;
   }
