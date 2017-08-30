@@ -3,6 +3,7 @@ import {QuoteRequestService} from "../shared/quote-request/quoteRequest.service"
 import {NQuoteWithProducts} from "../shared/quote-request/quoteRequest.model";
 import {SelectedQuoteRequestService} from "../shared/quote-request/selectedQuoteRequest.service";
 import {Subscription} from "rxjs";
+import {ActivatedRoute, Params} from "@angular/router";
 
 @Component({
   moduleId: module.id,
@@ -17,11 +18,17 @@ export class QuoteRequestsComponent implements OnInit, OnDestroy {
   errorMessage: string;
   isEditing = false;
   subscription: Subscription;
+  queryParams: {}
 
-  constructor(public quoteRequestService: QuoteRequestService, public selectedQuoteRequestService: SelectedQuoteRequestService) {
+  constructor(private activatedRoute: ActivatedRoute, public quoteRequestService: QuoteRequestService, public selectedQuoteRequestService: SelectedQuoteRequestService) {
   }
 
   ngOnInit() {
+    // subscribe to router event
+    this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
+      this.queryParams = queryParams;
+    });
+
     this.subscription = this.selectedQuoteRequestService.isEditing$.subscribe(isEditing => {
       this.isEditing = isEditing;
       console.log('ngOnInit: Changed isEditing to ' + this.isEditing);
@@ -56,7 +63,7 @@ export class QuoteRequestsComponent implements OnInit, OnDestroy {
    Called from ngOnInit, get all new quote requests
    */
   getQuoteRequests(): boolean {
-    this.quoteRequestService.getNew()
+    this.quoteRequestService.getNew(this.queryParams)
       .subscribe(
         nquotes => {
           this.quoteRequests = nquotes.quotes;

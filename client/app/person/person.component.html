@@ -17,13 +17,14 @@
           <th>Email</th>
           <th>Tel</th>
           <th>Company</th>
+          <th>Quotes</th>
           <th></th>
           <th></th>
         </tr>
       </thead>
       <tbody *ngIf="people.length === 0">
         <tr>
-          <td colspan="6">There are no people in the DB. Add a new Person below.</td>
+          <td colspan="7">There are no people in the DB. Add a new Person below.</td>
         </tr>
       </tbody>
       <tbody *ngIf="!isEditing">
@@ -32,6 +33,7 @@
           <td>{{personCompany._1.email}}</td>
           <td>{{personCompany._1.tel}}</td>
           <td>{{personCompany._2.name}}</td>
+          <td><a [routerLink]="['/quote-requests']" [queryParams]="{e:personCompany._1.email}" routerLinkActive="active">Quotes</a></td>
           <td><button class="btn btn-sm btn-warning" (click)="enableEditing(personCompany)"><i class="fa fa-pencil"></i> Edit</button></td>
             <td><button class="btn btn-sm btn-danger" (click)="deletePerson(personCompany)"><i class="fa fa-trash"></i> Delete</button>
           </td>
@@ -39,7 +41,7 @@
       </tbody>
       <tbody *ngIf="isEditing">
         <tr>
-          <td colspan="6">
+          <td colspan="7">
             <form class="form-inline" #form="ngForm" (ngSubmit)="editPerson(personCompany)" style="display:inline">
               <div class="form-group">
                   <input class="form-control" type="text" name="name" [(ngModel)]="personCompany._1.name" placeholder="name" required>

@@ -28,9 +28,27 @@ export class NQuote {
   }
 }
 
+export class NCompany {
+  constructor(public name: string) {
+  }
+}
+
+export class NPerson {
+  constructor(
+    public name: string,
+    public email: string,
+    public tel: string
+  ) {
+  }
+}
+
 export class NQuoteWithProducts {
-  constructor(public quote: NQuote) {
-    // TODO add product at time of quote
+  constructor(
+    public quote: NQuote,
+    public company: NCompany,
+    public person: NPerson
+    // TODO add products etc.
+  ) {
   }
 }
 

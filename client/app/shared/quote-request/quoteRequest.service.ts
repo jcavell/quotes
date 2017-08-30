@@ -21,8 +21,8 @@ export class QuoteRequestService {
    * Returns an Observable for the HTTP GET request for the JSON resource.
    * @return {Product[]} The Observable for the HTTP request.
    */
-getNew(): Observable<NQuotes> {
-    return this.http.get('http://localhost:9000/quotes')
+getNew(queryParams): Observable<NQuotes> {
+    return this.http.get('http://localhost:9000/quotes', {'params' : queryParams})
                     .map((res: Response) => res.json())
     //              .do(data => console.log('server data:', data))  // debug
                     .catch(this.handleError);

@@ -14,6 +14,7 @@
       <thead class="thead-default">
         <tr>
           <th>Name</th>
+          <th>Quotes</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -25,6 +26,7 @@
       <tbody *ngIf="!isEditing">
         <tr *ngFor="let company of companies">
           <td>{{company.name}}</td>
+          <td><a [routerLink]="['/quote-requests']" [queryParams]="{c:company.name}" routerLinkActive="active">Quotes</a></td>
           <td>
             <button class="btn btn-sm btn-warning" (click)="enableEditing(company)"><i class="fa fa-pencil"></i> Edit</button> <button class="btn btn-sm btn-danger" (click)="deleteCompany(company)"><i class="fa fa-trash"></i> Delete</button>
           </td>
