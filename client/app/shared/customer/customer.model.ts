@@ -1,8 +1,8 @@
-export class Person {
+export class Customer {
   constructor(public id: number,
-              public name: string,
+              public firstName: string,
               public email: string,
-              public tel: string,
+              public directPhone: string,
               public companyId: number
   ) {
 

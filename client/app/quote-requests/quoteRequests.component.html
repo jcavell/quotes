@@ -4,8 +4,9 @@
     <table class="table table-responsive table-striped table-hover">
       <thead class="thead-default">
       <tr>
-        <th>Customer name</th>
-        <th>Customer tel</th>
+        <th>Customer first name</th>
+        <th>Customer last name</th>
+        <th>Customer mobile phone</th>
         <th>Customer email</th>
         <th>Company</th>
         <th>Product ID</th>
@@ -18,9 +19,10 @@
       <tbody>
       <tr *ngFor="let quoteRequest of quoteRequests">
         <ng-container *ngIf="!isEditing || selectedQuoteRequest == quoteRequest">
-          <td>{{quoteRequest.person.name}}</td>
-          <td>{{quoteRequest.person.tel}}</td>
-          <td>{{quoteRequest.person.email}}</td>
+          <td>{{quoteRequest.customer.firstName}}</td>
+          <td>{{quoteRequest.customer.lastName}}</td>
+          <td>{{quoteRequest.customer.mobilePhone}}</td>
+          <td>{{quoteRequest.customer.email}}</td>
           <td>{{quoteRequest.company.name}}</td>
           <td>{{quoteRequest.quote.requestProductId}}</td>
           <td>{{quoteRequest.quote.requestQuantity}}</td>

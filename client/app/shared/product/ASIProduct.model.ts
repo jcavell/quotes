@@ -96,7 +96,7 @@ export class ASIImprinting {
               public Locations: { 'Values': [String] },
               public Sizes: { 'Values': [ASIAttribute] },
               public FullColorProcess: boolean,
-              public Personalization: boolean,
+              public Customeralization: boolean,
               public SoldUnimprinted: boolean) {
   }
 }
@@ -503,7 +503,7 @@ export class ASIProduct {
 //     ]
 //   },
 //   "FullColorProcess": false,
-//     "Personalization": false,
+//     "Customeralization": false,
 //     "SoldUnimprinted": false
 // },
 //   "Options": [

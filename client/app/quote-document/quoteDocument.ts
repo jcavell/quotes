@@ -24,11 +24,11 @@ export class QuoteDocument {
     console.log("Creating document for quote request " + JSON.stringify(quoteRequest))
     doc.setFontSize(12);
     doc.text(20, 10, 'QUOTE');
-    doc.text(20, 20, quoteRequest.requestCustomerName);
+    doc.text(20, 20, quoteRequest.requestCustomerFirstName);
     doc.text(20, 30, quoteRequest.requestCompany);
     doc.text(20, 40, 'quoteRequest.customer_address needs to be added');
     doc.text(20, 60, quoteRequest.requestCustomerEmail);
-    doc.text(20, 70, 'Tel ' + quoteRequest.requestCustomerTel);
+    doc.text(20, 70, 'DirectPhone ' + quoteRequest.requestCustomerDirectPhone);
 
     for (const product of quote.quote_products) {
       // console.log('Quote product: ' + JSON.stringify(product));

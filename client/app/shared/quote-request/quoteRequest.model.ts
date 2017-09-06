@@ -2,7 +2,7 @@ export class QuoteRequest {
   constructor(public id: number,
               public product_id: number,
               public customer_name: string,
-              public customer_telephone: string,
+              public customer_directPhoneephone: string,
               public customer_email: string,
               public company: string,
               public date_required: string,
@@ -19,9 +19,10 @@ export class NQuote {
               public requestTimestamp: string,
               public requestDateRequired: string,
               public requestProductId: number,
-              public requestCustomerName: string,
+              public requestCustomerFirstName: string,
+              public requestCustomerLastName: string,
               public requestCustomerEmail: string,
-              public requestCustomerTel: string,
+              public requestCustomerDirectPhone: string,
               public requestCompany: string,
               public requestQuantity: number,
               public requestOtherRequirements: string) {
@@ -33,11 +34,21 @@ export class NCompany {
   }
 }
 
-export class NPerson {
+export class NCustomer {
   constructor(
-    public name: string,
+    public firstName: string,
+    public lastName: string,
+    public salutation: string,
     public email: string,
-    public tel: string
+    public directPhone: string,
+    public mobilePhone: string,
+    public source: string,
+    public position: string,
+    public isMainContact: boolean,
+    public twitter: string,
+    public facebook: string,
+    public linkedIn: string,
+    public skype: string
   ) {
   }
 }
@@ -46,7 +57,7 @@ export class NQuoteWithProducts {
   constructor(
     public quote: NQuote,
     public company: NCompany,
-    public person: NPerson
+    public customer: NCustomer
     // TODO add products etc.
   ) {
   }

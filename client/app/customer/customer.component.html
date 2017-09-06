@@ -1,0 +1,91 @@
+<div class="card" *ngIf="isLoading">
+  <h4 class="card-header">Loading...</h4>
+  <div class="card-block text-xs-center">
+    <i class="fa fa-circle-o-notch fa-spin fa-3x"></i>
+  </div>
+</div>
+
+<app-toast [message]="toast.message"></app-toast>
+
+<div class="card" *ngIf="!isLoading">
+  <h4 class="card-header">Current customers ({{customers.length}})</h4>
+  <div class="card-block">
+    <table class="table table-bordered table-striped">
+      <thead class="thead-default">
+        <tr>
+          <th>First Name</th>
+          <th>Email</th>
+          <th>Direct Phone</th>
+          <th>Company</th>
+          <th>Quotes</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody *ngIf="customers.length === 0">
+        <tr>
+          <td colspan="7">There are no customers in the DB. Add a new Customer below.</td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="!isEditing">
+        <tr *ngFor="let customerCompany of customers">
+          <td>{{customerCompany._1.firstName}}</td>
+          <td>{{customerCompany._1.email}}</td>
+          <td>{{customerCompany._1.directPhone}}</td>
+          <td>{{customerCompany._2.name}}</td>
+          <td><a [routerLink]="['/quote-requests']" [queryParams]="{e:customerCompany._1.email}" routerLinkActive="active">Quotes</a></td>
+          <td><button class="btn btn-sm btn-warning" (click)="enableEditing(customerCompany)"><i class="fa fa-pencil"></i> Edit</button></td>
+            <td><button class="btn btn-sm btn-danger" (click)="deleteCustomer(customerCompany)"><i class="fa fa-trash"></i> Delete</button>
+          </td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="isEditing">
+        <tr>
+          <td colspan="7">
+            <form class="form-inline" #form="ngForm" (ngSubmit)="editCustomer(customerCompany)" style="display:inline">
+              <div class="form-group">
+                  <input class="form-control" type="text" name="firstName" [(ngModel)]="customerCompany._1.firstName" placeholder="name" required>
+              </div>
+              <div class="form-group">
+                <input class="form-control" type="text" name="email" [(ngModel)]="customerCompany._1.email" placeholder="email" required>
+              </div>
+              <div class="form-group">
+                <input class="form-control" type="text" name="directPhone" [(ngModel)]="customerCompany._1.directPhone" placeholder="directPhone" required>
+              </div>
+              <div class="form-group">
+                <select class="form-control" name="companyId" [(ngModel)]="customerCompany._1.companyId" placeholder="companyId">
+                  <option *ngFor="let c of companies" [ngValue]="c.id">{{c.name}}</option>
+                </select>
+              </div>
+              <button class="btn btn-sm btn-primary" type="submit" [disabled]="!form.form.valid"><i class="fa fa-floppy-o"></i> Save</button>
+            </form>
+            <button class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card" *ngIf="!isEditing">
+  <h4 class="card-header">Add new Customer</h4>
+  <div class="card-block">
+    <form class="form-inline" [formGroup]="addCustomerForm" (ngSubmit)="addCustomer()" style="text-align:center">
+      <div class="form-group">
+          <input class="form-control" type="text" name="firstName" formControlName="firstName" placeholder="firstName">
+      </div>
+      <div class="form-group">
+        <input class="form-control" type="text" name="email" formControlName="email" placeholder="email">
+      </div>
+      <div class="form-group">
+        <input class="form-control" type="text" name="directPhone" formControlName="directPhone" placeholder="directPhone">
+      </div>
+      <div class="form-group">
+        <select class="form-control" name="companyId" formControlName="companyId" placeholder="companyId">
+          <option *ngFor="let c of companies" [ngValue]="c.id">{{c.name}}</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" type="submit" [disabled]="!addCustomerForm.valid"><i class="fa fa-floppy-o"></i> Add</button>
+    </form>
+  </div>
+</div>

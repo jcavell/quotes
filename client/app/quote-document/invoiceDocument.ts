@@ -22,11 +22,11 @@ export class InvoiceDocument {
 
     doc.setFontSize(12);
     doc.text(20, 10, 'INVOICE');
-    doc.text(20, 20, quoteRequest.requestCustomerName);
+    doc.text(20, 20, quoteRequest.requestCustomerFirstName);
     doc.text(20, 30, quoteRequest.requestCompany);
     doc.text(20, 40, 'quoteRequest.customer_address needs to be added');
     doc.text(20, 60, quoteRequest.requestCustomerEmail);
-    doc.text(20, 70, 'Tel ' + quoteRequest.requestCustomerTel);
+    doc.text(20, 70, 'DirectPhone ' + quoteRequest.requestCustomerDirectPhone);
 
     const totalPriceForProducts: number[] = [];
 

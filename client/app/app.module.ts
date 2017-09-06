@@ -11,14 +11,14 @@ import {routing} from "./app-routes";
 import {XsellComponent} from "./xsell/xsell.component";
 import {CompanyComponent} from "./company/company.component";
 import {CompanyService} from "./shared/company/company.service";
-import {PersonComponent} from "./person/person.component";
-import {PersonService} from "./shared/person/person.service";
+import {CustomerComponent} from "./customer/customer.component";
+import {CustomerService} from "./shared/customer/customer.service";
 
 @NgModule({
   declarations: [
     AppComponent,
     CompanyComponent,
-    PersonComponent,
+    CustomerComponent,
     XsellComponent
   ],
   imports: [
@@ -32,7 +32,7 @@ import {PersonService} from "./shared/person/person.service";
   ],
   providers: [
     CompanyService,
-    PersonService,
+    CustomerService,
     XsellService
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
