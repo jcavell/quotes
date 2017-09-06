@@ -5,7 +5,6 @@ import {NQuoteWithProducts} from "./quoteRequest.model";
 @Injectable()
 export class SelectedQuoteRequestService {
 
-  // Observable selected quote source
   _selectedQuoteRequestSource = new BehaviorSubject<NQuoteWithProducts>(null);
   selectedQuoteRequest$ = this._selectedQuoteRequestSource.asObservable();
 
@@ -16,9 +15,7 @@ export class SelectedQuoteRequestService {
     this._isEditingSource.next(isEditing);
   }
 
-  // service command
   changeQuoteRequest(quoteRequest: NQuoteWithProducts) {
-    // console.log('Changing quote to ' + JSON.stringify(quoteRequest));
     this._selectedQuoteRequestSource.next(quoteRequest);
   }
 }

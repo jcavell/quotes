@@ -7,6 +7,6 @@ interface AuthConfiguration {
 export const myConfig: AuthConfiguration = {
     clientID: 'O7eU021Nw42_Cu7Et-BrRM44IPdbrknu',
     domain: 'jcavell.eu.auth0.com',
-  // You may need to change this!
+  // TODO will need to change this
   callbackURL: 'http://localhost:4200/'
 };

@@ -24,14 +24,12 @@ export class QuoteRequestsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // subscribe to router event
     this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
       this.queryParams = queryParams;
     });
 
     this.subscription = this.selectedQuoteRequestService.isEditing$.subscribe(isEditing => {
       this.isEditing = isEditing;
-      console.log('ngOnInit: Changed isEditing to ' + this.isEditing);
     });
 
     this.selectedQuoteRequestService.selectedQuoteRequest$.subscribe(quoteRequest => {
@@ -43,7 +41,6 @@ export class QuoteRequestsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // console.log('Destroying quoteRequestsComponent');
     this.selectedQuoteRequestService.setEditing(false);
     this.subscription.unsubscribe();
     this.selectedQuoteRequest = undefined;

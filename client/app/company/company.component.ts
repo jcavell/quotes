@@ -80,12 +80,12 @@ export class CompanyComponent implements OnInit {
   }
 
   deleteCompany(company) {
-    if (window.confirm('Are you sure you want to permanently delete this item?')) {
+    if (window.confirm('Are you sure you want to permanently delete this company?')) {
       this.companyService.deleteCompany(company).subscribe(
         res => {
           const pos = this.companies.map(elem => { return elem._id; }).indexOf(company._id);
           this.companies.splice(pos, 1);
-          this.toast.setMessage('item deleted successfully.', 'success');
+          this.toast.setMessage('company deleted successfully.', 'success');
         },
         error =>  this.toast.setMessage('Error deleting company: ' + JSON.stringify(error).substr(0, 200), 'danger')
       );

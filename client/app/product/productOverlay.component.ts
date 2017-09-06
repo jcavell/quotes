@@ -12,9 +12,6 @@ export class ProductModalContext extends BSModalContext {
   public quote: ASIQuote;
 }
 
-/**
- * A Sample of how simple it is to create a new window, with its own injects.
- */
 @Component({
   selector: 'search-modal',
   templateUrl: 'productOverlay.component.html'
@@ -59,7 +56,6 @@ export class ProductModalComponent implements CloseGuard, ModalComponent<Product
   }
 
   add(product: ASIProduct) {
-    // console.log(`Adding product ${JSON.stringify(product)} with prices ${product.Prices}`);
     const quoteProduct = new ASIQuoteProduct(product.Id, product.Name, this.context.quantity, product.ImageUrl, product.Prices, 0);
     this.context.quote.quote_products.unshift(quoteProduct);
   }
