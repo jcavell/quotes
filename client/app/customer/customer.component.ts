@@ -21,16 +21,29 @@ export class CustomerComponent implements OnInit {
   isEditing = false;
 
   addCustomerForm: FormGroup;
+
   firstName = new FormControl('', Validators.minLength(3));
+  lastName = new FormControl('', Validators.minLength(3));
+  salutation = new FormControl('');
   email = new FormControl('', Validators.minLength(6));
-  directPhone = new FormControl('', Validators.minLength(8));
+  directPhone = new FormControl('');
+  mobilePhone = new FormControl('', Validators.minLength(8));
+  source = new FormControl('');
+  position = new FormControl('');
+  isMainContact = new FormControl('');
+  twitter = new FormControl('');
+  facebook = new FormControl('');
+  linkedIn = new FormControl('');
+  skype = new FormControl('');
+  handlerId = new FormControl('', Validators.pattern('\\d+'));
   companyId = new FormControl('', Validators.pattern('\\d+'));
 
   constructor(private http: Http,
               private customerService: CustomerService,
               private companyService: CompanyService,
               public toast: ToastComponent,
-              private formBuilder: FormBuilder) { }
+              private formBuilder: FormBuilder) {
+  }
 
   ngOnInit() {
     this.getCustomers();
@@ -39,8 +52,19 @@ export class CustomerComponent implements OnInit {
 
     this.addCustomerForm = this.formBuilder.group({
       firstName: this.firstName,
+      lastName: this.lastName,
+      salutation: this.salutation,
       email: this.email,
       directPhone: this.directPhone,
+      mobilePhone: this.mobilePhone,
+      source: this.source,
+      position: this.position,
+      isMainContact: this.isMainContact,
+      twitter: this.twitter,
+      facebook: this.facebook,
+      linkedIn: this.linkedIn,
+      skype: this.skype,
+      handlerId: this.handlerId,
       companyId: this.companyId
     });
   }
@@ -55,7 +79,10 @@ export class CustomerComponent implements OnInit {
 
   getCompanies() {
     this.companyService.getCompanies().subscribe(
-      data => {this.companies = data; this.companies.unshift({'id' : '', 'name' : 'company'});},
+      data => {
+        this.companies = data;
+        this.companies.unshift({'id': '', 'name': 'company'});
+      },
       error => console.log(error),
       () => this.isLoading = false
     );
@@ -65,8 +92,19 @@ export class CustomerComponent implements OnInit {
     const customer = new Customer(
       0,
       this.addCustomerForm.value.firstName,
+      this.addCustomerForm.value.lastName,
+      this.addCustomerForm.value.salutation,
       this.addCustomerForm.value.email,
       this.addCustomerForm.value.directPhone,
+      this.addCustomerForm.value.mobilePhone,
+      this.addCustomerForm.value.source,
+      this.addCustomerForm.value.position,
+      this.addCustomerForm.value.isMainContact,
+      this.addCustomerForm.value.twitter,
+      this.addCustomerForm.value.facebook,
+      this.addCustomerForm.value.linkedIn,
+      this.addCustomerForm.value.skype,
+      parseInt(this.addCustomerForm.value.handlerId, 10),
       parseInt(this.addCustomerForm.value.companyId, 10)
     );
     this.customerService.addCustomer(customer).subscribe(
@@ -76,7 +114,7 @@ export class CustomerComponent implements OnInit {
         this.addCustomerForm.reset();
         this.toast.setMessage('item added successfully.', 'success');
       },
-      error =>  this.toast.setMessage('Error inserting customer: ' + JSON.stringify(error).substr(0, 200), 'danger')
+      error => this.toast.setMessage('Error inserting customer: ' + JSON.stringify(error).substr(0, 200), 'danger')
     );
   }
 
@@ -98,12 +136,14 @@ export class CustomerComponent implements OnInit {
       res => {
         this.isEditing = false;
         this.customerCompany = customerCompany;
-        const companyIndex = this.companies.map(elem => { return elem.id; }).indexOf(customerCompany._1.companyId)
+        const companyIndex = this.companies.map(elem => {
+          return elem.id;
+        }).indexOf(customerCompany._1.companyId)
         const companyName = this.companies[companyIndex].name;
         customerCompany._2.name = companyName;
         this.toast.setMessage('item edited successfully.', 'success');
       },
-      error =>  this.toast.setMessage('Error editing customer: ' + JSON.stringify(error).substr(0, 200), 'danger')
+      error => this.toast.setMessage('Error editing customer: ' + JSON.stringify(error).substr(0, 200), 'danger')
     );
   }
 
@@ -111,11 +151,13 @@ export class CustomerComponent implements OnInit {
     if (window.confirm('Are you sure you want to permanently delete this item?')) {
       this.customerService.deleteCustomer(customerCompany._1).subscribe(
         res => {
-          const pos = this.customers.map(elem => { return elem._id; }).indexOf(customerCompany._1._id);
+          const pos = this.customers.map(elem => {
+            return elem._id;
+          }).indexOf(customerCompany._1._id);
           this.customers.splice(pos, 1);
           this.toast.setMessage('item deleted successfully.', 'success');
         },
-        error =>  this.toast.setMessage('Error deleting customer: ' + JSON.stringify(error).substr(0, 200), 'danger')
+        error => this.toast.setMessage('Error deleting customer: ' + JSON.stringify(error).substr(0, 200), 'danger')
       );
     }
   }

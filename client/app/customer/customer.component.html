@@ -14,8 +14,11 @@
       <thead class="thead-default">
         <tr>
           <th>First Name</th>
+          <th>Last Name</th>
+          <th>Salutation</th>
           <th>Email</th>
-          <th>Direct Phone</th>
+          <th>Direct phone</th>
+          <th>Mobile phone</th>
           <th>Company</th>
           <th>Quotes</th>
           <th></th>
@@ -30,8 +33,11 @@
       <tbody *ngIf="!isEditing">
         <tr *ngFor="let customerCompany of customers">
           <td>{{customerCompany._1.firstName}}</td>
+          <td>{{customerCompany._1.lastName}}</td>
+          <td>{{customerCompany._1.salutation}}</td>
           <td>{{customerCompany._1.email}}</td>
           <td>{{customerCompany._1.directPhone}}</td>
+          <td>{{customerCompany._1.mobilePhone}}</td>
           <td>{{customerCompany._2.name}}</td>
           <td><a [routerLink]="['/quote-requests']" [queryParams]="{e:customerCompany._1.email}" routerLinkActive="active">Quotes</a></td>
           <td><button class="btn btn-sm btn-warning" (click)="enableEditing(customerCompany)"><i class="fa fa-pencil"></i> Edit</button></td>
@@ -44,13 +50,22 @@
           <td colspan="7">
             <form class="form-inline" #form="ngForm" (ngSubmit)="editCustomer(customerCompany)" style="display:inline">
               <div class="form-group">
-                  <input class="form-control" type="text" name="firstName" [(ngModel)]="customerCompany._1.firstName" placeholder="name" required>
+                  <input class="form-control" type="text" name="firstName" [(ngModel)]="customerCompany._1.firstName" placeholder="lastName" required>
+              </div>
+              <div class="form-group">
+                <input class="form-control" type="text" name="lastName" [(ngModel)]="customerCompany._1.lastName" placeholder="lastName" required>
+              </div>
+              <div class="form-group">
+                <input class="form-control" type="text" name="salutation" [(ngModel)]="customerCompany._1.salutation" placeholder="salutation">
               </div>
               <div class="form-group">
                 <input class="form-control" type="text" name="email" [(ngModel)]="customerCompany._1.email" placeholder="email" required>
               </div>
               <div class="form-group">
-                <input class="form-control" type="text" name="directPhone" [(ngModel)]="customerCompany._1.directPhone" placeholder="directPhone" required>
+                <input class="form-control" type="text" name="directPhone" [(ngModel)]="customerCompany._1.directPhone" placeholder="directPhone">
+              </div>
+              <div class="form-group">
+                <input class="form-control" type="text" name="mobile" [(ngModel)]="customerCompany._1.mobilePhone" placeholder="mobilePhone">
               </div>
               <div class="form-group">
                 <select class="form-control" name="companyId" [(ngModel)]="customerCompany._1.companyId" placeholder="companyId">
@@ -75,10 +90,19 @@
           <input class="form-control" type="text" name="firstName" formControlName="firstName" placeholder="firstName">
       </div>
       <div class="form-group">
+        <input class="form-control" type="text" name="lastName" formControlName="lastName" placeholder="lastName">
+      </div>
+      <div class="form-group">
+        <input class="form-control" type="text" name="salutation" formControlName="salutation" placeholder="salutation">
+      </div>
+      <div class="form-group">
         <input class="form-control" type="text" name="email" formControlName="email" placeholder="email">
       </div>
       <div class="form-group">
         <input class="form-control" type="text" name="directPhone" formControlName="directPhone" placeholder="directPhone">
+      </div>
+      <div class="form-group">
+        <input class="form-control" type="text" name="mobilePhone" formControlName="mobilePhone" placeholder="mobilePhone">
       </div>
       <div class="form-group">
         <select class="form-control" name="companyId" formControlName="companyId" placeholder="companyId">
