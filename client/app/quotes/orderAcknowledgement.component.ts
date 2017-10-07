@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit, ViewContainerRef} from "@angular/core";
 import {Subscription} from "rxjs/Rx";
-import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
+import {Enquiry} from "../shared/enquiry/enquiry.model";
 import {Quote, QuoteProduct, QuoteStatus} from "../shared/quote/quote.model";
 import {SelectedQuoteService} from "../shared/quote/selectedQuote.service";
 import {Modal, Overlay, overlayConfigFactory} from "angular2-modal";
-import {SearchModalComponent} from "../quote-requests/search.component";
+import {SearchModalComponent} from "../enquiries/search.component";
 import {BSModalContext} from "angular2-modal/plugins/bootstrap";
 
 @Component({
@@ -15,7 +15,7 @@ import {BSModalContext} from "angular2-modal/plugins/bootstrap";
 })
 
 export class OrderAcknowledgementComponent implements OnInit, OnDestroy {
-  quoteRequest: QuoteRequest;
+  enquiry: Enquiry;
   quote: Quote;
   subscription: Subscription;
   errorMessage: any;
@@ -25,7 +25,7 @@ export class OrderAcknowledgementComponent implements OnInit, OnDestroy {
   }
 
   openSearchModal() {
-    return this.modal.open(SearchModalComponent,  overlayConfigFactory({ quoteRequest: this.quoteRequest, quote: this.quote }, BSModalContext));
+    return this.modal.open(SearchModalComponent,  overlayConfigFactory({ enquiry: this.enquiry, quote: this.quote }, BSModalContext));
   }
 
   remove(product: QuoteProduct) {
@@ -34,14 +34,14 @@ export class OrderAcknowledgementComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    this.subscription = this.selectedQuoteService.selectedQuote$.subscribe(quoteRequestAndQuote => {
-        // console.log(`QRAQ: ${JSON.stringify(quoteRequestAndQuote)}`);
-        if (quoteRequestAndQuote[0] != null && quoteRequestAndQuote[1].quote_status === QuoteStatus.Quoted) {
-          // console.log('Received event ' + JSON.stringify(quoteRequestAndQuote));
-          const quoteRequest = quoteRequestAndQuote[0];
-          const quote = quoteRequestAndQuote[1];
-          if (quoteRequest !== null && quote !== null) {
-            this.quoteRequest = quoteRequest;
+    this.subscription = this.selectedQuoteService.selectedQuote$.subscribe(enquiryAndQuote => {
+        // console.log(`QRAQ: ${JSON.stringify(enquiryAndQuote)}`);
+        if (enquiryAndQuote[0] != null && enquiryAndQuote[1].quote_status === QuoteStatus.Quoted) {
+          // console.log('Received event ' + JSON.stringify(enquiryAndQuote));
+          const enquiry = enquiryAndQuote[0];
+          const quote = enquiryAndQuote[1];
+          if (enquiry !== null && quote !== null) {
+            this.enquiry = enquiry;
             this.quote = quote;
             console.log('Changed selected quote to ' + JSON.stringify(this.quote));
           }
@@ -52,7 +52,7 @@ export class OrderAcknowledgementComponent implements OnInit, OnDestroy {
 
   cancelEditing() {
     this.quote = undefined;
-    this.quoteRequest = undefined;
+    this.enquiry = undefined;
     this.selectedQuoteService.setEditing(false);
   }
 

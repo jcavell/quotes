@@ -55,7 +55,7 @@
           <td>{{cust.customer.facebook}}</td>
           <td>{{cust.customer.linkedIn}}</td>
           <td>{{cust.customer.skype}}</td>
-          <td><a [routerLink]="['/quote-requests']" [queryParams]="{e:cust.company.email}" routerLinkActive="active">Quotes</a></td>
+          <td><a [routerLink]="['/enquiries']" [queryParams]="{e:cust.company.email}" routerLinkActive="active">Quotes</a></td>
           <td><button class="btn btn-sm btn-warning" (click)="enableEditing(cust)"><i class="fa fa-pencil"></i> Edit</button></td>
             <td><button class="btn btn-sm btn-danger" (click)="deleteCustomer(cust)"><i class="fa fa-trash"></i> Delete</button>
           </td>

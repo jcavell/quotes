@@ -3,12 +3,12 @@ import {Http} from "@angular/http";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 
 import {ToastComponent} from "../shared/toast/toast.component";
-import {QuoteRequestService} from "../shared/quote-request/quoteRequest.service";
+import {Enquirieservice} from "../shared/enquiry/enquiry.service";
 import {QuoteService} from "../shared/quote/quote.service";
 import {Observable, Subscription} from "rxjs";
 import {Quote, QuoteStatus} from "../shared/quote/quote.model";
 import {SelectedQuoteService} from "../shared/quote/selectedQuote.service";
-import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
+import {Enquiry} from "../shared/enquiry/enquiry.model";
 import {Auth} from "../shared/auth/auth.service";
 
 @Component({
@@ -18,7 +18,7 @@ import {Auth} from "../shared/auth/auth.service";
 })
 export class QuotesComponent implements OnInit {
 
-  quoteRequestsAndQuotes: [[QuoteRequest, Quote]];
+  enquiriesAndQuotes: [[Enquiry, Quote]];
   isLoading = true;
   selectedQuote: Quote;
   isEditing: boolean;
@@ -46,14 +46,14 @@ export class QuotesComponent implements OnInit {
   }
 
   getCount(status: number) {
-    return this.quoteRequestsAndQuotes.filter(
-      quoteRequestAndQuote => quoteRequestAndQuote[1].quote_status === status).length;
+    return this.enquiriesAndQuotes.filter(
+      enquiryAndQuote => enquiryAndQuote[1].quote_status === status).length;
   }
 
   constructor(private http: Http,
               private auth: Auth,
               private quoteService: QuoteService,
-              private quoteRequestService: QuoteRequestService,
+              private enquirieservice: Enquirieservice,
               private selectedQuoteService: SelectedQuoteService,
               public toast: ToastComponent,
               private formBuilder: FormBuilder) { }
@@ -69,7 +69,7 @@ export class QuotesComponent implements OnInit {
       }
     );
 
-    this.getQuoteRequestAndQuoteTuples();
+    this.getEnquiryAndQuoteTuples();
 
     this.addQuoteForm = this.formBuilder.group({
       quote_request_id: this.quote_request_id,
@@ -78,24 +78,24 @@ export class QuotesComponent implements OnInit {
   }
 
 
-  combineQuotesAndQuoteRequests(): Observable<[[QuoteRequest, Quote]]> {
-    const combined = this.quoteService.getQuotes().combineLatest(this.quoteRequestService.getNew({}),
-      (quotes, quoteRequests) => {
-            return quotes.map(quote => [quoteRequests.quotes.find(qr => qr.quote.id == quote.quote_request_id), quote]);
+  combineQuotesAndEnquiries(): Observable<[[Enquiry, Quote]]> {
+    const combined = this.quoteService.getQuotes().combineLatest(this.enquirieservice.getNew({}),
+      (quotes, enquiries) => {
+            return quotes.map(quote => [enquiries.quotes.find(qr => qr.quote.id == quote.quote_request_id), quote]);
       });
     return combined;
   }
 
-  displaySelectedQuote(event: Event, selectedQuoteRequestAndQuote: [QuoteRequest, Quote]) {
-    this.selectedQuoteService.changeQuote(selectedQuoteRequestAndQuote);
-    this.selectedQuote = selectedQuoteRequestAndQuote[1];
+  displaySelectedQuote(event: Event, selectedEnquiryAndQuote: [Enquiry, Quote]) {
+    this.selectedQuoteService.changeQuote(selectedEnquiryAndQuote);
+    this.selectedQuote = selectedEnquiryAndQuote[1];
     this.selectedQuoteService.setEditing(true);
   }
 
-  getQuoteRequestAndQuoteTuples() {
-    this.combineQuotesAndQuoteRequests().subscribe(
+  getEnquiryAndQuoteTuples() {
+    this.combineQuotesAndEnquiries().subscribe(
       data => {
-        this.quoteRequestsAndQuotes = data;
+        this.enquiriesAndQuotes = data;
         // console.log(`Quotes: ${JSON.stringify(data)}`);
       },
       error => console.log(error),

@@ -23,31 +23,31 @@
     <table class="table table-bordered table-responsive table-striped table-hover">
       <thead class="thead-default">
       <tr>
-        <th>Quote request</th>
+        <th>Enquiry</th>
         <th>Customer</th>
         <th>Created</th>
         <th>Status</th>
         <th>Actions</th>
       </tr>
       </thead>
-      <tbody *ngIf="quoteRequestsAndQuotes.length === 0">
+      <tbody *ngIf="enquiriesAndQuotes.length === 0">
       <tr>
         <td colspan="4">There are no quotes</td>
       </tr>
       </tbody>
       <tbody>
-      <tr *ngFor="let quoteRequestAndQuote; of quoteRequestsAndQuotes | quotesByStatus:displayStatuses">
-        <ng-container *ngIf="!isEditing || selectedQuote == quoteRequestAndQuote[1]">
-          <td>{{quoteRequestAndQuote[0].id}}</td>
-          <td>{{quoteRequestAndQuote[0].customer_name}}</td>
-          <td>{{quoteRequestAndQuote[1].quote_created | date:'medium'}}</td>
-          <td>{{quoteStatus[quoteRequestAndQuote[1].quote_status]}}</td>
+      <tr *ngFor="let enquiryAndQuote; of enquiriesAndQuotes | quotesByStatus:displayStatuses">
+        <ng-container *ngIf="!isEditing || selectedQuote == enquiryAndQuote[1]">
+          <td>{{enquiryAndQuote[0].id}}</td>
+          <td>{{enquiryAndQuote[0].customer_name}}</td>
+          <td>{{enquiryAndQuote[1].quote_created | date:'medium'}}</td>
+          <td>{{quoteStatus[enquiryAndQuote[1].quote_status]}}</td>
           <td>
-            <button *ngIf="quoteRequestAndQuote[1].quote_status === 1" class="btn btn-warning btn-sm btn-space"
-                    (click)="displaySelectedQuote($event, quoteRequestAndQuote)"><i class="fa fa-pencil"></i> Order
+            <button *ngIf="enquiryAndQuote[1].quote_status === 1" class="btn btn-warning btn-sm btn-space"
+                    (click)="displaySelectedQuote($event, enquiryAndQuote)"><i class="fa fa-pencil"></i> Order
             </button>
-            <button *ngIf="auth.isAccounts() && quoteRequestAndQuote[1].quote_status === 2" class="btn btn-warning btn-sm btn-space"
-                    (click)="displaySelectedQuote($event, quoteRequestAndQuote)"><i class="fa fa-pencil"></i> Invoice
+            <button *ngIf="auth.isAccounts() && enquiryAndQuote[1].quote_status === 2" class="btn btn-warning btn-sm btn-space"
+                    (click)="displaySelectedQuote($event, enquiryAndQuote)"><i class="fa fa-pencil"></i> Invoice
             </button>
           </td>
         </ng-container>

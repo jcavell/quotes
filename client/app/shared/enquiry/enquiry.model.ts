@@ -1,4 +1,4 @@
-export class QuoteRequest {
+export class Enquiry {
   constructor(public id: number,
               public product_id: number,
               public customer_name: string,

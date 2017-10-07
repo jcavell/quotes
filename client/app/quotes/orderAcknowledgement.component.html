@@ -4,7 +4,7 @@
 
   <div class="card-block">
 
-    <form class="form-inline" #form="ngForm" (ngSubmit)="editRep(quoteRequest)" style="display:inline">
+    <form class="form-inline" #form="ngForm" (ngSubmit)="editRep(enquiry)" style="display:inline">
       <table class="table table-bordered table-striped">
         <thead class="thead-default">
         <tr>
@@ -16,15 +16,15 @@
         </thead>
         <tbody>
         <tr>
-          <td><input class="form-control" type="text" name="name" [(ngModel)]="quoteRequest.customer_name"
+          <td><input class="form-control" type="text" name="name" [(ngModel)]="enquiry.customer_name"
                      placeholder="Name" required></td>
-          <td><input class="form-control" type="text" name="email" [(ngModel)]="quoteRequest.customer_email"
+          <td><input class="form-control" type="text" name="email" [(ngModel)]="enquiry.customer_email"
                      placeholder="Email"
                      required></td>
-          <td><input class="form-control" type="text" name="directPhoneephone" [(ngModel)]="quoteRequest.customer_directPhoneephone"
+          <td><input class="form-control" type="text" name="directPhoneephone" [(ngModel)]="enquiry.customer_directPhoneephone"
                      placeholder="DirectPhoneephone"
                      required></td>
-          <td><textarea class="form-control" type="text" name="address" [(ngModel)]="quoteRequest.customer_address"
+          <td><textarea class="form-control" type="text" name="address" [(ngModel)]="enquiry.customer_address"
                      placeholder="Address"
                         required></textarea></td>
         </tr>
@@ -61,7 +61,7 @@
       </tbody>
       <ng-container *ngIf="quote.quote_status === 1">
       <tr><td colspan="6">
-        <download-quote [quote]="quote" [quoteRequest]="quoteRequest" [documentType]="'order_acknowledgement'"
+        <download-quote [quote]="quote" [enquiry]="enquiry" [documentType]="'order_acknowledgement'"
                                             [buttonName]="'Create'"></download-quote>
         <button class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button></td></tr>
       </ng-container>

@@ -18,7 +18,7 @@
       </tr>
       </tbody>
       <ng-container *ngIf="quote.quote_status === 2">
-      <tr><td colspan="3">  <download-quote [quote]="quote" [quoteRequest]="quoteRequest" [documentType]="'invoice'"
+      <tr><td colspan="3">  <download-quote [quote]="quote" [enquiry]="enquiry" [documentType]="'invoice'"
                                             [buttonName]="'Create Invoice'"></download-quote>
         <button class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button></td></tr>
       </ng-container>

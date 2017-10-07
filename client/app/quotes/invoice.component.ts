@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
 import {Subscription} from "rxjs/Rx";
-import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
+import {Enquiry} from "../shared/enquiry/enquiry.model";
 import {Quote, QuoteStatus} from "../shared/quote/quote.model";
 import {SelectedQuoteService} from "../shared/quote/selectedQuote.service";
 
@@ -12,7 +12,7 @@ import {SelectedQuoteService} from "../shared/quote/selectedQuote.service";
 })
 
 export class InvoiceComponent implements OnInit, OnDestroy {
-  quoteRequest: QuoteRequest;
+  enquiry: Enquiry;
   quote: Quote;
   subscription: Subscription;
   errorMessage: any;
@@ -21,14 +21,14 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscription = this.selectedQuoteService.selectedQuote$.subscribe(quoteRequestAndQuote => {
-        // console.log(`QRAQ: ${JSON.stringify(quoteRequestAndQuote)}`);
-        if (quoteRequestAndQuote[0] != null && quoteRequestAndQuote[1].quote_status === QuoteStatus.OrderConfirmed) {
-          // console.log('Received event ' + JSON.stringify(quoteRequestAndQuote));
-          const quoteRequest = quoteRequestAndQuote[0];
-          const quote = quoteRequestAndQuote[1];
-          if (quoteRequest !== null && quote !== null) {
-            this.quoteRequest = quoteRequest;
+    this.subscription = this.selectedQuoteService.selectedQuote$.subscribe(enquiryAndQuote => {
+        // console.log(`QRAQ: ${JSON.stringify(enquiryAndQuote)}`);
+        if (enquiryAndQuote[0] != null && enquiryAndQuote[1].quote_status === QuoteStatus.OrderConfirmed) {
+          // console.log('Received event ' + JSON.stringify(enquiryAndQuote));
+          const enquiry = enquiryAndQuote[0];
+          const quote = enquiryAndQuote[1];
+          if (enquiry !== null && quote !== null) {
+            this.enquiry = enquiry;
             this.quote = quote;
             console.log('Changed selected quote to ' + JSON.stringify(this.quote));
           }
@@ -39,7 +39,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
   cancelEditing() {
     this.quote = undefined;
-    this.quoteRequest = undefined;
+    this.enquiry = undefined;
     this.selectedQuoteService.setEditing(false);
   }
 

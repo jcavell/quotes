@@ -2,7 +2,6 @@ import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from "@angular/core";
 import {SharedModule} from "./shared/shared.module";
 import {AppComponent} from "./app.component";
 import {XsellService} from "./shared/xsell/xsell.service";
-import {QuoteRequestsModule} from "./quote-requests/quoteRequests.module";
 import {ProductModule} from "./product/product.module";
 import {QuotesModule} from "./quotes/quotes.module";
 import {QuoteDocumentModule} from "./quote-document/quoteDocument.module";
@@ -15,6 +14,7 @@ import {CustomerComponent} from "./customer/customer.component";
 import {CustomerService} from "./shared/customer/customer.service";
 import {UserComponent} from "./user/user.component";
 import {UserService} from "./shared/user/user.service";
+import {EnquiriesModule} from "./enquiries/enquiries.module";
 
 @NgModule({
   declarations: [
@@ -28,7 +28,7 @@ import {UserService} from "./shared/user/user.service";
     routing,
     SharedModule,
     ProductModule,
-    QuoteRequestsModule,
+    EnquiriesModule,
     QuotesModule,
     QuoteDocumentModule,
     AuthModule

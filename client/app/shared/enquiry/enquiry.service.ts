@@ -1,17 +1,17 @@
 import {Injectable} from "@angular/core";
 import {Http, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
-import {NQuotes} from "./quoteRequest.model";
+import {NQuotes} from "./enquiry.model";
 // import 'rxjs/add/operator/do';  // for debugging
 
 /**
  * This class provides the Product service with methods to read names and add names.
  */
 @Injectable()
-export class QuoteRequestService {
+export class Enquirieservice {
 
   /**
-   * Creates a new QuoteRequestService with the injected Http.
+   * Creates a new Enquirieservice with the injected Http.
    * @param {Http} http - The injected Http.
    * @constructor
    */

@@ -4,11 +4,11 @@ import {CloseGuard, DialogRef, ModalComponent} from "angular2-modal";
 import {BSModalContext} from "angular2-modal/plugins/bootstrap";
 import {Product} from "../shared/product/product.model";
 import {ProductService} from "../shared/product/product.service";
-import {QuoteRequest} from "../shared/quote-request/quoteRequest.model";
+import {Enquiry} from "../shared/enquiry/enquiry.model";
 import {Quote, QuoteProduct} from "../shared/quote/quote.model";
 
 export class SearchModalContext extends BSModalContext {
-  public quoteRequest: QuoteRequest;
+  public enquiry: Enquiry;
   public quote: Quote;
 }
 
