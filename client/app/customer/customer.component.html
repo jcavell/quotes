@@ -20,6 +20,14 @@
           <th>Direct phone</th>
           <th>Mobile phone</th>
           <th>Company</th>
+          <th>Handler</th>
+          <th>Source</th>
+          <th>Position</th>
+          <th>Is main contact</th>
+          <th>Twitter</th>
+          <th>Facebook</th>
+          <th>LinkedIn</th>
+          <th>Skype</th>
           <th>Quotes</th>
           <th></th>
           <th></th>
@@ -27,49 +35,83 @@
       </thead>
       <tbody *ngIf="customers.length === 0">
         <tr>
-          <td colspan="7">There are no customers in the DB. Add a new Customer below.</td>
+          <td colspan="17">There are no customers in the DB. Add a new Customer below.</td>
         </tr>
       </tbody>
       <tbody *ngIf="!isEditing">
-        <tr *ngFor="let customerCompany of customers">
-          <td>{{customerCompany._1.firstName}}</td>
-          <td>{{customerCompany._1.lastName}}</td>
-          <td>{{customerCompany._1.salutation}}</td>
-          <td>{{customerCompany._1.email}}</td>
-          <td>{{customerCompany._1.directPhone}}</td>
-          <td>{{customerCompany._1.mobilePhone}}</td>
-          <td>{{customerCompany._2.name}}</td>
-          <td><a [routerLink]="['/quote-requests']" [queryParams]="{e:customerCompany._1.email}" routerLinkActive="active">Quotes</a></td>
-          <td><button class="btn btn-sm btn-warning" (click)="enableEditing(customerCompany)"><i class="fa fa-pencil"></i> Edit</button></td>
-            <td><button class="btn btn-sm btn-danger" (click)="deleteCustomer(customerCompany)"><i class="fa fa-trash"></i> Delete</button>
+        <tr *ngFor="let cust of customers">
+          <td>{{cust.customer.firstName}}</td>
+          <td>{{cust.customer.lastName}}</td>
+          <td>{{cust.customer.salutation}}</td>
+          <td>{{cust.customer.email}}</td>
+          <td>{{cust.customer.directPhone}}</td>
+          <td>{{cust.customer.mobilePhone}}</td>
+          <td>{{cust.company.name}}</td>
+          <td>{{cust.handler.name}}</td>
+          <td>{{cust.customer.source}}</td>
+          <td>{{cust.customer.position}}</td>
+          <td>{{cust.customer.isMainContact}}</td>
+          <td>{{cust.customer.twitter}}</td>
+          <td>{{cust.customer.facebook}}</td>
+          <td>{{cust.customer.linkedIn}}</td>
+          <td>{{cust.customer.skype}}</td>
+          <td><a [routerLink]="['/quote-requests']" [queryParams]="{e:cust.company.email}" routerLinkActive="active">Quotes</a></td>
+          <td><button class="btn btn-sm btn-warning" (click)="enableEditing(cust)"><i class="fa fa-pencil"></i> Edit</button></td>
+            <td><button class="btn btn-sm btn-danger" (click)="deleteCustomer(cust)"><i class="fa fa-trash"></i> Delete</button>
           </td>
         </tr>
       </tbody>
       <tbody *ngIf="isEditing">
         <tr>
-          <td colspan="7">
-            <form class="form-inline" #form="ngForm" (ngSubmit)="editCustomer(customerCompany)" style="display:inline">
+          <td colspan="17">
+            <form class="form-inline" #form="ngForm" (ngSubmit)="editCustomer(cust)" style="display:inline">
               <div class="form-group">
-                  <input class="form-control" type="text" name="firstName" [(ngModel)]="customerCompany._1.firstName" placeholder="lastName" required>
+                  <input class="form-control" type="text" name="firstName" [(ngModel)]="customer.customer.firstName" placeholder="lastName" required>
               </div>
               <div class="form-group">
-                <input class="form-control" type="text" name="lastName" [(ngModel)]="customerCompany._1.lastName" placeholder="lastName" required>
+                <input class="form-control" type="text" name="lastName" [(ngModel)]="customer.customer.lastName" placeholder="lastName" required>
               </div>
               <div class="form-group">
-                <input class="form-control" type="text" name="salutation" [(ngModel)]="customerCompany._1.salutation" placeholder="salutation">
+                <input class="form-control" type="text" name="salutation" [(ngModel)]="customer.customer.salutation" placeholder="salutation">
               </div>
               <div class="form-group">
-                <input class="form-control" type="text" name="email" [(ngModel)]="customerCompany._1.email" placeholder="email" required>
+                <input class="form-control" type="text" name="email" [(ngModel)]="customer.customer.email" placeholder="email" required>
               </div>
               <div class="form-group">
-                <input class="form-control" type="text" name="directPhone" [(ngModel)]="customerCompany._1.directPhone" placeholder="directPhone">
+                <input class="form-control" type="text" name="directPhone" [(ngModel)]="customer.customer.directPhone" placeholder="directPhone">
               </div>
               <div class="form-group">
-                <input class="form-control" type="text" name="mobile" [(ngModel)]="customerCompany._1.mobilePhone" placeholder="mobilePhone">
+                <input class="form-control" type="text" name="mobile" [(ngModel)]="customer.customer.mobilePhone" placeholder="mobilePhone">
               </div>
               <div class="form-group">
-                <select class="form-control" name="companyId" [(ngModel)]="customerCompany._1.companyId" placeholder="companyId">
+                <input class="form-control" type="text" name="mobile" [(ngModel)]="customer.customer.source" placeholder="source">
+              </div>
+              <div class="form-group">
+                <input class="form-control" type="text" name="mobile" [(ngModel)]="customer.customer.position" placeholder="position">
+              </div>
+              <div class="form-group">
+                <input class="form-control" type="checkbox" name="mobile" [(checked)]="customer.customer.isMainContact" placeholder="isMainContact">
+              </div>
+              <div class="form-group">
+                <input class="form-control" type="text" name="mobile" [(ngModel)]="customer.customer.twitter" placeholder="twitter">
+              </div>
+              <div class="form-group">
+                <input class="form-control" type="text" name="mobile" [(ngModel)]="customer.customer.facebook" placeholder="facebook">
+              </div>
+              <div class="form-group">
+                <input class="form-control" type="text" name="mobile" [(ngModel)]="customer.customer.linkedIn" placeholder="linkedIn">
+              </div>
+              <div class="form-group">
+                <input class="form-control" type="text" name="mobile" [(ngModel)]="customer.customer.skype" placeholder="skype">
+              </div>
+              <div class="form-group">
+                <select class="form-control" name="companyId" [(ngModel)]="customer.customer.companyId" placeholder="companyId">
                   <option *ngFor="let c of companies" [ngValue]="c.id">{{c.name}}</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <select class="form-control" name="handlerId" [(ngModel)]="customer.customer.handlerId" placeholder="handlerId">
+                  <option *ngFor="let h of handlers" [ngValue]="h.id">{{h.name}}</option>
                 </select>
               </div>
               <button class="btn btn-sm btn-primary" type="submit" [disabled]="!form.form.valid"><i class="fa fa-floppy-o"></i> Save</button>
@@ -105,8 +147,17 @@
         <input class="form-control" type="text" name="mobilePhone" formControlName="mobilePhone" placeholder="mobilePhone">
       </div>
       <div class="form-group">
+        <label>Is main contact?</label>
+        <input class="form-control" type="checkbox" name="isMainContact" formControlName="isMainContact" placeholder="isMainContact">
+      </div>
+      <div class="form-group">
         <select class="form-control" name="companyId" formControlName="companyId" placeholder="companyId">
           <option *ngFor="let c of companies" [ngValue]="c.id">{{c.name}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <select class="form-control" name="handlerId" formControlName="handlerId" placeholder="handlerId">
+          <option *ngFor="let h of handlers" [ngValue]="h.id">{{h.name}}</option>
         </select>
       </div>
       <button class="btn btn-primary" type="submit" [disabled]="!addCustomerForm.valid"><i class="fa fa-floppy-o"></i> Add</button>

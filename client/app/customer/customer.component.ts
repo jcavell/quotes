@@ -5,6 +5,7 @@ import {ToastComponent} from "../shared/toast/toast.component";
 import {CustomerService} from "../shared/customer/customer.service";
 import {Customer} from "../shared/customer/customer.model";
 import {CompanyService} from "../shared/company/company.service";
+import {UserService} from "../shared/user/user.service";
 
 @Component({
   selector: 'app-customer',
@@ -15,15 +16,19 @@ export class CustomerComponent implements OnInit {
 
   customers = [];
   companies = [];
+  handlers = [];
+
   isLoading = true;
 
-  customerCompany = {};
+  customer = {};
+  customerHandler = {};
+
   isEditing = false;
 
   addCustomerForm: FormGroup;
 
-  firstName = new FormControl('', Validators.minLength(3));
-  lastName = new FormControl('', Validators.minLength(3));
+  firstName = new FormControl('', Validators.minLength(2));
+  lastName = new FormControl('', Validators.minLength(2));
   salutation = new FormControl('');
   email = new FormControl('', Validators.minLength(6));
   directPhone = new FormControl('');
@@ -41,6 +46,7 @@ export class CustomerComponent implements OnInit {
   constructor(private http: Http,
               private customerService: CustomerService,
               private companyService: CompanyService,
+              private userService: UserService,
               public toast: ToastComponent,
               private formBuilder: FormBuilder) {
   }
@@ -48,6 +54,7 @@ export class CustomerComponent implements OnInit {
   ngOnInit() {
     this.getCustomers();
     this.getCompanies();
+    this.getHandlers();
 
 
     this.addCustomerForm = this.formBuilder.group({
@@ -88,6 +95,17 @@ export class CustomerComponent implements OnInit {
     );
   }
 
+  getHandlers() {
+    this.userService.getUsers().subscribe(
+      data => {
+        this.handlers = data;
+        this.handlers.unshift({'id': '', 'name': 'handler'});
+      },
+      error => console.log(error),
+      () => this.isLoading = false
+    );
+  }
+
   addCustomer() {
     const customer = new Customer(
       0,
@@ -118,42 +136,42 @@ export class CustomerComponent implements OnInit {
     );
   }
 
-  enableEditing(customerCompany) {
+  enableEditing(customer) {
     this.isEditing = true;
-    this.customerCompany = customerCompany;
+    this.customer = customer;
   }
 
   cancelEditing() {
     this.isEditing = false;
-    this.customerCompany = {};
+    this.customer = {};
     this.toast.setMessage('item editing cancelled.', 'warning');
     // reload the customers to reset the editing
     this.getCustomers();
   }
 
-  editCustomer(customerCompany) {
-    this.customerService.editCustomer(customerCompany._1).subscribe(
+  editCustomer(customerCompanyHandler) {
+    this.customerService.editCustomer(customerCompanyHandler.cust).subscribe(
       res => {
         this.isEditing = false;
-        this.customerCompany = customerCompany;
+        this.customer = customerCompanyHandler;
         const companyIndex = this.companies.map(elem => {
           return elem.id;
-        }).indexOf(customerCompany._1.companyId)
+        }).indexOf(customerCompanyHandler.cust.companyId)
         const companyName = this.companies[companyIndex].name;
-        customerCompany._2.name = companyName;
+        customerCompanyHandler.company.name = companyName;
         this.toast.setMessage('item edited successfully.', 'success');
       },
       error => this.toast.setMessage('Error editing customer: ' + JSON.stringify(error).substr(0, 200), 'danger')
     );
   }
 
-  deleteCustomer(customerCompany) {
+  deleteCustomer(customer) {
     if (window.confirm('Are you sure you want to permanently delete this item?')) {
-      this.customerService.deleteCustomer(customerCompany._1).subscribe(
+      this.customerService.deleteCustomer(customer.customer).subscribe(
         res => {
           const pos = this.customers.map(elem => {
             return elem._id;
-          }).indexOf(customerCompany._1._id);
+          }).indexOf(customer.customer._id);
           this.customers.splice(pos, 1);
           this.toast.setMessage('item deleted successfully.', 'success');
         },
