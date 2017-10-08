@@ -1,4 +1,4 @@
-export class Product {
+export class PensWarehouseProduct {
   constructor(public id: number,
               public sku: string,
               public parent_sku: string,
@@ -29,7 +29,7 @@ export class Product {
 }
 
 
-export class Stock {
+export class PensWarehouseStock {
   constructor(public id: string, public stock_level: number) {
   }
 }

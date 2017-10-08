@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Headers, Http, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
-import {Product} from "./product.model";
+import {PensWarehouseProduct} from "./penswarehouseproduct.model";
 import {ASIProduct} from "./ASIProduct.model";
 import {ASISearchResults} from "./ASISearchResults.model";
 // import 'rxjs/add/operator/do';  // for debugging
@@ -86,9 +86,9 @@ export class ASIProductService {
 
   /**
    * Returns an Observable for the HTTP GET request for the JSON resource.
-   * @return {Product[]} The Observable for the HTTP request.
+   * @return {PensWarehouseProduct[]} The Observable for the HTTP request.
    */
-  private get(url: string): Observable<Product[]> {
+  private get(url: string): Observable<PensWarehouseProduct[]> {
     return this.http.get(url, {
         headers: this.headers
       }

@@ -1,14 +1,14 @@
 import {Component, ViewContainerRef} from "@angular/core";
-import {ASIProductService, SearchFilters} from "../shared/product/ASIProduct.service";
-import {ASIPrice, ASIProduct} from "../shared/product/ASIProduct.model";
-import {ASISearchResults} from "../shared/product/ASISearchResults.model";
+import {ASIProductService, SearchFilters} from "../shared/asiproduct/ASIProduct.service";
+import {ASIPrice, ASIProduct} from "../shared/asiproduct/ASIProduct.model";
+import {ASISearchResults} from "../shared/asiproduct/ASISearchResults.model";
 import {BSModalContext} from "angular2-modal/plugins/bootstrap";
 import {CloseGuard, DialogRef, Modal, ModalComponent, Overlay, overlayConfigFactory} from "angular2-modal";
-import {ProductModalComponent} from "./productOverlay.component";
+import {ASIProductModalComponent} from "./asiproductOverlay.component";
 import {Subscription} from "rxjs";
 import {ASIQuote} from "../shared/quote/quote.model";
 
-export class ProductSearchModalContext extends BSModalContext {
+export class ASIProductSearchModalContext extends BSModalContext {
   public productId: number;
   public quantity: number;
   public quote: ASIQuote;
@@ -17,10 +17,10 @@ export class ProductSearchModalContext extends BSModalContext {
 @Component({
   moduleId: module.id,
   selector: 'sd-rep',
-  templateUrl: 'product.component.html'
+  templateUrl: 'asiproduct.component.html'
 })
-export class ProductComponent implements CloseGuard, ModalComponent<ProductSearchModalContext> {
-  context: ProductSearchModalContext;
+export class ASIProductComponent implements CloseGuard, ModalComponent<ASIProductSearchModalContext> {
+  context: ASIProductSearchModalContext;
 
   productId: number;
   quantity: number;
@@ -40,7 +40,7 @@ export class ProductComponent implements CloseGuard, ModalComponent<ProductSearc
   errorMessage: string;
 
 
-  constructor(public dialog: DialogRef<ProductSearchModalContext>, public asiProductService: ASIProductService, overlay: Overlay, vcRef: ViewContainerRef, public modal: Modal) {
+  constructor(public dialog: DialogRef<ASIProductSearchModalContext>, public asiProductService: ASIProductService, overlay: Overlay, vcRef: ViewContainerRef, public modal: Modal) {
     overlay.defaultViewContainer = vcRef;
     this.context = dialog.context;
     this.context.dialogClass = 'modal-dialog modal-lg';
@@ -51,7 +51,7 @@ export class ProductComponent implements CloseGuard, ModalComponent<ProductSearc
   }
 
   openProductModal(productId: number) {
-    return this.modal.open(ProductModalComponent,  overlayConfigFactory(
+    return this.modal.open(ASIProductModalComponent,  overlayConfigFactory(
       {
         productId : productId,
         quote: this.context.quote,

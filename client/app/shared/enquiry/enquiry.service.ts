@@ -19,7 +19,7 @@ export class EnquiryService {
 
   /**
    * Returns an Observable for the HTTP GET request for the JSON resource.
-   * @return {Product[]} The Observable for the HTTP request.
+   * @return {PensWarehouseProduct[]} The Observable for the HTTP request.
    */
 getNew(queryParams): Observable<Enquiry[]> {
     return this.http.get('http://localhost:9000/enquiries', {'params' : queryParams})

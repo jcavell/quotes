@@ -12,3 +12,7 @@ input.markup {
   width: 30px;
   padding-left: 4px;
 }
+
+.rep:first-letter {
+  text-transform:capitalize;
+}

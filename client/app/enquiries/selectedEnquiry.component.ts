@@ -8,8 +8,8 @@ import {SelectedEnquiryService} from "../shared/enquiry/selectedEnquiry.service"
 import {EnquiryService} from "../shared/enquiry/enquiry.service";
 import {ASIQuote} from "../shared/quote/quote.model";
 import {isNullOrUndefined} from "util";
-import {ASIProductService} from "../shared/product/ASIProduct.service";
-import {ProductComponent} from "../product/product.component";
+import {ASIProductService} from "../shared/asiproduct/ASIProduct.service";
+import {ASIProductComponent} from "../asiproduct/asiproduct.component";
 import {XsellService} from "../shared/xsell/xsell.service";
 
 /**
@@ -36,7 +36,7 @@ export class SelectedEnquiryComponent implements OnInit, OnDestroy {
   }
 
   openSearchModal() {
-    return this.modal.open(ProductComponent, overlayConfigFactory({
+    return this.modal.open(ASIProductComponent, overlayConfigFactory({
       productId: this.enquiry.internalProductId,
       quantity: this.enquiry.quantity,
       quote: this.quote
@@ -72,6 +72,26 @@ export class SelectedEnquiryComponent implements OnInit, OnDestroy {
 
   setSelectedEnquiry(enquiry: Enquiry): boolean {
     this.enquiry = enquiry;
+
+    // this.xsellservice.getXsells().subscribe(
+    //   data => {
+    //     const productIds: number[] = data.map(d => d.productId);
+    //     productIds.unshift(enquiry.quote.requestProductId);
+    //     const productObservables: Observable<ASIProduct >[] = productIds.map(pid => this.asiProductService.getProduct(pid));
+    //
+    //     Observable.forkJoin(productObservables).subscribe(
+    //       products => {
+    //         const quoteProducts = products.map(product =>
+    //           new ASIQuoteProduct(product.Id, product.Name, this.enquiry.quote.requestQuantity, product.ImageUrl, product.Prices, enquiry.quote.requestQuantity));
+    //         this.quote = new ASIQuote(undefined, this.enquiry.quote.id, new Date(), QuoteStatus.New, quoteProducts);
+    //         console.log(`AIP Product: ${JSON.stringify(enquiry.quote.requestProductId)}`);
+    //       },
+    //       error => this.errorMessage = <any>error
+    //     );
+    //   },
+    //   error => console.log(error)
+    // );
+
     return false;
   }
 }

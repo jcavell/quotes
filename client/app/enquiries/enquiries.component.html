@@ -25,10 +25,10 @@
           <td>{{enquiry.company}}</td>
           <td>{{enquiry.quantity}}</td>
           <td>{{enquiry.dateRequired | date: 'EE dd/MM/yyyy'}}</td>
-          <td>{{enquiry.repEmail}}</td>
+          <td class = "rep">{{enquiry.repEmail.split('@')[0]}}</td>
           <td>
             <button type="button" class="btn btn-sm btn-warning"
-                    (click)="displaySelectedEnquiry($event, enquiry)"><i class="fa fa-pencil"></i> Quote
+                    (click)="displaySelectedEnquiry($event, enquiry)"><i class="fa fa-binoculars"></i> View
             </button>
           </td>
         </ng-container>

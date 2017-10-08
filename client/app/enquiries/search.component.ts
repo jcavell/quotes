@@ -2,8 +2,8 @@ import {Component} from "@angular/core";
 
 import {CloseGuard, DialogRef, ModalComponent} from "angular2-modal";
 import {BSModalContext} from "angular2-modal/plugins/bootstrap";
-import {Product} from "../shared/product/product.model";
-import {ProductService} from "../shared/product/product.service";
+import {PensWarehouseProduct} from "../shared/asiproduct/penswarehouseproduct.model";
+import {PensWarehouseProductService} from "../shared/asiproduct/penswarehouseproduct.service";
 import {Enquiry} from "../shared/enquiry/enquiry.model";
 import {Quote, QuoteProduct} from "../shared/quote/quote.model";
 
@@ -12,9 +12,7 @@ export class SearchModalContext extends BSModalContext {
   public quote: Quote;
 }
 
-/**
- * A Sample of how simple it is to create a new window, with its own injects.
- */
+
 @Component({
   selector: 'search-modal',
   templateUrl: 'search.component.html'
@@ -22,7 +20,7 @@ export class SearchModalContext extends BSModalContext {
 export class SearchModalComponent implements CloseGuard, ModalComponent<SearchModalContext> {
   context: SearchModalContext;
 
-  products: Product[];
+  products: PensWarehouseProduct[];
   errorMessage: string;
   quantity = 500;
   numColours = '';
@@ -34,12 +32,12 @@ export class SearchModalComponent implements CloseGuard, ModalComponent<SearchMo
   inkColours: string[] = ['', 'Blue', 'Black', 'Green', 'Red'];
   colours: string[] = ['', 'Blue', 'Black', 'Green', 'Red'];
 
-  constructor(public dialog: DialogRef<SearchModalContext>, public productService: ProductService) {
+  constructor(public dialog: DialogRef<SearchModalContext>, public productService: PensWarehouseProductService) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
   }
 
-  doFilter(product: Product) {
+  doFilter(product: PensWarehouseProduct) {
     let passesFilter: boolean = this.quantity >= product.minimum_order_quantity;
     if (passesFilter && this.numColours !== '') {
       passesFilter = product.branding_method === this.numColours + 'COL';
@@ -71,7 +69,7 @@ export class SearchModalComponent implements CloseGuard, ModalComponent<SearchMo
     }
   }
 
-  setStockLevel(product: Product) {
+  setStockLevel(product: PensWarehouseProduct) {
     this.productService.getStock(product.sage_sku)
       .subscribe(
         stock => {
@@ -115,7 +113,7 @@ export class SearchModalComponent implements CloseGuard, ModalComponent<SearchMo
     this.dialog.dismiss();
   }
 
-  add(product: Product) {
+  add(product: PensWarehouseProduct) {
     const quoteProduct = new QuoteProduct(product.id, product.name, product.sku, product.sage_sku,
       this.quantity, product.origination_price, product.prices, 0, 0, product.image_url);
     this.context.quote.quote_products.push(quoteProduct);

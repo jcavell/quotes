@@ -2,7 +2,7 @@ import {NgModule} from "@angular/core";
 import {BrowserModule} from "@angular/platform-browser";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
-import {ProductService} from "./product/product.service";
+import {PensWarehouseProductService} from "./asiproduct/penswarehouseproduct.service";
 import {QuoteService} from "./quote/quote.service";
 
 import {ToastComponent} from "./toast/toast.component";
@@ -24,6 +24,6 @@ import {ToastComponent} from "./toast/toast.component";
        ToastComponent
    ],
    declarations: [ToastComponent],
-   providers: [ToastComponent, ProductService, QuoteService],
+   providers: [ToastComponent, PensWarehouseProductService, QuoteService],
 })
 export class SharedModule { }

@@ -1,4 +1,4 @@
-import {ASIPrice} from "../product/ASIProduct.model";
+import {ASIPrice} from "../asiproduct/ASIProduct.model";
 export enum QuoteStatus {
   New = 0,
   Quoted = 1,

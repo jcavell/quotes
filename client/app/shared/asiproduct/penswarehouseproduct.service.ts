@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Http, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
-import {Product, Stock} from "./product.model";
+import {PensWarehouseProduct, PensWarehouseStock} from "./penswarehouseproduct.model";
 // import 'rxjs/add/operator/do';  // for debugging
 
 
@@ -17,7 +17,7 @@ export class ProductFilters {
  * This class provides the Product service with methods to read names and add names.
  */
 @Injectable()
-export class ProductService {
+export class PensWarehouseProductService {
 
   /**
    * Creates a new ProductService with the injected Http.
@@ -29,42 +29,42 @@ export class ProductService {
 
   /**
    * Returns an Observable for the HTTP GET request for the JSON resource.
-   * @return {Product[]} The Observable for the HTTP request.
+   * @return {PensWarehouseProduct[]} The Observable for the HTTP request.
    */
-  private get(url: string, filters: ProductFilters): Observable<Product[]> {
+  private get(url: string, filters: ProductFilters): Observable<PensWarehouseProduct[]> {
     return this.http.get(url, {params: filters})
       .map((res: Response) => res.json())
       //              .do(data => console.log('server data:', data))  // debug
       .catch(this.handleError);
   }
 
-  getFromPenWarehouse(): Observable<Product[]> {
+  getFromPenWarehouse(): Observable<PensWarehouseProduct[]> {
     return this.get('http://localhost:3001/products', new ProductFilters());
   }
 
-  getFromPenWarehouseMongo(filters: ProductFilters): Observable<Product[]> {
+  getFromPenWarehouseMongo(filters: ProductFilters): Observable<PensWarehouseProduct[]> {
     return this.get('http://localhost:3000/api/penwarehouseproducts', filters);
   }
 
-  getSingleFromPenWarehouseMongo(sku: string): Observable<Product> {
+  getSingleFromPenWarehouseMongo(sku: string): Observable<PensWarehouseProduct> {
     return this.http.get(`http://localhost:3000/api/penwarehouseproducts/${sku}`)
       .map((res: Response) => res.json())
       .catch(this.handleError);
   }
 
-  getFromCrossSell(): Observable<Product[]> {
+  getFromCrossSell(): Observable<PensWarehouseProduct[]> {
     return this.get('http://localhost:3001/cross-sell', new ProductFilters());
   }
 
 
-  getStock(sageSku: string): Observable<Stock> {
+  getStock(sageSku: string): Observable<PensWarehouseStock> {
     return this.http.get(`http://localhost:3001/stock-level-by-sage-sku/${sageSku}`)
       .map((res: Response) => res.json())
       .catch(this.handleError);
   }
 
 
-  getMultiple(sku: string): Observable<Product[]> {
+  getMultiple(sku: string): Observable<PensWarehouseProduct[]> {
     const combined = this.getAlternatives(sku).combineLatest(this.getSingleFromPenWarehouseMongo(sku),
       (alternatives, requestedProduct) => {
         // console.log(`requested product: ${JSON.stringify(requestedProduct)}`);
@@ -74,13 +74,13 @@ export class ProductService {
     return combined;
   }
 
-  getAlternatives(sku: string): Observable<Product[]> {
+  getAlternatives(sku: string): Observable<PensWarehouseProduct[]> {
     const combined = this.getFromPenWarehouseMongo(new ProductFilters()).combineLatest(this.getFromCrossSell(),
       (penWarehouseProds, crossSellProds) => {
         // console.log('cross sell products: ' + JSON.stringify(crossSellProds));
-        let quoteProducts: Product[] = [];
+        let quoteProducts: PensWarehouseProduct[] = [];
 
-        const similarProds: Product[] = penWarehouseProds.filter(product => product.sku !== sku);
+        const similarProds: PensWarehouseProduct[] = penWarehouseProds.filter(product => product.sku !== sku);
 
         if (similarProds.length > 0) {
           // console.log('Getting cheapest product')

@@ -27,8 +27,7 @@ export class CustomerComponent implements OnInit {
 
   addCustomerForm: FormGroup;
 
-  firstName = new FormControl('', Validators.minLength(2));
-  lastName = new FormControl('', Validators.minLength(2));
+  name = new FormControl('', Validators.minLength(2));
   salutation = new FormControl('');
   email = new FormControl('', Validators.minLength(6));
   directPhone = new FormControl('');
@@ -58,8 +57,7 @@ export class CustomerComponent implements OnInit {
 
 
     this.addCustomerForm = this.formBuilder.group({
-      firstName: this.firstName,
-      lastName: this.lastName,
+      name: this.name,
       salutation: this.salutation,
       email: this.email,
       directPhone: this.directPhone,
@@ -109,8 +107,7 @@ export class CustomerComponent implements OnInit {
   addCustomer() {
     const customer = new Customer(
       0,
-      this.addCustomerForm.value.firstName,
-      this.addCustomerForm.value.lastName,
+      this.addCustomerForm.value.name,
       this.addCustomerForm.value.salutation,
       this.addCustomerForm.value.email,
       this.addCustomerForm.value.directPhone,

@@ -10,7 +10,7 @@ var core_1 = require("@angular/core");
 var product_component_1 = require("./product.component");
 var product_routing_module_1 = require("./product-routing.module");
 var shared_module_1 = require("../shared/shared.module");
-var product_service_1 = require("../shared/product/product.service");
+var product_service_1 = require("./penswarehouseproduct.service.ts");
 var ProductModule = (function () {
     function ProductModule() {
     }

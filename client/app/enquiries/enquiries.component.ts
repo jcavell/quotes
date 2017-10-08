@@ -48,7 +48,7 @@ export class EnquiriesComponent implements OnInit, OnDestroy {
   }
 
   /*
-   Quote button clicked - inform listeners and set edit mode
+   View enquiry button clicked - inform listeners and set edit mode
    */
   displaySelectedEnquiry(event: Event, enquiry: Enquiry) {
     console.log('Changing selected enquiry');

@@ -5,8 +5,8 @@ import {Enquiry} from "./enquiry.model";
 @Injectable()
 export class SelectedEnquiryService {
 
-  _selectedEnquiriesource = new BehaviorSubject<Enquiry>(null);
-  selectedEnquiry$ = this._selectedEnquiriesource.asObservable();
+  _selectedEnquirySource = new BehaviorSubject<Enquiry>(null);
+  selectedEnquiry$ = this._selectedEnquirySource.asObservable();
 
   _isEditingSource = new BehaviorSubject<boolean>(false);
   isEditing$ = this._isEditingSource.asObservable();
@@ -16,7 +16,7 @@ export class SelectedEnquiryService {
   }
 
   changeEnquiry(enquiry: Enquiry) {
-    this._selectedEnquiriesource.next(enquiry);
+    this._selectedEnquirySource.next(enquiry);
   }
 }
 

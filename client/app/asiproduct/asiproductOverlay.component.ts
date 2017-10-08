@@ -2,11 +2,11 @@ import {Component} from "@angular/core";
 
 import {CloseGuard, DialogRef, ModalComponent} from "angular2-modal";
 import {BSModalContext} from "angular2-modal/plugins/bootstrap";
-import {ASIProductService} from "../shared/product/ASIProduct.service";
-import {ASIProduct} from "../shared/product/ASIProduct.model";
+import {ASIProductService} from "../shared/asiproduct/ASIProduct.service";
+import {ASIProduct} from "../shared/asiproduct/ASIProduct.model";
 import {ASIQuote, ASIQuoteProduct} from "../shared/quote/quote.model";
 
-export class ProductModalContext extends BSModalContext {
+export class ASIProductModalContext extends BSModalContext {
   public productId: number;
   public quantity: number;
   public quote: ASIQuote;
@@ -14,14 +14,14 @@ export class ProductModalContext extends BSModalContext {
 
 @Component({
   selector: 'search-modal',
-  templateUrl: 'productOverlay.component.html'
+  templateUrl: 'asiproductOverlay.component.html'
 })
-export class ProductModalComponent implements CloseGuard, ModalComponent<ProductModalContext> {
-  context: ProductModalContext;
+export class ASIProductModalComponent implements CloseGuard, ModalComponent<ASIProductModalContext> {
+  context: ASIProductModalContext;
   product: ASIProduct;
   errorMessage: string;
 
-  constructor(public dialog: DialogRef<ProductModalContext>, public asiProductService: ASIProductService) {
+  constructor(public dialog: DialogRef<ASIProductModalContext>, public asiProductService: ASIProductService) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
     this.getProduct();

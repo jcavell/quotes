@@ -13,14 +13,13 @@
     <table class="table table-bordered table-striped">
       <thead class="thead-default">
         <tr>
-          <th>First Name</th>
-          <th>Last Name</th>
+          <th>Name</th>
           <th>Salutation</th>
           <th>Email</th>
           <th>Direct phone</th>
           <th>Mobile phone</th>
           <th>Company</th>
-          <th>Handler</th>
+          <th>Rep</th>
           <th>Source</th>
           <th>Position</th>
           <th>Is main contact</th>
@@ -40,14 +39,13 @@
       </tbody>
       <tbody *ngIf="!isEditing">
         <tr *ngFor="let cust of customers">
-          <td>{{cust.customer.firstName}}</td>
-          <td>{{cust.customer.lastName}}</td>
+          <td>{{cust.customer.name}}</td>
           <td>{{cust.customer.salutation}}</td>
           <td>{{cust.customer.email}}</td>
           <td>{{cust.customer.directPhone}}</td>
           <td>{{cust.customer.mobilePhone}}</td>
           <td>{{cust.company.name}}</td>
-          <td>{{cust.handler.name}}</td>
+          <td>{{cust.rep.name}}</td>
           <td>{{cust.customer.source}}</td>
           <td>{{cust.customer.position}}</td>
           <td>{{cust.customer.isMainContact}}</td>
@@ -66,10 +64,7 @@
           <td colspan="17">
             <form class="form-inline" #form="ngForm" (ngSubmit)="editCustomer(cust)" style="display:inline">
               <div class="form-group">
-                  <input class="form-control" type="text" name="firstName" [(ngModel)]="customer.customer.firstName" placeholder="lastName" required>
-              </div>
-              <div class="form-group">
-                <input class="form-control" type="text" name="lastName" [(ngModel)]="customer.customer.lastName" placeholder="lastName" required>
+                <input class="form-control" type="text" name="name" [(ngModel)]="customer.customer.name" placeholder="name" required>
               </div>
               <div class="form-group">
                 <input class="form-control" type="text" name="salutation" [(ngModel)]="customer.customer.salutation" placeholder="salutation">
@@ -129,10 +124,7 @@
   <div class="card-block">
     <form class="form-inline" [formGroup]="addCustomerForm" (ngSubmit)="addCustomer()" style="text-align:center">
       <div class="form-group">
-          <input class="form-control" type="text" name="firstName" formControlName="firstName" placeholder="firstName">
-      </div>
-      <div class="form-group">
-        <input class="form-control" type="text" name="lastName" formControlName="lastName" placeholder="lastName">
+          <input class="form-control" type="text" name="name" formControlName="name" placeholder="name">
       </div>
       <div class="form-group">
         <input class="form-control" type="text" name="salutation" formControlName="salutation" placeholder="salutation">
