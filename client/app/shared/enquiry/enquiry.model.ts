@@ -1,13 +1,25 @@
 export class Enquiry {
   constructor(public id: number,
-              public product_id: number,
-              public customer_name: string,
-              public customer_directPhoneephone: string,
-              public customer_email: string,
+              public enquiryId:  number,
+              public enquiryTimestamp: string,
+              public internalProductId:  number,
+              public productId: string,
+              public productName: string,
+              public brand: string,
+              public colour: string,
+              public customerName: string,
+              public customerTelephone: string,
+              public customerEmail: string,
               public company: string,
-              public date_required: string,
-              public quantity: number,
-              public other_requirements: string) {
+              public dateRequired: string,
+              public quantity:  number,
+              public repId:  number,
+              public repEmail: String,
+              public source: string,
+              public subject: string,
+              public xsellProductIds: number[],
+              public otherRequirements: string,
+              public imported: Boolean = false) {
 
   }
 }

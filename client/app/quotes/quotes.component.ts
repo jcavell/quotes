@@ -3,7 +3,7 @@ import {Http} from "@angular/http";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 
 import {ToastComponent} from "../shared/toast/toast.component";
-import {Enquirieservice} from "../shared/enquiry/enquiry.service";
+import {EnquiryService} from "../shared/enquiry/enquiry.service";
 import {QuoteService} from "../shared/quote/quote.service";
 import {Observable, Subscription} from "rxjs";
 import {Quote, QuoteStatus} from "../shared/quote/quote.model";
@@ -53,7 +53,7 @@ export class QuotesComponent implements OnInit {
   constructor(private http: Http,
               private auth: Auth,
               private quoteService: QuoteService,
-              private enquirieservice: Enquirieservice,
+              private enquiryService: EnquiryService,
               private selectedQuoteService: SelectedQuoteService,
               public toast: ToastComponent,
               private formBuilder: FormBuilder) { }
@@ -79,9 +79,9 @@ export class QuotesComponent implements OnInit {
 
 
   combineQuotesAndEnquiries(): Observable<[[Enquiry, Quote]]> {
-    const combined = this.quoteService.getQuotes().combineLatest(this.enquirieservice.getNew({}),
+    const combined = this.quoteService.getQuotes().combineLatest(this.enquiryService.getNew({}),
       (quotes, enquiries) => {
-            return quotes.map(quote => [enquiries.quotes.find(qr => qr.quote.id == quote.quote_request_id), quote]);
+            return quotes.map(quote => [enquiries.find(qr => qr.id === quote.quote_request_id), quote]);
       });
     return combined;
   }

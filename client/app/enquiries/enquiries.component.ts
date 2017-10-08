@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
-import {Enquirieservice} from "../shared/enquiry/enquiry.service";
-import {NQuoteWithProducts} from "../shared/enquiry/enquiry.model";
+import {EnquiryService} from "../shared/enquiry/enquiry.service";
+import {Enquiry} from "../shared/enquiry/enquiry.model";
 import {SelectedEnquiryService} from "../shared/enquiry/selectedEnquiry.service";
 import {Subscription} from "rxjs";
 import {ActivatedRoute, Params} from "@angular/router";
@@ -13,14 +13,14 @@ import {ActivatedRoute, Params} from "@angular/router";
 })
 
 export class EnquiriesComponent implements OnInit, OnDestroy {
-  enquiries: NQuoteWithProducts[];
-  selectedEnquiry: NQuoteWithProducts;
+  enquiries: Enquiry[];
+  selectedEnquiry: Enquiry;
   errorMessage: string;
   isEditing = false;
   subscription: Subscription;
-  queryParams: {}
+  queryParams: {};
 
-  constructor(private activatedRoute: ActivatedRoute, public enquirieservice: Enquirieservice, public selectedEnquirieservice: SelectedEnquiryService) {
+  constructor(private activatedRoute: ActivatedRoute, public enquiryService: EnquiryService, public selectedEnquiryService: SelectedEnquiryService) {
   }
 
   ngOnInit() {
@@ -28,11 +28,11 @@ export class EnquiriesComponent implements OnInit, OnDestroy {
       this.queryParams = queryParams;
     });
 
-    this.subscription = this.selectedEnquirieservice.isEditing$.subscribe(isEditing => {
+    this.subscription = this.selectedEnquiryService.isEditing$.subscribe(isEditing => {
       this.isEditing = isEditing;
     });
 
-    this.selectedEnquirieservice.selectedEnquiry$.subscribe(enquiry => {
+    this.selectedEnquiryService.selectedEnquiry$.subscribe(enquiry => {
       console.log(`ngOnInit: Setting selected enquiry to ${JSON.stringify(enquiry)}`);
       this.selectedEnquiry = enquiry;
     });
@@ -41,29 +41,29 @@ export class EnquiriesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.selectedEnquirieservice.setEditing(false);
+    this.selectedEnquiryService.setEditing(false);
     this.subscription.unsubscribe();
     this.selectedEnquiry = undefined;
-    this.selectedEnquirieservice.changeEnquiry(undefined);
+    this.selectedEnquiryService.changeEnquiry(undefined);
   }
 
   /*
    Quote button clicked - inform listeners and set edit mode
    */
-  displaySelectedEnquiry(event: Event, enquiry: NQuoteWithProducts) {
+  displaySelectedEnquiry(event: Event, enquiry: Enquiry) {
     console.log('Changing selected enquiry');
-    this.selectedEnquirieservice.changeEnquiry(enquiry);
-    this.selectedEnquirieservice.setEditing(true);
+    this.selectedEnquiryService.changeEnquiry(enquiry);
+    this.selectedEnquiryService.setEditing(true);
   }
 
   /*
    Called from ngOnInit, get all new enquiries
    */
   getEnquiries(): boolean {
-    this.enquirieservice.getNew(this.queryParams)
+    this.enquiryService.getNew(this.queryParams)
       .subscribe(
-        nquotes => {
-          this.enquiries = nquotes.quotes;
+        enquiries => {
+          this.enquiries = enquiries;
         },
         error => this.errorMessage = <any>error
       );

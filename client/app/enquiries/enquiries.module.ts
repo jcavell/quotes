@@ -1,6 +1,6 @@
 import {NgModule} from "@angular/core";
 import {SharedModule} from "../shared/shared.module";
-import {Enquirieservice} from "../shared/enquiry/enquiry.service";
+import {EnquiryService} from "../shared/enquiry/enquiry.service";
 import {EnquiriesComponent} from "./enquiries.component";
 import {EnquiriesRoutingModule} from "./enquiries-routing.module";
 import {SelectedEnquiryComponent} from "./selectedEnquiry.component";
@@ -20,7 +20,7 @@ import {SearchModalComponent} from "./search.component";
   ],
   declarations: [EnquiriesComponent, SelectedEnquiryComponent, SearchModalComponent],
   exports: [EnquiriesComponent, SelectedEnquiryComponent],
-  providers: [Enquirieservice, SelectedEnquiryService],
+  providers: [EnquiryService, SelectedEnquiryService],
   entryComponents: [ SearchModalComponent ]
 })
 export class EnquiriesModule { }

@@ -1,14 +1,14 @@
 import {Injectable} from "@angular/core";
 import {Http, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
-import {NQuotes} from "./enquiry.model";
+import {Enquiry} from "./enquiry.model";
 // import 'rxjs/add/operator/do';  // for debugging
 
 /**
  * This class provides the Product service with methods to read names and add names.
  */
 @Injectable()
-export class Enquirieservice {
+export class EnquiryService {
 
   /**
    * Creates a new Enquirieservice with the injected Http.
@@ -21,8 +21,8 @@ export class Enquirieservice {
    * Returns an Observable for the HTTP GET request for the JSON resource.
    * @return {Product[]} The Observable for the HTTP request.
    */
-getNew(queryParams): Observable<NQuotes> {
-    return this.http.get('http://localhost:9000/quotes', {'params' : queryParams})
+getNew(queryParams): Observable<Enquiry[]> {
+    return this.http.get('http://localhost:9000/enquiries', {'params' : queryParams})
                     .map((res: Response) => res.json())
     //              .do(data => console.log('server data:', data))  // debug
                     .catch(this.handleError);

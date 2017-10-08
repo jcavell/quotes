@@ -1,11 +1,11 @@
 import {Injectable} from "@angular/core";
 import {BehaviorSubject} from "rxjs/Rx";
-import {NQuoteWithProducts} from "./enquiry.model";
+import {Enquiry} from "./enquiry.model";
 
 @Injectable()
 export class SelectedEnquiryService {
 
-  _selectedEnquiriesource = new BehaviorSubject<NQuoteWithProducts>(null);
+  _selectedEnquiriesource = new BehaviorSubject<Enquiry>(null);
   selectedEnquiry$ = this._selectedEnquiriesource.asObservable();
 
   _isEditingSource = new BehaviorSubject<boolean>(false);
@@ -15,7 +15,7 @@ export class SelectedEnquiryService {
     this._isEditingSource.next(isEditing);
   }
 
-  changeEnquiry(enquiry: NQuoteWithProducts) {
+  changeEnquiry(enquiry: Enquiry) {
     this._selectedEnquiriesource.next(enquiry);
   }
 }

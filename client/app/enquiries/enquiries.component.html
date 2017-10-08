@@ -4,30 +4,28 @@
     <table class="table table-responsive table-striped table-hover">
       <thead class="thead-default">
       <tr>
-        <th>Customer first name</th>
-        <th>Customer last name</th>
-        <th>Customer mobile phone</th>
-        <th>Customer email</th>
+        <th>Enquiry ID</th>
+        <th>Enquiry date</th>
+        <th>Product</th>
+        <th>Customer</th>
         <th>Company</th>
-        <th>Product ID</th>
         <th>Quantity</th>
-        <th>Date required</th>
-        <th>Other requirements</th>
+        <th>Required</th>
+        <th>Rep</th>
         <th>Action</th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let enquiry of enquiries">
         <ng-container *ngIf="!isEditing || selectedEnquiry == enquiry">
-          <td>{{enquiry.customer.firstName}}</td>
-          <td>{{enquiry.customer.lastName}}</td>
-          <td>{{enquiry.customer.mobilePhone}}</td>
-          <td>{{enquiry.customer.email}}</td>
-          <td>{{enquiry.company.name}}</td>
-          <td>{{enquiry.quote.requestProductId}}</td>
-          <td>{{enquiry.quote.requestQuantity}}</td>
-          <td>{{enquiry.quote.requestDateRequired | date: 'EE dd/MM/yyyy'}}</td>
-          <td>{{enquiry.quote.requestOtherRequirements}}</td>
+          <td>{{enquiry.enquiryId}}</td>
+          <td>{{enquiry.enquiryTimestamp | date: 'EE dd/MM/yyyy'}}</td>
+          <td>{{enquiry.productName}}</td>
+          <td>{{enquiry.customerName}}</td>
+          <td>{{enquiry.company}}</td>
+          <td>{{enquiry.quantity}}</td>
+          <td>{{enquiry.dateRequired | date: 'EE dd/MM/yyyy'}}</td>
+          <td>{{enquiry.repEmail}}</td>
           <td>
             <button type="button" class="btn btn-sm btn-warning"
                     (click)="displaySelectedEnquiry($event, enquiry)"><i class="fa fa-pencil"></i> Quote
