@@ -66,6 +66,7 @@ export class SelectedEnquiryComponent implements OnInit, OnDestroy {
     this.selectedEnquiryService.setEditing(false);
   }
 
+
   // remove(product: ASIQuoteProduct) {
   //   this.quote.quote_products.splice(this.quote.quote_products.indexOf(product), 1);
   // }

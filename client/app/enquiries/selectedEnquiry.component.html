@@ -1,7 +1,8 @@
-<div *ngIf="quote" class="card">
+<div *ngIf="enquiry" class="card">
   <h4 class="card-header">Create quote</h4>
 
   <div class="card-block">
+
     <table class="table table-responsive table-striped table-hover">
       <thead>
       <tr>
@@ -10,35 +11,24 @@
       </thead>
       <thead class="thead-default">
       <tr>
-        <th>Image</th>
-        <th>Product name</th>
-        <th>Quantity</th>
-        <th>Markup</th>
-        <th>Unit price</th>
-        <th>Total price</th>
+        <th>Product ID</th>
         <th>Action</th>
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let product of quote.quote_products">
-        <td><img width = "60" src = "https://api.asicentral.com/v1/{{product.image_url}}"/></td>
-        <td style="width:40%">{{product.name}}</td>
-        <td style="width:20%"><input class="quantity" [(ngModel)]="product.quantity" name="quantity"></td>
-        <td style="width:15%"><input class="markup" [(ngModel)]="product.markup" name="markup"> %</td>
-        <td>${{product.getMarkedUpUnitCost() | number}}</td>
-        <td>${{product.getMarkedUpTotalCost() | number}}</td>
+
+      <tr>
+        <td>{{enquiry.internalProductId}}</td>
+        <td></td>
+      </tr>
+
+      <tr *ngFor="let productId of enquiry.xsellProductIds">
+        <td>{{productId}}</td>
         <td style="width:15%"><button type = "button" class="btn btn-sm btn-danger" (click)="remove(product)"><i class="fa fa-times"></i> Remove</button></td>
       </tr>
-      <td colspan="5">
-        <ng-container *ngIf="quote.quote_status === 0">
-        <download-quote [quote]="quote" [enquiry]="enquiry"></download-quote>
-        <button type = "button" class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button>
-        </ng-container>
-        <ng-container *ngIf="quote.quote_status != 0">
-          <button type = "button" class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Close</button>
-        </ng-container>
-      </td>
       </tbody>
     </table>
+
+          <button type = "button" class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Close</button>
   </div>
 </div>

@@ -4,7 +4,7 @@ import {Enquiry} from "../shared/enquiry/enquiry.model";
 import {Quote, QuoteProduct, QuoteStatus} from "../shared/quote/quote.model";
 import {SelectedQuoteService} from "../shared/quote/selectedQuote.service";
 import {Modal, Overlay, overlayConfigFactory} from "angular2-modal";
-import {SearchModalComponent} from "../enquiries/search.component";
+import {ASISearchModalComponent} from "../enquiries/asisearch.component";
 import {BSModalContext} from "angular2-modal/plugins/bootstrap";
 
 @Component({
@@ -25,7 +25,7 @@ export class OrderAcknowledgementComponent implements OnInit, OnDestroy {
   }
 
   openSearchModal() {
-    return this.modal.open(SearchModalComponent,  overlayConfigFactory({ enquiry: this.enquiry, quote: this.quote }, BSModalContext));
+    return this.modal.open(ASISearchModalComponent,  overlayConfigFactory({ enquiry: this.enquiry, quote: this.quote }, BSModalContext));
   }
 
   remove(product: QuoteProduct) {

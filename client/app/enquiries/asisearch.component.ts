@@ -7,7 +7,7 @@ import {PensWarehouseProductService} from "../shared/asiproduct/penswarehousepro
 import {Enquiry} from "../shared/enquiry/enquiry.model";
 import {Quote, QuoteProduct} from "../shared/quote/quote.model";
 
-export class SearchModalContext extends BSModalContext {
+export class ASISearchModalContext extends BSModalContext {
   public enquiry: Enquiry;
   public quote: Quote;
 }
@@ -15,10 +15,10 @@ export class SearchModalContext extends BSModalContext {
 
 @Component({
   selector: 'search-modal',
-  templateUrl: 'search.component.html'
+  templateUrl: 'asisearch.component.html'
 })
-export class SearchModalComponent implements CloseGuard, ModalComponent<SearchModalContext> {
-  context: SearchModalContext;
+export class ASISearchModalComponent implements CloseGuard, ModalComponent<ASISearchModalContext> {
+  context: ASISearchModalContext;
 
   products: PensWarehouseProduct[];
   errorMessage: string;
@@ -32,7 +32,7 @@ export class SearchModalComponent implements CloseGuard, ModalComponent<SearchMo
   inkColours: string[] = ['', 'Blue', 'Black', 'Green', 'Red'];
   colours: string[] = ['', 'Blue', 'Black', 'Green', 'Red'];
 
-  constructor(public dialog: DialogRef<SearchModalContext>, public productService: PensWarehouseProductService) {
+  constructor(public dialog: DialogRef<ASISearchModalContext>, public productService: PensWarehouseProductService) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
   }

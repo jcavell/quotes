@@ -7,21 +7,34 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var product_component_1 = require("./product.component");
-var product_routing_module_1 = require("./product-routing.module");
 var shared_module_1 = require("../shared/shared.module");
-var product_service_1 = require("./penswarehouseproduct.service.ts");
-var ProductModule = (function () {
-    function ProductModule() {
+var enquiry_service_1 = require("../shared/enquiry/enquiry.service");
+var enquiries_component_1 = require("./enquiries.component");
+var enquiries_routing_module_1 = require("./enquiries-routing.module");
+var selectedEnquiry_component_1 = require("./selectedEnquiry.component");
+var selectedEnquiry_service_1 = require("../shared/enquiry/selectedEnquiry.service");
+var quoteDocument_module_1 = require("../quote-document/quoteDocument.module");
+var angular2_modal_1 = require("angular2-modal");
+var bootstrap_1 = require("angular2-modal/plugins/bootstrap");
+var asisearch_component_1 = require("./asisearch.component");
+var EnquiriesModule = (function () {
+    function EnquiriesModule() {
     }
-    return ProductModule;
+    return EnquiriesModule;
 }());
-ProductModule = __decorate([
+EnquiriesModule = __decorate([
     core_1.NgModule({
-        imports: [product_routing_module_1.ProductRoutingModule, shared_module_1.SharedModule],
-        declarations: [product_component_1.ProductComponent],
-        exports: [product_component_1.ProductComponent],
-        providers: [product_service_1.ProductService]
+        imports: [
+            enquiries_routing_module_1.EnquiriesRoutingModule,
+            quoteDocument_module_1.QuoteDocumentModule,
+            shared_module_1.SharedModule,
+            angular2_modal_1.ModalModule.forRoot(),
+            bootstrap_1.BootstrapModalModule
+        ],
+        declarations: [enquiries_component_1.EnquiriesComponent, selectedEnquiry_component_1.SelectedEnquiryComponent, asisearch_component_1.ASISearchModalComponent],
+        exports: [enquiries_component_1.EnquiriesComponent, selectedEnquiry_component_1.SelectedEnquiryComponent],
+        providers: [enquiry_service_1.EnquiryService, selectedEnquiry_service_1.SelectedEnquiryService],
+        entryComponents: [asisearch_component_1.ASISearchModalComponent]
     })
-], ProductModule);
-exports.ProductModule = ProductModule;
+], EnquiriesModule);
+exports.EnquiriesModule = EnquiriesModule;

@@ -8,7 +8,7 @@ import {SelectedEnquiryService} from "../shared/enquiry/selectedEnquiry.service"
 import {QuoteDocumentModule} from "../quote-document/quoteDocument.module";
 import {ModalModule} from "angular2-modal";
 import {BootstrapModalModule} from "angular2-modal/plugins/bootstrap";
-import {SearchModalComponent} from "./search.component";
+import {ASISearchModalComponent} from "./asisearch.component";
 
 @NgModule({
   imports: [
@@ -18,9 +18,9 @@ import {SearchModalComponent} from "./search.component";
     ModalModule.forRoot(),
     BootstrapModalModule
   ],
-  declarations: [EnquiriesComponent, SelectedEnquiryComponent, SearchModalComponent],
+  declarations: [EnquiriesComponent, SelectedEnquiryComponent, ASISearchModalComponent],
   exports: [EnquiriesComponent, SelectedEnquiryComponent],
   providers: [EnquiryService, SelectedEnquiryService],
-  entryComponents: [ SearchModalComponent ]
+  entryComponents: [ ASISearchModalComponent ]
 })
 export class EnquiriesModule { }
