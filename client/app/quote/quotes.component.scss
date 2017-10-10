@@ -1,0 +1,35 @@
+.table td, .table th {
+   text-align: center;
+   width: 25%;
+}
+
+input.quantity {
+  padding-left: 4px;
+  width: 70px;
+}
+
+input.markup {
+  width: 30px;
+  padding-left: 4px;
+}
+
+.rep:first-letter {
+  text-transform:capitalize;
+}
+
+.grow {
+  padding: 5px 5px 5px 5px;
+  border-radius: 10px;
+  height: 39px;
+  width: 100%;
+  margin: 5px 1% 5px 1%;
+  float: left;
+  position: relative;
+  transition: height 0.5s;
+  -webkit-transition: height 0.5s;
+  text-align: center;
+  overflow: hidden;
+}
+.grow:hover {
+  height: auto;
+}

@@ -1,16 +1,16 @@
 import {NgModule} from "@angular/core";
 import {RouterModule} from "@angular/router";
-import {QuotesComponent} from "./quotes.component";
+import {OldQuotesComponent} from "./oldquotes.component";
 import {AuthForRepGuard} from "../shared/auth/authForRep.guard";
 
 @NgModule({
   imports: [
     RouterModule.forChild([
-      { path: 'quotes', component: QuotesComponent, canActivate: [AuthForRepGuard] }
+      { path: 'quotes', component: OldQuotesComponent, canActivate: [AuthForRepGuard] }
     ])
   ],
   exports: [RouterModule]
 })
 
-export class QuotesRoutingModule { }
+export class OldQuotesRoutingModule { }
 

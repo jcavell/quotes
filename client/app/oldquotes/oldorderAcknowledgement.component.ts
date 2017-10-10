@@ -10,11 +10,11 @@ import {BSModalContext} from "angular2-modal/plugins/bootstrap";
 @Component({
   moduleId: module.id,
   selector: 'order-acknowledgement',
-  templateUrl: 'orderAcknowledgement.component.html',
-  styleUrls: ['./quotes.component.scss']
+  templateUrl: 'oldorderAcknowledgement.component.html',
+  styleUrls: ['./oldquotes.component.scss']
 })
 
-export class OrderAcknowledgementComponent implements OnInit, OnDestroy {
+export class OldOrderAcknowledgementComponent implements OnInit, OnDestroy {
   enquiry: Enquiry;
   quote: OldQuote;
   subscription: Subscription;

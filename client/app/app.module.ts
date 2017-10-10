@@ -3,7 +3,6 @@ import {SharedModule} from "./shared/shared.module";
 import {AppComponent} from "./app.component";
 import {XsellService} from "./shared/xsell/xsell.service";
 import {ASIProductModule} from "./asiproduct/asiproduct.module";
-import {QuotesModule} from "./quotes/quotes.module";
 import {QuoteDocumentModule} from "./quote-document/quoteDocument.module";
 import {AuthModule} from "./shared/auth/auth.module";
 import {routing} from "./app-routes";
@@ -15,6 +14,7 @@ import {CustomerService} from "./shared/customer/customer.service";
 import {UserComponent} from "./user/user.component";
 import {UserService} from "./shared/user/user.service";
 import {EnquiriesModule} from "./enquiries/enquiries.module";
+import {QuotesModule} from "./quote/quotes.module";
 
 @NgModule({
   declarations: [

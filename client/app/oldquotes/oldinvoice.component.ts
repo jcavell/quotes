@@ -7,11 +7,11 @@ import {SelectedASIQuoteService} from "../shared/asiquote/selectedASIQuote.servi
 @Component({
   moduleId: module.id,
   selector: 'invoice',
-  templateUrl: 'invoice.component.html',
-  styleUrls: ['./quotes.component.scss']
+  templateUrl: 'oldinvoice.component.html',
+  styleUrls: ['./oldquotes.component.scss']
 })
 
-export class InvoiceComponent implements OnInit, OnDestroy {
+export class OldInvoiceComponent implements OnInit, OnDestroy {
   enquiry: Enquiry;
   quote: OldQuote;
   subscription: Subscription;

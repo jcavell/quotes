@@ -5,17 +5,11 @@ import {BSModalContext, Modal} from "angular2-modal/plugins/bootstrap";
 import {Subscription} from "rxjs/Rx";
 import {Enquiry} from "../shared/enquiry/enquiry.model";
 import {SelectedEnquiryService} from "../shared/enquiry/selectedEnquiry.service";
-import {EnquiryService} from "../shared/enquiry/enquiry.service";
-import {ASIQuote} from "../shared/asiquote/ASIQuote.model";
 import {isNullOrUndefined} from "util";
 import {ASIProductComponent} from "../asiproduct/asiproduct.component";
-import {XsellService} from "../shared/xsell/xsell.service";
 import {GazProductService} from "../shared/gazproduct/gazProduct.service";
 import {GazProduct} from "../shared/gazproduct/gazproduct.model";
 
-/**
- * This class represents the lazy loaded EnquiryComponent.
- */
 @Component({
   moduleId: module.id,
   selector: 'selected-enquiry',
@@ -25,16 +19,16 @@ import {GazProduct} from "../shared/gazproduct/gazproduct.model";
 
 export class SelectedEnquiryComponent implements OnInit, OnDestroy {
   enquiry: Enquiry;
-  quote: ASIQuote;
   products: GazProduct[];
   xsellProducts: Map<number, GazProduct>;
   subscription: Subscription;
   errorMessage: any;
 
-  constructor(private xsellservice: XsellService,
-              public selectedEnquiryService: SelectedEnquiryService,
-              public enquiryService: EnquiryService,
-              public gazProductService: GazProductService, overlay: Overlay, vcRef: ViewContainerRef, public modal: Modal) {
+  constructor(public selectedEnquiryService: SelectedEnquiryService,
+              public gazProductService: GazProductService,
+              overlay: Overlay,
+              vcRef: ViewContainerRef,
+              public modal: Modal) {
     overlay.defaultViewContainer = vcRef;
   }
 
@@ -42,7 +36,6 @@ export class SelectedEnquiryComponent implements OnInit, OnDestroy {
     return this.modal.open(ASIProductComponent, overlayConfigFactory({
       productId: this.enquiry.internalProductId,
       quantity: this.enquiry.quantity,
-      quote: this.quote
     }, BSModalContext));
   }
 
@@ -50,10 +43,8 @@ export class SelectedEnquiryComponent implements OnInit, OnDestroy {
     this.subscription = this.selectedEnquiryService.selectedEnquiry$.subscribe(enquiry => {
         if (isNullOrUndefined(enquiry)) {
           this.enquiry = undefined;
-          this.quote = undefined;
         } else {
           this.setSelectedEnquiry(enquiry);
-          // console.log('Changed selected enquiry to ' + enquiry.id);
         }
       }
     );
@@ -68,7 +59,6 @@ export class SelectedEnquiryComponent implements OnInit, OnDestroy {
   }
 
   cancelEditing() {
-    this.quote = undefined;
     this.enquiry = undefined;
     this.selectedEnquiryService.setEditing(false);
   }
@@ -100,28 +90,6 @@ export class SelectedEnquiryComponent implements OnInit, OnDestroy {
        });
      }
    );
-
-
-
-    // this.xsellservice.getXsells().subscribe(
-    //   data => {
-    //     const productIds: number[] = data.map(d => d.productId);
-    //     productIds.unshift(enquiry.quote.requestProductId);
-    //     const productObservables: Observable<ASIProduct >[] = productIds.map(pid => this.asiProductService.getProduct(pid));
-    //
-    //     Observable.forkJoin(productObservables).subscribe(
-    //       products => {
-    //         const quoteProducts = products.map(product =>
-    //           new ASIQuoteProduct(product.Id, product.Name, this.enquiry.quote.requestQuantity, product.ImageUrl, product.Prices, enquiry.quote.requestQuantity));
-    //         this.quote = new ASIQuote(undefined, this.enquiry.quote.id, new Date(), QuoteStatus.New, quoteProducts);
-    //         console.log(`AIP Product: ${JSON.stringify(enquiry.quote.requestProductId)}`);
-    //       },
-    //       error => this.errorMessage = <any>error
-    //     );
-    //   },
-    //   error => console.log(error)
-    // );
-
     return false;
   }
 }

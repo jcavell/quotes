@@ -13,10 +13,10 @@ import {Auth} from "../shared/auth/auth.service";
 
 @Component({
   selector: 'app-quote',
-  templateUrl: './quotes.component.html',
-  styleUrls: ['./quotes.component.scss']
+  templateUrl: './oldquotes.component.html',
+  styleUrls: ['./oldquotes.component.scss']
 })
-export class QuotesComponent implements OnInit {
+export class OldQuotesComponent implements OnInit {
 
   enquiriesAndQuotes: [[Enquiry, OldQuote]];
   isLoading = true;

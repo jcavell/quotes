@@ -6,7 +6,7 @@ import {Enquiry} from "../shared/enquiry/enquiry.model";
   name: 'quotesByStatus',
   pure: false
 })
-export class QuotesStatusPipe implements PipeTransform {
+export class OldQuotesStatusPipe implements PipeTransform {
   transform(allEnquiriesAndQuotes: [Enquiry, OldQuote][], desiredStatuses: [QuoteStatus]) {
     console.log(`Filtering on statuses: ${JSON.stringify(desiredStatuses)}`);
     return allEnquiriesAndQuotes.filter(
