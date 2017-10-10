@@ -9,6 +9,7 @@ import {QuoteDocumentModule} from "../quote-document/quoteDocument.module";
 import {ModalModule} from "angular2-modal";
 import {BootstrapModalModule} from "angular2-modal/plugins/bootstrap";
 import {ASISearchModalComponent} from "./asisearch.component";
+import {GazProductService} from "../shared/gazproduct/gazProduct.service";
 
 @NgModule({
   imports: [
@@ -20,7 +21,7 @@ import {ASISearchModalComponent} from "./asisearch.component";
   ],
   declarations: [EnquiriesComponent, SelectedEnquiryComponent, ASISearchModalComponent],
   exports: [EnquiriesComponent, SelectedEnquiryComponent],
-  providers: [EnquiryService, SelectedEnquiryService],
+  providers: [EnquiryService, SelectedEnquiryService, GazProductService],
   entryComponents: [ ASISearchModalComponent ]
 })
 export class EnquiriesModule { }

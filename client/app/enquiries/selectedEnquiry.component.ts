@@ -8,9 +8,10 @@ import {SelectedEnquiryService} from "../shared/enquiry/selectedEnquiry.service"
 import {EnquiryService} from "../shared/enquiry/enquiry.service";
 import {ASIQuote} from "../shared/quote/quote.model";
 import {isNullOrUndefined} from "util";
-import {ASIProductService} from "../shared/asiproduct/ASIProduct.service";
 import {ASIProductComponent} from "../asiproduct/asiproduct.component";
 import {XsellService} from "../shared/xsell/xsell.service";
+import {GazProductService} from "../shared/gazproduct/gazProduct.service";
+import {GazProduct} from "../shared/gazproduct/gazproduct.model";
 
 /**
  * This class represents the lazy loaded EnquiryComponent.
@@ -25,13 +26,15 @@ import {XsellService} from "../shared/xsell/xsell.service";
 export class SelectedEnquiryComponent implements OnInit, OnDestroy {
   enquiry: Enquiry;
   quote: ASIQuote;
+  products: GazProduct[];
+  xsellProducts: Map<number, GazProduct>;
   subscription: Subscription;
   errorMessage: any;
 
   constructor(private xsellservice: XsellService,
               public selectedEnquiryService: SelectedEnquiryService,
               public enquiryService: EnquiryService,
-              public asiProductService: ASIProductService, overlay: Overlay, vcRef: ViewContainerRef, public modal: Modal) {
+              public gazProductService: GazProductService, overlay: Overlay, vcRef: ViewContainerRef, public modal: Modal) {
     overlay.defaultViewContainer = vcRef;
   }
 
@@ -60,6 +63,10 @@ export class SelectedEnquiryComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
+  getThumb(product: GazProduct) {
+    return 'https://www.everythingbranded.co.uk/asset/image/imagep/thumbnail/' + product.images[0].imageid + '.jpg';
+  }
+
   cancelEditing() {
     this.quote = undefined;
     this.enquiry = undefined;
@@ -67,12 +74,34 @@ export class SelectedEnquiryComponent implements OnInit, OnDestroy {
   }
 
 
-  // remove(product: ASIQuoteProduct) {
-  //   this.quote.quote_products.splice(this.quote.quote_products.indexOf(product), 1);
-  // }
+  removeProduct(product: GazProduct) {
+    this.products.splice(this.products.indexOf(product), 1);
+  }
+
+  addProductAndRemoveXsell(product: GazProduct) {
+    this.products.push(product);
+    this.xsellProducts.delete(product.productid);
+  }
 
   setSelectedEnquiry(enquiry: Enquiry): boolean {
     this.enquiry = enquiry;
+
+   this.gazProductService.getProduct(enquiry.internalProductId).subscribe(
+      product => {
+        this.products = [product];
+      }
+    );
+
+   this.xsellProducts = new Map<number, GazProduct>();
+   this.enquiry.xsellProductIds.forEach( xsellProductId => {
+     this.gazProductService.getProduct(xsellProductId).subscribe(
+       product => {
+         this.xsellProducts.set(xsellProductId, product);
+       });
+     }
+   );
+
+
 
     // this.xsellservice.getXsells().subscribe(
     //   data => {
