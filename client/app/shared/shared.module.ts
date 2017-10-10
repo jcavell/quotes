@@ -3,7 +3,7 @@ import {BrowserModule} from "@angular/platform-browser";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
 import {PensWarehouseProductService} from "./asiproduct/penswarehouseproduct.service";
-import {QuoteService} from "./quote/quote.service";
+import {ASIQuoteService} from "./asiquote/ASIQuote.service";
 
 import {ToastComponent} from "./toast/toast.component";
 
@@ -24,6 +24,6 @@ import {ToastComponent} from "./toast/toast.component";
        ToastComponent
    ],
    declarations: [ToastComponent],
-   providers: [ToastComponent, PensWarehouseProductService, QuoteService],
+   providers: [ToastComponent, PensWarehouseProductService, ASIQuoteService],
 })
 export class SharedModule { }

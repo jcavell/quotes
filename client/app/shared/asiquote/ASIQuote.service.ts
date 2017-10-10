@@ -3,10 +3,10 @@ import {Headers, Http, RequestOptions} from "@angular/http";
 
 import {Observable} from "rxjs/Observable";
 import "rxjs/add/operator/map";
-import {ASIQuote} from "./quote.model";
+import {ASIQuote} from "./ASIQuote.model";
 
 @Injectable()
-export class QuoteService {
+export class ASIQuoteService {
 
   private headers = new Headers({ 'Content-Type': 'application/json', 'charset': 'UTF-8' });
   private options = new RequestOptions({ headers: this.headers });

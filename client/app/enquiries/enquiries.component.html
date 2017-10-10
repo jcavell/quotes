@@ -6,7 +6,7 @@
       <table class="table table-responsive table-striped table-hover">
         <thead class="thead-default">
         <tr>
-          <th>Enquiry ID</th>
+          <th>Subject</th>
           <th>Enquiry date</th>
           <th>Required</th>
           <th>Product</th>
@@ -20,7 +20,7 @@
         <tbody>
         <tr *ngFor="let enquiry of enquiries">
 
-          <td>{{enquiry.enquiryId}}</td>
+          <td>{{enquiry.subject}}</td>
           <td>{{enquiry.enquiryTimestamp | date: 'EE dd/MM/yyyy'}}</td>
           <td>{{enquiry.dateRequired | date: 'EE dd/MM/yyyy'}}</td>
           <td>{{enquiry.productName}}</td>

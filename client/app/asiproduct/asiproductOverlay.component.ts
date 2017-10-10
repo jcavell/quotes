@@ -4,7 +4,7 @@ import {CloseGuard, DialogRef, ModalComponent} from "angular2-modal";
 import {BSModalContext} from "angular2-modal/plugins/bootstrap";
 import {ASIProductService} from "../shared/asiproduct/ASIProduct.service";
 import {ASIProduct} from "../shared/asiproduct/ASIProduct.model";
-import {ASIQuote, ASIQuoteProduct} from "../shared/quote/quote.model";
+import {ASIQuote, ASIQuoteProduct} from "../shared/asiquote/ASIQuote.model";
 
 export class ASIProductModalContext extends BSModalContext {
   public productId: number;

@@ -44,7 +44,7 @@ export class ASIQuote {
 }
 
 
-export class QuoteProduct {
+export class OldQuoteProduct {
   constructor(public product_id: number,
               public name: string,
               public sku: string,
@@ -59,12 +59,12 @@ export class QuoteProduct {
   }
 }
 
-export class Quote {
+export class OldQuote {
   constructor(public _id: String,
               public quote_request_id: number,
               public quote_created: Date,
               public quote_status: QuoteStatus,
-              public quote_products: QuoteProduct[]) {
+              public quote_products: OldQuoteProduct[]) {
 
   }
 }

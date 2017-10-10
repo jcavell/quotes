@@ -6,7 +6,7 @@ import {Subscription} from "rxjs/Rx";
 import {Enquiry} from "../shared/enquiry/enquiry.model";
 import {SelectedEnquiryService} from "../shared/enquiry/selectedEnquiry.service";
 import {EnquiryService} from "../shared/enquiry/enquiry.service";
-import {ASIQuote} from "../shared/quote/quote.model";
+import {ASIQuote} from "../shared/asiquote/ASIQuote.model";
 import {isNullOrUndefined} from "util";
 import {ASIProductComponent} from "../asiproduct/asiproduct.component";
 import {XsellService} from "../shared/xsell/xsell.service";

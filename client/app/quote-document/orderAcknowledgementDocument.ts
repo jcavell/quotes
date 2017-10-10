@@ -1,5 +1,5 @@
-import {ASIQuote, QuoteStatus} from "../shared/quote/quote.model";
-import {QuoteService} from "../shared/quote/quote.service";
+import {ASIQuote, QuoteStatus} from "../shared/asiquote/ASIQuote.model";
+import {ASIQuoteService} from "../shared/asiquote/ASIQuote.service";
 import {NQuote} from "../shared/enquiry/enquiry.model";
 
 declare var jsPDF: any;
@@ -12,7 +12,7 @@ export class OrderAcknowledgementDocument {
     minimumFractionDigits: 2,
   });
 
-  constructor(private quoteService: QuoteService) { }
+  constructor(private quoteService: ASIQuoteService) { }
 
   public save(enquiry: NQuote, quote: ASIQuote) {
     const doc = new jsPDF();

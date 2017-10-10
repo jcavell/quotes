@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
 import {Subscription} from "rxjs/Rx";
 import {Enquiry} from "../shared/enquiry/enquiry.model";
-import {Quote, QuoteStatus} from "../shared/quote/quote.model";
-import {SelectedQuoteService} from "../shared/quote/selectedQuote.service";
+import {OldQuote, QuoteStatus} from "../shared/asiquote/ASIQuote.model";
+import {SelectedASIQuoteService} from "../shared/asiquote/selectedASIQuote.service";
 
 @Component({
   moduleId: module.id,
@@ -13,11 +13,11 @@ import {SelectedQuoteService} from "../shared/quote/selectedQuote.service";
 
 export class InvoiceComponent implements OnInit, OnDestroy {
   enquiry: Enquiry;
-  quote: Quote;
+  quote: OldQuote;
   subscription: Subscription;
   errorMessage: any;
 
-  constructor(public selectedQuoteService: SelectedQuoteService) {
+  constructor(public selectedQuoteService: SelectedASIQuoteService) {
   }
 
   ngOnInit() {

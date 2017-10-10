@@ -5,11 +5,11 @@ import {BSModalContext} from "angular2-modal/plugins/bootstrap";
 import {PensWarehouseProduct} from "../shared/asiproduct/penswarehouseproduct.model";
 import {PensWarehouseProductService} from "../shared/asiproduct/penswarehouseproduct.service";
 import {Enquiry} from "../shared/enquiry/enquiry.model";
-import {Quote, QuoteProduct} from "../shared/quote/quote.model";
+import {OldQuote, OldQuoteProduct} from "../shared/asiquote/ASIQuote.model";
 
 export class ASISearchModalContext extends BSModalContext {
   public enquiry: Enquiry;
-  public quote: Quote;
+  public quote: OldQuote;
 }
 
 
@@ -114,7 +114,7 @@ export class ASISearchModalComponent implements CloseGuard, ModalComponent<ASISe
   }
 
   add(product: PensWarehouseProduct) {
-    const quoteProduct = new QuoteProduct(product.id, product.name, product.sku, product.sage_sku,
+    const quoteProduct = new OldQuoteProduct(product.id, product.name, product.sku, product.sage_sku,
       this.quantity, product.origination_price, product.prices, 0, 0, product.image_url);
     this.context.quote.quote_products.push(quoteProduct);
   }

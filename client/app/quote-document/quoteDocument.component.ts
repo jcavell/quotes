@@ -1,7 +1,7 @@
 import {Component, Input} from "@angular/core";
 import {NQuoteWithProducts} from "../shared/enquiry/enquiry.model";
-import {ASIQuote} from "../shared/quote/quote.model";
-import {QuoteService} from "../shared/quote/quote.service";
+import {ASIQuote} from "../shared/asiquote/ASIQuote.model";
+import {ASIQuoteService} from "../shared/asiquote/ASIQuote.service";
 import {QuoteDocument} from "./quoteDocument";
 import {OrderAcknowledgementDocument} from "./orderAcknowledgementDocument";
 import {InvoiceDocument} from "./invoiceDocument";
@@ -34,7 +34,7 @@ export class QuoteDocumentComponent {
   processedImages = 0;
   productImages: Array<[string, any]> = new Array();
 
-  constructor(private quoteService: QuoteService, private http: Http) {
+  constructor(private quoteService: ASIQuoteService, private http: Http) {
   }
 
   public download() {

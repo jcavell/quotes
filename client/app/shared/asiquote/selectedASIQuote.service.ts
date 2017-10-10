@@ -1,12 +1,12 @@
 import {Injectable} from "@angular/core";
 import {BehaviorSubject} from "rxjs/Rx";
-import {Quote} from "./quote.model";
+import {OldQuote} from "./ASIQuote.model";
 import {Enquiry} from "../enquiry/enquiry.model";
 
 @Injectable()
-export class SelectedQuoteService {
+export class SelectedASIQuoteService {
 
-  _selectedQuoteSource = new BehaviorSubject<[Enquiry, Quote]>([null, null]);
+  _selectedQuoteSource = new BehaviorSubject<[Enquiry, OldQuote]>([null, null]);
   selectedQuote$ = this._selectedQuoteSource.asObservable();
 
   _isEditingSource = new BehaviorSubject<boolean>(false);
@@ -17,7 +17,7 @@ export class SelectedQuoteService {
   }
 
   // service command
-  changeQuote(enquiryAndQuote: [Enquiry, Quote]) {
+  changeQuote(enquiryAndQuote: [Enquiry, OldQuote]) {
     // console.log(`Changing quote to ${JSON.stringify(enquiryAndQuote[0].id)}`);
     this._selectedQuoteSource.next(enquiryAndQuote);
   }

@@ -4,10 +4,10 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 
 import {ToastComponent} from "../shared/toast/toast.component";
 import {EnquiryService} from "../shared/enquiry/enquiry.service";
-import {QuoteService} from "../shared/quote/quote.service";
+import {ASIQuoteService} from "../shared/asiquote/ASIQuote.service";
 import {Observable, Subscription} from "rxjs";
-import {Quote, QuoteStatus} from "../shared/quote/quote.model";
-import {SelectedQuoteService} from "../shared/quote/selectedQuote.service";
+import {OldQuote, QuoteStatus} from "../shared/asiquote/ASIQuote.model";
+import {SelectedASIQuoteService} from "../shared/asiquote/selectedASIQuote.service";
 import {Enquiry} from "../shared/enquiry/enquiry.model";
 import {Auth} from "../shared/auth/auth.service";
 
@@ -18,9 +18,9 @@ import {Auth} from "../shared/auth/auth.service";
 })
 export class QuotesComponent implements OnInit {
 
-  enquiriesAndQuotes: [[Enquiry, Quote]];
+  enquiriesAndQuotes: [[Enquiry, OldQuote]];
   isLoading = true;
-  selectedQuote: Quote;
+  selectedQuote: OldQuote;
   isEditing: boolean;
   subscription: Subscription;
 
@@ -52,9 +52,9 @@ export class QuotesComponent implements OnInit {
 
   constructor(private http: Http,
               private auth: Auth,
-              private quoteService: QuoteService,
+              private quoteService: ASIQuoteService,
               private enquiryService: EnquiryService,
-              private selectedQuoteService: SelectedQuoteService,
+              private selectedQuoteService: SelectedASIQuoteService,
               public toast: ToastComponent,
               private formBuilder: FormBuilder) { }
 
@@ -78,7 +78,7 @@ export class QuotesComponent implements OnInit {
   }
 
 
-  combineQuotesAndEnquiries(): Observable<[[Enquiry, Quote]]> {
+  combineQuotesAndEnquiries(): Observable<[[Enquiry, OldQuote]]> {
     const combined = this.quoteService.getQuotes().combineLatest(this.enquiryService.getNew({}),
       (quotes, enquiries) => {
             return quotes.map(quote => [enquiries.find(qr => qr.id === quote.quote_request_id), quote]);
@@ -86,7 +86,7 @@ export class QuotesComponent implements OnInit {
     return combined;
   }
 
-  displaySelectedQuote(event: Event, selectedEnquiryAndQuote: [Enquiry, Quote]) {
+  displaySelectedQuote(event: Event, selectedEnquiryAndQuote: [Enquiry, OldQuote]) {
     this.selectedQuoteService.changeQuote(selectedEnquiryAndQuote);
     this.selectedQuote = selectedEnquiryAndQuote[1];
     this.selectedQuoteService.setEditing(true);

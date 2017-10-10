@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit, ViewContainerRef} from "@angular/core";
 import {Subscription} from "rxjs/Rx";
 import {Enquiry} from "../shared/enquiry/enquiry.model";
-import {Quote, QuoteProduct, QuoteStatus} from "../shared/quote/quote.model";
-import {SelectedQuoteService} from "../shared/quote/selectedQuote.service";
+import {OldQuote, OldQuoteProduct, QuoteStatus} from "../shared/asiquote/ASIQuote.model";
+import {SelectedASIQuoteService} from "../shared/asiquote/selectedASIQuote.service";
 import {Modal, Overlay, overlayConfigFactory} from "angular2-modal";
 import {ASISearchModalComponent} from "../enquiries/asisearch.component";
 import {BSModalContext} from "angular2-modal/plugins/bootstrap";
@@ -16,11 +16,11 @@ import {BSModalContext} from "angular2-modal/plugins/bootstrap";
 
 export class OrderAcknowledgementComponent implements OnInit, OnDestroy {
   enquiry: Enquiry;
-  quote: Quote;
+  quote: OldQuote;
   subscription: Subscription;
   errorMessage: any;
 
-  constructor(public selectedQuoteService: SelectedQuoteService, overlay: Overlay, vcRef: ViewContainerRef, public modal: Modal) {
+  constructor(public selectedQuoteService: SelectedASIQuoteService, overlay: Overlay, vcRef: ViewContainerRef, public modal: Modal) {
     overlay.defaultViewContainer = vcRef;
   }
 
@@ -28,7 +28,7 @@ export class OrderAcknowledgementComponent implements OnInit, OnDestroy {
     return this.modal.open(ASISearchModalComponent,  overlayConfigFactory({ enquiry: this.enquiry, quote: this.quote }, BSModalContext));
   }
 
-  remove(product: QuoteProduct) {
+  remove(product: OldQuoteProduct) {
     this.quote.quote_products.splice(this.quote.quote_products.indexOf(product), 1);
   }
 

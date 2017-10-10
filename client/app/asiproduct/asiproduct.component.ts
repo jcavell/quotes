@@ -6,7 +6,7 @@ import {BSModalContext} from "angular2-modal/plugins/bootstrap";
 import {CloseGuard, DialogRef, Modal, ModalComponent, Overlay, overlayConfigFactory} from "angular2-modal";
 import {ASIProductModalComponent} from "./asiproductOverlay.component";
 import {Subscription} from "rxjs";
-import {ASIQuote} from "../shared/quote/quote.model";
+import {ASIQuote} from "../shared/asiquote/ASIQuote.model";
 
 export class ASIProductSearchModalContext extends BSModalContext {
   public productId: number;
