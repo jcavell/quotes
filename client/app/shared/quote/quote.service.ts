@@ -1,28 +1,24 @@
 import {Injectable} from "@angular/core";
 import {Http, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
-import {QuoteRecord} from "./quote.model";
+import {QuoteLineItem, QuoteRecord} from "./quote.model";
 // import 'rxjs/add/operator/do';  // for debugging
 
-/**
- * This class provides the Product service with methods to read names and add names.
- */
+
 @Injectable()
 export class QuoteService {
 
-  /**
-   * Creates a new Enquirieservice with the injected Http.
-   * @param {Http} http - The injected Http.
-   * @constructor
-   */
   constructor(private http: Http) {}
 
-  /**
-   * Returns an Observable for the HTTP GET request for the JSON resource.
-   * @return {PensWarehouseProduct[]} The Observable for the HTTP request.
-   */
-  getNew(queryParams): Observable<QuoteRecord[]> {
+  getQuotes(queryParams): Observable<QuoteRecord[]> {
     return this.http.get('http://localhost:9000/quotes', {'params' : queryParams})
+      .map((res: Response) => res.json())
+      //              .do(data => console.log('server data:', data))  // debug
+      .catch(this.handleError);
+  }
+
+  getLineItems(quoteId: number): Observable<QuoteLineItem[]> {
+    return this.http.get('http://localhost:9000/quotes/' + quoteId + '/line-items')
       .map((res: Response) => res.json())
       //              .do(data => console.log('server data:', data))  // debug
       .catch(this.handleError);

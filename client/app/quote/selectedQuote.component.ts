@@ -3,12 +3,14 @@ import {Overlay, overlayConfigFactory} from "angular2-modal";
 import {BSModalContext, Modal} from "angular2-modal/plugins/bootstrap";
 
 import {Subscription} from "rxjs/Rx";
-import {QuoteRecord} from "../shared/quote/quote.model";
+import {QuoteLineItem, QuoteRecord} from "../shared/quote/quote.model";
 import {SelectedQuoteService} from "../shared/quote/selectedQuote.service";
 import {QuoteService} from "../shared/quote/quote.service";
 import {isNullOrUndefined} from "util";
-import {ASIProductComponent} from "../asiproduct/asiproduct.component";
 import {GazProduct} from "../shared/gazproduct/gazproduct.model";
+import {Address} from "../shared/address/address.model";
+import {EditAddressModalComponent} from "../address/editAddress.component";
+import {GazProductService} from "../shared/gazproduct/gazProduct.service";
 
 /**
  * This class represents the lazy loaded QuoteComponent.
@@ -22,17 +24,21 @@ import {GazProduct} from "../shared/gazproduct/gazproduct.model";
 
 export class SelectedQuoteComponent implements OnInit, OnDestroy {
   quoteRecord: QuoteRecord;
+  quoteLineItems: QuoteLineItem[];
+  lineItemProducts: Map<number, GazProduct>;
   subscription: Subscription;
   errorMessage: any;
 
   constructor(public selectedQuoteService: SelectedQuoteService,
               public quoteService: QuoteService,
+              public gazProductService: GazProductService,
               overlay: Overlay, vcRef: ViewContainerRef, public modal: Modal) {
     overlay.defaultViewContainer = vcRef;
   }
 
-  openSearchModal() {
-    return this.modal.open(ASIProductComponent, overlayConfigFactory({
+  openEditAddressModal(address: Address) {
+    return this.modal.open(EditAddressModalComponent, overlayConfigFactory({
+      address: address
     }, BSModalContext));
   }
 
@@ -64,25 +70,22 @@ export class SelectedQuoteComponent implements OnInit, OnDestroy {
   setSelectedQuote(qr: QuoteRecord): boolean {
     this.quoteRecord = qr;
 
-    // this.xsellservice.getXsells().subscribe(
-    //   data => {
-    //     const productIds: number[] = data.map(d => d.productId);
-    //     productIds.unshift(quote.quote.requestProductId);
-    //     const productObservables: Observable<ASIProduct >[] = productIds.map(pid => this.asiProductService.getProduct(pid));
-    //
-    //     Observable.forkJoin(productObservables).subscribe(
-    //       products => {
-    //         const quoteProducts = products.map(product =>
-    //           new ASIQuoteProduct(product.Id, product.Name, this.quote.quote.requestQuantity, product.ImageUrl, product.Prices, quote.quote.requestQuantity));
-    //         this.quote = new ASIQuote(undefined, this.quote.quote.id, new Date(), QuoteStatus.New, quoteProducts);
-    //         console.log(`AIP Product: ${JSON.stringify(quote.quote.requestProductId)}`);
-    //       },
-    //       error => this.errorMessage = <any>error
-    //     );
-    //   },
-    //   error => console.log(error)
-    // );
+    this.quoteService.getLineItems(qr.quote.id).subscribe(
+      lineItems => {
+        this.quoteLineItems = lineItems;
+        this.lineItemProducts = new Map<number, GazProduct>();
+        this.quoteLineItems.forEach(lineItem => {
+            this.gazProductService.getProduct(lineItem.productId).subscribe(
+              product => {
+                this.lineItemProducts.set(lineItem.productId, product);
+                console.log('SET: ' + product);
+              });
+          },
+          error => console.log(error)
+        );
 
+        return false;
+      });
     return false;
   }
 }

@@ -42,3 +42,18 @@ export class Quote {
               public deliveryAddress: Address) {
   }
 }
+
+
+export class QuoteLineItem {
+  constructor(public id: number,
+              public productId: number,
+              public quantity: number,
+              public colour: string,
+              public description: string,
+              public priceIncludes: string,
+              public cost: number,
+              public markup: number,
+              public sell: number,
+              public vat: number) {
+  }
+}

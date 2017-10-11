@@ -1,0 +1,58 @@
+<div class="card-block">
+
+  <form>
+    <table class="table">
+      <tbody>
+
+      <tr>
+        <th scope="row">Name</th>
+        <td><input class="form-control" type="text" name="name" [(ngModel)]="address.name" placeholder="name"></td>
+      </tr>
+      <tr>
+        <th scope="row">FAO</th>
+        <td><input class="form-control" type="text" name="fao" [(ngModel)]="address.fao" placeholder="fao"></td>
+      </tr>
+      <tr>
+        <th scope="row">Line 1</th>
+        <td><input class="form-control" type="text" name="line1" [(ngModel)]="address.line1" placeholder="line1"></td>
+      </tr>
+      <tr>
+        <th scope="row">Line 2</th>
+        <td><input class="form-control" type="text" name="line2" [(ngModel)]="address.line2" placeholder="line2"></td>
+      </tr>
+      <tr>
+        <th scope="row">Line 3</th>
+        <td><input class="form-control" type="text" name="line3" [(ngModel)]="address.line3" placeholder="line3"></td>
+      </tr>
+      <tr>
+        <th scope="row">Line 4</th>
+        <td><input class="form-control" type="text" name="line4" [(ngModel)]="address.line4" placeholder="line4"></td>
+      </tr>
+      <tr>
+        <th scope="row">Town / City</th>
+        <td><input class="form-control" type="text" name="townCity" [(ngModel)]="address.townCity"
+                   placeholder="townCity"></td>
+      </tr>
+      <tr>
+        <th scope="row">County</th>
+        <td><input class="form-control" type="text" name="line4" [(ngModel)]="address.county" placeholder="county"></td>
+      </tr>
+      <tr>
+        <th scope="row">Postcode</th>
+        <td><input class="form-control" type="text" name="postcode" [(ngModel)]="address.postcode"
+                   placeholder="postcode"></td>
+      </tr>
+      <tr>
+        <th scope="row">County</th>
+        <td><input class="form-control" type="text" name="country" [(ngModel)]="address.country" placeholder="country">
+        </td>
+      </tr>
+
+      </tbody>
+    </table>
+    <div>
+      <button type="submit" class="btn btn-sm btn-warning" (click) = "updateAddress(address)">Update address</button>
+      <button type="button" (click) = "dismiss()" class="btn btn-sm btn-warning">Close</button>
+    </div>
+  </form>
+</div>

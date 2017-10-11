@@ -11,7 +11,7 @@
   <h4 class="card-header">Current customers ({{customers.length}})</h4>
   <div class="card-block">
     <table class="table table-bordered table-striped">
-      <thead class="thead-default">
+      <thead class="thead-inverse">
         <tr>
           <th>Name</th>
           <th>Salutation</th>
@@ -22,10 +22,6 @@
           <th>Source</th>
           <th>Position</th>
           <th>Is main contact</th>
-          <th>Twitter</th>
-          <th>Facebook</th>
-          <th>LinkedIn</th>
-          <th>Skype</th>
           <th>Quotes</th>
           <th></th>
           <th></th>
@@ -47,10 +43,6 @@
           <td>{{cust.customer.source}}</td>
           <td>{{cust.customer.position}}</td>
           <td>{{cust.customer.isMainContact}}</td>
-          <td>{{cust.customer.twitter}}</td>
-          <td>{{cust.customer.facebook}}</td>
-          <td>{{cust.customer.linkedIn}}</td>
-          <td>{{cust.customer.skype}}</td>
           <td><a [routerLink]="['/enquiries']" [queryParams]="{e:cust.company.email}" routerLinkActive="active">Quotes</a></td>
           <td><button class="btn btn-sm btn-warning" (click)="enableEditing(cust)"><i class="fa fa-pencil"></i> Edit</button></td>
             <td><button class="btn btn-sm btn-danger" (click)="deleteCustomer(cust)"><i class="fa fa-trash"></i> Delete</button>

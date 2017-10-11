@@ -60,7 +60,7 @@ export class QuotesComponent implements OnInit, OnDestroy {
    Called from ngOnInit, get all new quotes
    */
   getQuotes(): boolean {
-    this.quoteService.getNew(this.queryParams)
+    this.quoteService.getQuotes(this.queryParams)
       .subscribe(
         qr => {
           this.quoteRecords = qr;

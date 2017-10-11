@@ -15,6 +15,7 @@ import {UserComponent} from "./user/user.component";
 import {UserService} from "./shared/user/user.service";
 import {EnquiriesModule} from "./enquiries/enquiries.module";
 import {QuotesModule} from "./quote/quotes.module";
+import {EditAddressModule} from "./address/editAddress.module";
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import {QuotesModule} from "./quote/quotes.module";
     routing,
     SharedModule,
     ASIProductModule,
+    EditAddressModule,
     EnquiriesModule,
     QuotesModule,
     QuoteDocumentModule,

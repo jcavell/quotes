@@ -3,56 +3,152 @@
     <h4 class="card-header">Quote</h4>
     <div class="card-block">
 
-      <table class="table table-responsive table-striped table-hover">
-        <tbody class="thead-default">
+      <h4>Details
+        <button type="button" class="btn btn-sm btn-primary"
+                (click)="openEditAddressModal(quoteRecord.invoiceAddress)"><i class="fa fa-edit"></i> Edit
+        </button>
+      </h4>
+      <table class="table table-responsive">
+        <thead class="thead-default">
         <tr>
-          <td><strong>Quote</strong></td>
-          <td>
-            ID {{quoteRecord.quote.id}} {{quoteRecord.quote.title}}<br>
-            Created {{quoteRecord.quote.createdDate | date: 'EE dd/MM/yyyy'}}<br>
-            Required {{quoteRecord.quote.dateRequired | date: 'EE dd/MM/yyyy'}}
-          </td>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Created</th>
+          <th>Required</th>
         </tr>
+        </thead>
+        <tbody>
         <tr>
-          <td><strong>Company</strong></td>
-          <td>{{quoteRecord.company.name}}</td>
-        </tr>
-        <tr>
-          <td><strong>Customer</strong></td>
-          <td>{{quoteRecord.customer.name}}<br>{{quoteRecord.customer.email}}<br>{{quoteRecord.customer.mobilePhone}}</td>
-        </tr>
-        <tr>
-          <td><strong>Invoice address</strong></td>
-          <td>
-            {{quoteRecord.invoiceAddress.name}}<br>
-            {{quoteRecord.invoiceAddress.company}}<br>
-            {{quoteRecord.invoiceAddress.fao}}<br>
-            {{quoteRecord.invoiceAddress.line1}}<br>
-            <ng-container *ngIf="quoteRecord.invoiceAddress.line2">{{quoteRecord.invoiceAddress.line2}}<br></ng-container>
-            <ng-container *ngIf="quoteRecord.invoiceAddress.line3">{{quoteRecord.invoiceAddress.line3}}<br></ng-container>
-            <ng-container *ngIf="quoteRecord.invoiceAddress.line4">{{quoteRecord.invoiceAddress.line4}}<br></ng-container>
-            {{quoteRecord.invoiceAddress.townCity}}<br>
-            <ng-container *ngIf="quoteRecord.invoiceAddress.county">{{quoteRecord.invoiceAddress.county}}<br></ng-container>
-            {{quoteRecord.invoiceAddress.postcode}}
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Delivery address</strong></td>
-          <td>
-            {{quoteRecord.deliveryAddress.name}}<br>
-            {{quoteRecord.deliveryAddress.company}}<br>
-            {{quoteRecord.deliveryAddress.fao}}<br>
-            {{quoteRecord.deliveryAddress.line1}}<br>
-            <ng-container *ngIf="quoteRecord.deliveryAddress.line2">{{quoteRecord.deliveryAddress.line2}}<br></ng-container>
-            <ng-container *ngIf="quoteRecord.deliveryAddress.line3">{{quoteRecord.deliveryAddress.line3}}<br></ng-container>
-            <ng-container *ngIf="quoteRecord.deliveryAddress.line4">{{quoteRecord.deliveryAddress.line4}}<br></ng-container>
-            {{quoteRecord.deliveryAddress.townCity}}<br>
-            <ng-container *ngIf="quoteRecord.deliveryAddress.county">{{quoteRecord.deliveryAddress.county}}<br></ng-container>
-            {{quoteRecord.deliveryAddress.postcode}}
-          </td>
+          <td>{{quoteRecord.quote.id}}</td>
+          <td>{{quoteRecord.quote.title}}</td>
+          <td>{{quoteRecord.quote.createdDate | date: 'EE dd/MM/yyyy'}}</td>
+          <td>{{quoteRecord.quote.dateRequired | date: 'EE dd/MM/yyyy'}}</td>
         </tr>
         </tbody>
       </table>
+
+      <h4>Customer
+        <button type="button" class="btn btn-sm btn-primary"
+                (click)="openEditAddressModal(quoteRecord.invoiceAddress)"><i class="fa fa-edit"></i> Edit
+        </button>
+      </h4>
+      <table class="table table-responsive">
+        <thead class="thead-default">
+        <tr>
+          <th>Company</th>
+          <th>Customer</th>
+          <th>Email</th>
+          <th>Mobile</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>{{quoteRecord.company.name}}</td>
+          <td>{{quoteRecord.customer.name}}</td>
+          <td>{{quoteRecord.customer.email}}</td>
+          <td>{{quoteRecord.customer.mobileTelephone}}</td>
+        </tr>
+        </tbody>
+      </table>
+
+      <h4>Addresses</h4>
+      <table class="table table-responsive">
+        <thead class="thead-default">
+        <tr>
+          <th></th>
+          <th>Type</th>
+          <th>Name</th>
+          <th>Company</th>
+          <th>FAO</th>
+          <th>Line1</th>
+          <th>Line2</th>
+          <th>Line3</th>
+          <th>Line4</th>
+          <th>City</th>
+          <th>County</th>
+          <th>Postcode</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>
+            <button type="button" class="btn btn-sm btn-primary"
+                    (click)="openEditAddressModal(quoteRecord.invoiceAddress)"><i class="fa fa-edit"></i> Edit
+            </button>
+          </td>
+          <td>Invoice</td>
+          <td>{{quoteRecord.invoiceAddress.name}}</td>
+          <td>{{quoteRecord.invoiceAddress.company}}</td>
+          <td>{{quoteRecord.invoiceAddress.fao}}</td>
+          <td>{{quoteRecord.invoiceAddress.line1}}</td>
+          <td>{{quoteRecord.invoiceAddress.line2}}</td>
+          <td>{{quoteRecord.invoiceAddress.line3}}</td>
+          <td>{{quoteRecord.invoiceAddress.line4}}</td>
+          <td>{{quoteRecord.invoiceAddress.townCity}}</td>
+          <td>{{quoteRecord.invoiceAddress.county}}</td>
+          <td>{{quoteRecord.invoiceAddress.postcode}}</td>
+        </tr>
+        <tr>
+          <td>
+            <button type="button" class="btn btn-sm btn-primary"
+                    (click)="openEditAddressModal(quoteRecord.deliveryAddress)"><i class="fa fa-edit"></i> Edit
+            </button>
+          </td>
+          <td>Delivery</td>
+          <td>{{quoteRecord.deliveryAddress.name}}</td>
+          <td>{{quoteRecord.deliveryAddress.company}}</td>
+          <td>{{quoteRecord.deliveryAddress.fao}}</td>
+          <td>{{quoteRecord.deliveryAddress.line1}}</td>
+          <td>{{quoteRecord.deliveryAddress.line2}}</td>
+          <td>{{quoteRecord.deliveryAddress.line3}}</td>
+          <td>{{quoteRecord.deliveryAddress.line4}}</td>
+          <td>{{quoteRecord.deliveryAddress.townCity}}</td>
+          <td>{{quoteRecord.deliveryAddress.county}}</td>
+          <td>{{quoteRecord.deliveryAddress.postcode}}</td>
+        </tr>
+        </tbody>
+      </table>
+
+      <h4>Line items</h4>
+      <table class="table table-responsive">
+        <thead class="thead-default">
+        <tr>
+          <th></th>
+          <th>Product</th>
+          <th>Image</th>
+          <th>Quantity</th>
+          <th>Colour</th>
+          <th>Price includes</th>
+          <th>Cost</th>
+          <th>Markup</th>
+          <th>VAT</th>
+          <th>Sell</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let lineItem of quoteLineItems">
+          <ng-container *ngIf="lineItemProducts.get(lineItem.productId) as product">
+            <td>
+              <button type="button" class="btn btn-sm btn-primary"
+                      (click)="openEditAddressModal(quoteRecord.deliveryAddress)"><i class="fa fa-edit"></i> Edit
+              </button>
+            </td>
+            <td>{{product.productname}}</td>
+            <td><img src="{{getThumb(product)}}"/></td>
+            <td>{{lineItem.quantity}}</td>
+            <td>{{lineItem.colour}}</td>
+            <td>{{lineItem.priceIncludes}}</td>
+            <td>{{lineItem.cost}}</td>
+            <td>{{lineItem.markup}}</td>
+            <td>{{lineItem.vat}}</td>
+            <td>{{lineItem.sell}}</td>
+          </ng-container>
+        </tr>
+        </tbody>
+      </table>
+
     </div>
   </div>
 </ng-container>
+
+
