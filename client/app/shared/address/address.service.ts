@@ -14,7 +14,7 @@ export class AddressService {
   constructor(private http: Http) {}
 
 
-updateAddress(address: Address): Observable<Address[]> {
+updateAddress(address: Address): Observable<Address> {
   return this.http.put(`http://localhost:9000/addresses/${address.id}`, JSON.stringify(address), this.options)
                     .map((res: Response) => res.json())
     //              .do(data => console.log('server data:', data))  // debug

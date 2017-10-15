@@ -21,13 +21,7 @@ export class Quote {
               public customerName: string,
               public customerEmail: string,
               public createdDate: string,
-              public active: boolean,
-              public quoteMeta: QuoteMeta,
-              public customer: Customer,
-              public rep: User,
-              public assignedUser: User,
-              public invoiceAddress: Address,
-              public deliveryAddress: Address) {
+              public active: boolean) {
   }
 }
 

@@ -7,16 +7,20 @@ import {QuotesComponent} from "./quotes.component";
 import {QuoteService} from "../shared/quote/quote.service";
 import {SelectedQuoteService} from "../shared/quote/selectedQuote.service";
 import {SelectedQuoteComponent} from "./selectedQuote.component";
+import {EditQuoteModalComponent} from "./editQuote.component";
+import {NgDatepickerModule} from "ng2-datepicker";
 
 @NgModule({
   imports: [
     QuotesRoutingModule,
     SharedModule,
     ModalModule.forRoot(),
-    BootstrapModalModule
+    BootstrapModalModule,
+    NgDatepickerModule
   ],
-  declarations: [QuotesComponent, SelectedQuoteComponent],
+  declarations: [QuotesComponent, SelectedQuoteComponent, EditQuoteModalComponent],
   exports: [QuotesComponent, SelectedQuoteComponent],
-  providers: [QuoteService, SelectedQuoteService]
+  providers: [QuoteService, SelectedQuoteService, EditQuoteModalComponent],
+  entryComponents: [EditQuoteModalComponent]
 })
 export class QuotesModule { }

@@ -3,7 +3,7 @@ import {Overlay, overlayConfigFactory} from "angular2-modal";
 import {BSModalContext, Modal} from "angular2-modal/plugins/bootstrap";
 
 import {Subscription} from "rxjs/Rx";
-import {QuoteLineItem, QuoteRecord} from "../shared/quote/quote.model";
+import {Quote, QuoteLineItem, QuoteRecord} from "../shared/quote/quote.model";
 import {SelectedQuoteService} from "../shared/quote/selectedQuote.service";
 import {QuoteService} from "../shared/quote/quote.service";
 import {isNullOrUndefined} from "util";
@@ -11,6 +11,7 @@ import {GazProduct} from "../shared/gazproduct/gazproduct.model";
 import {Address} from "../shared/address/address.model";
 import {EditAddressModalComponent} from "../address/editAddress.component";
 import {GazProductService} from "../shared/gazproduct/gazProduct.service";
+import {EditQuoteModalComponent} from "./editQuote.component";
 
 /**
  * This class represents the lazy loaded QuoteComponent.
@@ -41,6 +42,13 @@ export class SelectedQuoteComponent implements OnInit, OnDestroy {
       address: address
     }, BSModalContext));
   }
+
+  openEditQuoteModal(quote: Quote) {
+    return this.modal.open(EditQuoteModalComponent, overlayConfigFactory({
+      quote: quote
+    }, BSModalContext));
+  }
+
 
   ngOnInit() {
     this.subscription = this.selectedQuoteService.selectedQuote$.subscribe(quoteRecord => {

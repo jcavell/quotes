@@ -44,6 +44,7 @@
     "jspdf-autotable": "^2.3.1",
     "mongoose": "^4.9.1",
     "morgan": "^1.8.1",
+    "ng2-datepicker": "^2.1.2",
     "nodemailer": "^2.7.2",
     "rxjs": "^5.2.0",
     "tether": "1.4.0",

@@ -11,6 +11,7 @@
           <th>Required</th>
           <th>Product</th>
           <th>Customer</th>
+          <th>Phone</th>
           <th>Company</th>
           <th>Quantity</th>
           <th>Rep</th>
@@ -25,12 +26,13 @@
           <td>{{enquiry.dateRequired | date: 'EE dd/MM/yyyy'}}</td>
           <td>{{enquiry.productName}}</td>
           <td>{{enquiry.customerName}}</td>
+          <td>{{enquiry.customerTelephone}}</td>
           <td>{{enquiry.company}}</td>
           <td>{{enquiry.quantity}}</td>
           <td class="rep">{{enquiry.repEmail.split('@')[0]}}</td>
           <td>
             <button type="button" class="btn btn-sm btn-warning"
-                    (click)="displaySelectedEnquiry($event, enquiry)"><i class="fa fa-pencil"></i> Quote
+                    (click)="displaySelectedEnquiry($event, enquiry)"><i class="fa fa-pencil"></i> Edit
             </button>
           </td>
         </tr>

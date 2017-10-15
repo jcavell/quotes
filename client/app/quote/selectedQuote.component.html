@@ -4,11 +4,12 @@
     <div class="card-block">
 
       <h4>Details
+
         <button type="button" class="btn btn-sm btn-primary"
-                (click)="openEditAddressModal(quoteRecord.invoiceAddress)"><i class="fa fa-edit"></i> Edit
+                (click)="openEditQuoteModal(quoteRecord.quote)"><i class="fa fa-edit"></i> Edit
         </button>
       </h4>
-      <table class="table table-responsive">
+      <table class="table table-responsive table-bordered">
         <thead class="thead-default">
         <tr>
           <th>ID</th>
@@ -27,12 +28,14 @@
         </tbody>
       </table>
 
+
       <h4>Customer
+
         <button type="button" class="btn btn-sm btn-primary"
-                (click)="openEditAddressModal(quoteRecord.invoiceAddress)"><i class="fa fa-edit"></i> Edit
+                (click)="openEditQuoteModal(quoteRecord.quote)"><i class="fa fa-edit"></i> Edit
         </button>
       </h4>
-      <table class="table table-responsive">
+      <table class="table table-responsive table-bordered">
         <thead class="thead-default">
         <tr>
           <th>Company</th>
@@ -51,8 +54,10 @@
         </tbody>
       </table>
 
+
       <h4>Addresses</h4>
-      <table class="table table-responsive">
+
+      <table class="table table-responsive table-bordered">
         <thead class="thead-default">
         <tr>
           <th></th>
@@ -109,8 +114,10 @@
         </tbody>
       </table>
 
+
       <h4>Line items</h4>
-      <table class="table table-responsive">
+
+      <table class="table table-responsive table-bordered">
         <thead class="thead-default">
         <tr>
           <th></th>

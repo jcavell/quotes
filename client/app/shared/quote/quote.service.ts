@@ -1,12 +1,15 @@
 import {Injectable} from "@angular/core";
-import {Http, Response} from "@angular/http";
+import {Headers, Http, RequestOptions, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
-import {QuoteLineItem, QuoteRecord} from "./quote.model";
+import {Quote, QuoteLineItem, QuoteRecord} from "./quote.model";
 // import 'rxjs/add/operator/do';  // for debugging
 
 
 @Injectable()
 export class QuoteService {
+
+  private headers = new Headers({ 'Content-Type': 'application/json', 'charset': 'UTF-8' });
+  private options = new RequestOptions({ headers: this.headers });
 
   constructor(private http: Http) {}
 
@@ -19,6 +22,13 @@ export class QuoteService {
 
   getLineItems(quoteId: number): Observable<QuoteLineItem[]> {
     return this.http.get('http://localhost:9000/quotes/' + quoteId + '/line-items')
+      .map((res: Response) => res.json())
+      //              .do(data => console.log('server data:', data))  // debug
+      .catch(this.handleError);
+  }
+
+  updateQuote(quote: Quote): Observable<Quote> {
+    return this.http.put(`http://localhost:9000/quotes/${quote.id}`, JSON.stringify(quote), this.options)
       .map((res: Response) => res.json())
       //              .do(data => console.log('server data:', data))  // debug
       .catch(this.handleError);

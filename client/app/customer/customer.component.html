@@ -14,14 +14,12 @@
       <thead class="thead-inverse">
         <tr>
           <th>Name</th>
-          <th>Salutation</th>
           <th>Email</th>
           <th>Direct phone</th>
           <th>Mobile phone</th>
           <th>Company</th>
           <th>Source</th>
           <th>Position</th>
-          <th>Is main contact</th>
           <th>Quotes</th>
           <th></th>
           <th></th>
@@ -35,14 +33,12 @@
       <tbody *ngIf="!isEditing">
         <tr *ngFor="let cust of customers">
           <td>{{cust.customer.name}}</td>
-          <td>{{cust.customer.salutation}}</td>
           <td>{{cust.customer.email}}</td>
           <td>{{cust.customer.directPhone}}</td>
           <td>{{cust.customer.mobilePhone}}</td>
           <td>{{cust.company.name}}</td>
           <td>{{cust.customer.source}}</td>
           <td>{{cust.customer.position}}</td>
-          <td>{{cust.customer.isMainContact}}</td>
           <td><a [routerLink]="['/enquiries']" [queryParams]="{e:cust.company.email}" routerLinkActive="active">Quotes</a></td>
           <td><button class="btn btn-sm btn-warning" (click)="enableEditing(cust)"><i class="fa fa-pencil"></i> Edit</button></td>
             <td><button class="btn btn-sm btn-danger" (click)="deleteCustomer(cust)"><i class="fa fa-trash"></i> Delete</button>

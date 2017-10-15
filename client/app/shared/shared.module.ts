@@ -6,24 +6,31 @@ import {PensWarehouseProductService} from "./asiproduct/penswarehouseproduct.ser
 import {ASIQuoteService} from "./asiquote/ASIQuote.service";
 
 import {ToastComponent} from "./toast/toast.component";
+import {BusyModule} from "angular2-busy";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
-   imports: [
-       BrowserModule,
-       FormsModule,
-       ReactiveFormsModule,
-       HttpModule
-   ],
-   exports: [
-       // Shared Modules
-       BrowserModule,
-       FormsModule,
-       ReactiveFormsModule,
-       HttpModule,
-       // Shared Components
-       ToastComponent
-   ],
-   declarations: [ToastComponent],
-   providers: [ToastComponent, PensWarehouseProductService, ASIQuoteService],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    BusyModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpModule
+  ],
+  exports: [
+    // Shared Modules
+    BrowserModule,
+    BrowserAnimationsModule,
+    BusyModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpModule,
+    // Shared Components
+    ToastComponent
+  ],
+  declarations: [ToastComponent],
+  providers: [ToastComponent, PensWarehouseProductService, ASIQuoteService],
 })
-export class SharedModule { }
+export class SharedModule {
+}
