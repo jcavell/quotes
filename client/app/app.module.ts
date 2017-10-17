@@ -16,6 +16,7 @@ import {UserService} from "./shared/user/user.service";
 import {EnquiriesModule} from "./enquiries/enquiries.module";
 import {QuotesModule} from "./quote/quotes.module";
 import {EditAddressModule} from "./address/editAddress.module";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {EditAddressModule} from "./address/editAddress.module";
     EnquiriesModule,
     QuotesModule,
     QuoteDocumentModule,
-    AuthModule
+    AuthModule,
+    NgbModule.forRoot(),
   ],
   providers: [
     CompanyService,

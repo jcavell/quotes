@@ -1,0 +1,36 @@
+<ng-template #content let-c="close" let-d="dismiss">
+
+  <div class="modal-header">
+    <h4 class="modal-title">Modal title</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+
+  <form class="form-inline">
+    <div class="form-group">
+      <div class="input-group">
+        <input class="form-control" type="text" name="name" [(ngModel)]="quote.title" placeholder="title">
+      </div>
+      <br>
+      <div class="input-group">
+        <input class="form-control" placeholder="yyyy-mm-dd"
+               name="requiredDate" [(ngModel)]="theDate" ngbDatepicker #dp="ngbDatepicker">
+        <button class="input-group-addon" (click)="dp.toggle()" type="button">
+          <img src="/assets/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-sm btn-outline-dark btn-warning" (click) = "updateQuote(quote)">Update quote</button>
+    <button type="button" class="btn btn-sm btn-outline-dark" (click)="c('Close click')">Close</button>
+  </div>
+
+</ng-template>
+
+<button type="button" class="btn btn-sm btn-primary"
+        (click)="open(content)"><i class="fa fa-edit"></i> Edit
+</button>

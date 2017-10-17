@@ -77,8 +77,8 @@ export class GazProductService {
   }
 
 
-  getProduct(internalProductId: number): Observable<GazProduct> {
-    return this.http.get(`http://localhost:9000/gazproduct/${internalProductId}`)
+  getProduct(productId: number): Observable<GazProduct> {
+    return this.http.get(`http://localhost:9000/gazproduct/${productId}`)
       .map((res: Response) => res.json())
       .catch(this.handleError);
   }

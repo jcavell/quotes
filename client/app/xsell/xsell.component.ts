@@ -43,7 +43,7 @@ export class XsellComponent implements OnInit {
   }
 
   addXsell() {
-    const xsell = new Xsell(0, parseInt(this.addXsellForm.value.productId, 10));
+    const xsell = new Xsell(0, parseInt(this.addXsellForm.value.sku, 10));
     this.xsellservice.addXsell(xsell).subscribe(
       res => {
         const newXsell = res.json();
@@ -69,7 +69,7 @@ export class XsellComponent implements OnInit {
   }
 
   editXsell(xsell) {
-    xsell.productId = parseInt(xsell.productId, 10);
+    xsell.sku = parseInt(xsell.sku, 10);
     this.xsellservice.editXsell(xsell).subscribe(
       res => {
         this.isEditing = false;

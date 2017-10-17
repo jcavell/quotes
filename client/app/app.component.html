@@ -1,7 +1,6 @@
 <div class="container-fluid">
 
-  <nav class="navbar navbar-dark bg-primary">
-    <div class="nav navbar-nav">
+  <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
 
       <a routerLink="/users" class="nav-item nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
         <i class="fa fa-user"></i> Users</a>
@@ -25,7 +24,7 @@
       <!--</a>-->
       <button class="btn btn-primary btn-margin" (click)="auth.login()" *ngIf="!auth.authenticated()">Log In</button>
       <button class="btn btn-primary btn-margin" (click)="auth.logout()" *ngIf="auth.authenticated()">Log Out</button>
-    </div>
+
   </nav>
 
   <router-outlet></router-outlet>

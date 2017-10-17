@@ -34,7 +34,7 @@ export class SelectedEnquiryComponent implements OnInit, OnDestroy {
 
   openSearchModal() {
     return this.modal.open(ASIProductComponent, overlayConfigFactory({
-      productId: this.enquiry.internalProductId,
+      productId: this.enquiry.productId,
       quantity: this.enquiry.quantity,
     }, BSModalContext));
   }
@@ -76,7 +76,7 @@ export class SelectedEnquiryComponent implements OnInit, OnDestroy {
   setSelectedEnquiry(enquiry: Enquiry): boolean {
     this.enquiry = enquiry;
 
-   this.gazProductService.getProduct(enquiry.internalProductId).subscribe(
+   this.gazProductService.getProduct(enquiry.productId).subscribe(
       product => {
         this.products = [product];
       }

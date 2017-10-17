@@ -1,14 +1,12 @@
 <ng-container *ngIf="!isEditing && quoteRecord">
   <div class="card">
-    <h4 class="card-header">Quote</h4>
+
     <div class="card-block">
 
       <h4>Details
-
-        <button type="button" class="btn btn-sm btn-primary"
-                (click)="openEditQuoteModal(quoteRecord.quote)"><i class="fa fa-edit"></i> Edit
-        </button>
+        <edit-quote [quote]="quoteRecord.quote"></edit-quote>
       </h4>
+
       <table class="table table-responsive table-bordered">
         <thead class="thead-default">
         <tr>
@@ -23,7 +21,26 @@
           <td>{{quoteRecord.quote.id}}</td>
           <td>{{quoteRecord.quote.title}}</td>
           <td>{{quoteRecord.quote.createdDate | date: 'EE dd/MM/yyyy'}}</td>
-          <td>{{quoteRecord.quote.dateRequired | date: 'EE dd/MM/yyyy'}}</td>
+          <td>{{quoteRecord.quote.requiredDate | date: 'EE dd/MM/yyyy'}}</td>
+        </tr>
+        </tbody>
+      </table>
+
+      <h4>Company
+
+        <button type="button" class="btn btn-sm btn-primary"
+                (click)="openEditQuoteModal(quoteRecord.quote)"><i class="fa fa-edit"></i> Edit
+        </button>
+      </h4>
+      <table class="table table-responsive table-bordered">
+        <thead class="thead-default">
+        <tr>
+          <th>Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>{{quoteRecord.quote.companyName}}</td>
         </tr>
         </tbody>
       </table>
@@ -38,18 +55,18 @@
       <table class="table table-responsive table-bordered">
         <thead class="thead-default">
         <tr>
-          <th>Company</th>
-          <th>Customer</th>
+          <th>Name</th>
           <th>Email</th>
+          <th>Direct</th>
           <th>Mobile</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-          <td>{{quoteRecord.company.name}}</td>
-          <td>{{quoteRecord.customer.name}}</td>
-          <td>{{quoteRecord.customer.email}}</td>
-          <td>{{quoteRecord.customer.mobileTelephone}}</td>
+          <td>{{quoteRecord.quote.customerName}}</td>
+          <td>{{quoteRecord.quote.customerEmail}}</td>
+          <td>{{quoteRecord.quote.customerDirectPhone}}</td>
+          <td>{{quoteRecord.quote.customerMobilePhone}}</td>
         </tr>
         </tbody>
       </table>

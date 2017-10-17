@@ -17,10 +17,15 @@ export class QuoteMeta {
 export class Quote {
   constructor(public id: number,
               public title: string,
-              public dateRequired: string,
+              public requiredDate: string,
+              public specialInstructions: string,
+              public companyName: string,
               public customerName: string,
               public customerEmail: string,
+              public customerDirectPhone: string,
+              public customerMobilePhone: string,
               public createdDate: string,
+              public notes: string,
               public active: boolean) {
   }
 }
