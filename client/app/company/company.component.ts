@@ -43,7 +43,7 @@ export class CompanyComponent implements OnInit {
   }
 
   addCompany() {
-    const company = new Company(0, this.addCompanyForm.value.name);
+    const company = new Company(0, this.addCompanyForm.value.name, "", "", "", "", "", "", "", "", true);
     this.companyService.addCompany(company).subscribe(
       res => {
         const newcompany = res.json();

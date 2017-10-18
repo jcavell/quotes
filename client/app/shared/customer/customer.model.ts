@@ -11,7 +11,11 @@ export class Customer {
               public facebook: string,
               public linkedIn: string,
               public skype: string,
-              public companyId: number
+              public companyId: number,
+              public repId: number,
+              public invoiceAddressId: number,
+              public deliveryAddressId: number,
+              public active: boolean
   ) {
 
   }

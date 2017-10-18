@@ -100,7 +100,11 @@ export class CustomerComponent implements OnInit {
       this.addCustomerForm.value.facebook,
       this.addCustomerForm.value.linkedIn,
       this.addCustomerForm.value.skype,
-      parseInt(this.addCustomerForm.value.companyId, 10)
+      parseInt(this.addCustomerForm.value.companyId, 10),
+      null, // repId
+      null, // invoiceaddressId
+      null, // deliveryAddressId
+      true // active
     );
     this.customerService.addCustomer(customer).subscribe(
       res => {
