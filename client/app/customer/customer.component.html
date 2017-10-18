@@ -37,7 +37,7 @@
           <td>{{cust.company.name}}</td>
           <td>{{cust.customer.source}}</td>
           <td>{{cust.customer.position}}</td>
-         <td><edit-customer [customer]="cust.customer" [company]="cust.company" [invoiceAddress]="cust.invoiceAddress" [deliveryAddress] = "cust.deliveryAddress"></edit-customer></td>
+         <td><edit-customer [customerRecord]="cust"></edit-customer></td>
             <td><button class="btn btn-sm btn-danger" (click)="deleteCustomer(cust)"><i class="fa fa-trash"></i> Delete</button>
           </td>
         </tr>

@@ -12,6 +12,7 @@ import {CustomerService} from "../shared/customer/customer.service";
 import _ from "lodash";
 import {Address} from "../shared/address/address.model";
 import {AddressService} from "../shared/address/address.service";
+import {CustomerRecord} from "../shared/customer/customerRecord.model";
 
 
 @Component({
@@ -20,10 +21,7 @@ import {AddressService} from "../shared/address/address.service";
 })
 export class EditCustomerComponent implements OnInit {
   private modalRef: NgbModalRef;
-  @Input() customer: Customer;
-  @Input() company: Company;
-  @Input() invoiceAddress: Address;
-  @Input() deliveryAddress: Address;
+  @Input() customerRecord: CustomerRecord;
 
   customerEdited: Customer;
   companyEdited: Company;
@@ -43,10 +41,10 @@ export class EditCustomerComponent implements OnInit {
 
   ngOnInit() {
     this.getCompanies();
-    this.companyEdited = _.clone(this.company);
-    this.customerEdited = _.clone(this.customer);
-    this.invoiceAddressEdited = _.clone(this.invoiceAddress);
-    this.deliveryAddressEdited = _.clone(this.deliveryAddress);
+    this.companyEdited = _.clone(this.customerRecord.company);
+    this.customerEdited = _.clone(this.customerRecord.customer);
+    this.invoiceAddressEdited = _.clone(this.customerRecord.invoiceAddress);
+    this.deliveryAddressEdited = _.clone(this.customerRecord.deliveryAddress);
   }
 
   search = (text$: Observable<string>) =>
@@ -72,34 +70,21 @@ export class EditCustomerComponent implements OnInit {
       );
   }
   updateAddresses() {
-    if (!_.isEqual(this.invoiceAddress, this.invoiceAddressEdited)) {
+    if (!_.isEqual(this.customerRecord.invoiceAddress, this.invoiceAddressEdited)) {
       this.updateAddress(this.invoiceAddressEdited);
       this.customerEdited.invoiceAddressId = this.invoiceAddressEdited.id;
     }
-    if (!_.isEqual(this.deliveryAddress, this.deliveryAddressEdited)) {
+    if (!_.isEqual(this.customerRecord.deliveryAddress, this.deliveryAddressEdited)) {
       this.updateAddress(this.deliveryAddressEdited);
       this.customerEdited.deliveryAddressId = this.deliveryAddressEdited.id;
     }
   }
   updateCustomer() {
-    if (!_.isEqual(this.customer, this.customerEdited)) {
+    if (!_.isEqual(this.customerRecord.customer, this.customerEdited)) {
       this.customerService.editCustomer(this.customerEdited).subscribe(
         res => {
-          this.company.name = this.companyEdited.name;
-          this.customer.id = this.customerEdited.id;
-          this.customer.name = this.customerEdited.name;
-          this.customer.email = this.customerEdited.email;
-          this.customer.directPhone = this.customerEdited.directPhone;
-          this.customer.mobilePhone = this.customerEdited.mobilePhone;
-          this.customer.source = this.customerEdited.source;
-          this.customer.position = this.customerEdited.position;
-          this.customer.isMainContact = this.customerEdited.isMainContact;
-          this.customer.twitter = this.customerEdited.twitter;
-          this.customer.facebook = this.customerEdited.facebook;
-          this.customer.linkedIn = this.customerEdited.linkedIn;
-          this.customer.skype = this.customerEdited.skype;
-          this.customer.companyId = this.customerEdited.companyId;
-          this.customer.active = this.customerEdited.active;
+          this.customerRecord.company = this.companyEdited;
+          this.customerRecord.customer = this.customerEdited;
         },
         error => console.log('ERROR')
       );
@@ -108,7 +93,7 @@ export class EditCustomerComponent implements OnInit {
 
 
   updateCompany() {
-    if (!_.isEqual(this.company, this.companyEdited)) {
+    if (!_.isEqual(this.customerRecord.company, this.companyEdited)) {
       this.companyService.editCompany(this.companyEdited).subscribe(
         res => {
           this.customerEdited.companyId = this.companyEdited.id;
