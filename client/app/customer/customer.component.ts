@@ -16,19 +16,16 @@ export class CustomerComponent implements OnInit {
 
   customers = [];
   companies = [];
-  handlers = [];
 
   isLoading = true;
 
   customer = {};
-  customerHandler = {};
 
   isEditing = false;
 
   addCustomerForm: FormGroup;
 
   name = new FormControl('', Validators.minLength(2));
-  salutation = new FormControl('');
   email = new FormControl('', Validators.minLength(6));
   directPhone = new FormControl('');
   mobilePhone = new FormControl('', Validators.minLength(8));
@@ -39,7 +36,6 @@ export class CustomerComponent implements OnInit {
   facebook = new FormControl('');
   linkedIn = new FormControl('');
   skype = new FormControl('');
-  handlerId = new FormControl('', Validators.pattern('\\d+'));
   companyId = new FormControl('', Validators.pattern('\\d+'));
 
   constructor(private http: Http,
@@ -53,12 +49,10 @@ export class CustomerComponent implements OnInit {
   ngOnInit() {
     this.getCustomers();
     this.getCompanies();
-    this.getHandlers();
 
 
     this.addCustomerForm = this.formBuilder.group({
       name: this.name,
-      salutation: this.salutation,
       email: this.email,
       directPhone: this.directPhone,
       mobilePhone: this.mobilePhone,
@@ -69,7 +63,6 @@ export class CustomerComponent implements OnInit {
       facebook: this.facebook,
       linkedIn: this.linkedIn,
       skype: this.skype,
-      handlerId: this.handlerId,
       companyId: this.companyId
     });
   }
@@ -93,22 +86,10 @@ export class CustomerComponent implements OnInit {
     );
   }
 
-  getHandlers() {
-    this.userService.getUsers().subscribe(
-      data => {
-        this.handlers = data;
-        this.handlers.unshift({'id': '', 'name': 'handler'});
-      },
-      error => console.log(error),
-      () => this.isLoading = false
-    );
-  }
-
   addCustomer() {
     const customer = new Customer(
       0,
       this.addCustomerForm.value.name,
-      this.addCustomerForm.value.salutation,
       this.addCustomerForm.value.email,
       this.addCustomerForm.value.directPhone,
       this.addCustomerForm.value.mobilePhone,
@@ -119,7 +100,6 @@ export class CustomerComponent implements OnInit {
       this.addCustomerForm.value.facebook,
       this.addCustomerForm.value.linkedIn,
       this.addCustomerForm.value.skype,
-      parseInt(this.addCustomerForm.value.handlerId, 10),
       parseInt(this.addCustomerForm.value.companyId, 10)
     );
     this.customerService.addCustomer(customer).subscribe(
@@ -146,21 +126,21 @@ export class CustomerComponent implements OnInit {
     this.getCustomers();
   }
 
-  editCustomer(customerCompanyHandler) {
-    this.customerService.editCustomer(customerCompanyHandler.cust).subscribe(
-      res => {
-        this.isEditing = false;
-        this.customer = customerCompanyHandler;
-        const companyIndex = this.companies.map(elem => {
-          return elem.id;
-        }).indexOf(customerCompanyHandler.cust.companyId)
-        const companyName = this.companies[companyIndex].name;
-        customerCompanyHandler.company.name = companyName;
-        this.toast.setMessage('item edited successfully.', 'success');
-      },
-      error => this.toast.setMessage('Error editing customer: ' + JSON.stringify(error).substr(0, 200), 'danger')
-    );
-  }
+  // editCustomer(customerCompanyHandler) {
+  //   this.customerService.editCustomer(customerCompanyHandler.cust).subscribe(
+  //     res => {
+  //       this.isEditing = false;
+  //       this.customer = customerCompanyHandler;
+  //       const companyIndex = this.companies.map(elem => {
+  //         return elem.id;
+  //       }).indexOf(customerCompanyHandler.cust.companyId)
+  //       const companyName = this.companies[companyIndex].name;
+  //       customerCompanyHandler.company.name = companyName;
+  //       this.toast.setMessage('item edited successfully.', 'success');
+  //     },
+  //     error => this.toast.setMessage('Error editing customer: ' + JSON.stringify(error).substr(0, 200), 'danger')
+  //   );
+  // }
 
   deleteCustomer(customer) {
     if (window.confirm('Are you sure you want to permanently delete this item?')) {

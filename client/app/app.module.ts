@@ -7,22 +7,18 @@ import {QuoteDocumentModule} from "./quote-document/quoteDocument.module";
 import {AuthModule} from "./shared/auth/auth.module";
 import {routing} from "./app-routes";
 import {XsellComponent} from "./xsell/xsell.component";
-import {CompanyComponent} from "./company/company.component";
-import {CompanyService} from "./shared/company/company.service";
-import {CustomerComponent} from "./customer/customer.component";
-import {CustomerService} from "./shared/customer/customer.service";
 import {UserComponent} from "./user/user.component";
 import {UserService} from "./shared/user/user.service";
 import {EnquiriesModule} from "./enquiries/enquiries.module";
 import {QuotesModule} from "./quote/quotes.module";
 import {EditAddressModule} from "./address/editAddress.module";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {CompanyModule} from "./company/company.module";
+import {CustomerModule} from "./customer/customer.module";
 
 @NgModule({
   declarations: [
     AppComponent,
-    CompanyComponent,
-    CustomerComponent,
     XsellComponent,
     UserComponent
   ],
@@ -34,12 +30,12 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
     EnquiriesModule,
     QuotesModule,
     QuoteDocumentModule,
+    CompanyModule,
+    CustomerModule,
     AuthModule,
     NgbModule.forRoot(),
   ],
   providers: [
-    CompanyService,
-    CustomerService,
     XsellService,
     UserService
   ],

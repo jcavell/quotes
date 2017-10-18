@@ -1,0 +1,114 @@
+<ng-template #content let-c="close" let-d="dismiss">
+
+  <div class="modal-header">
+    <h4 class="modal-title">Edit Customer</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+  <form class="form-inline" #form="ngForm" (ngSubmit)="updateCustomer()" style="display:inline">
+  <div class="form-group row">
+    <label for="company-text-input" class="col-4 col-form-label">Company</label>
+    <div class="col-8">
+      <input name = "company" id="company-text-input" type="text" class="form-control" [(ngModel)]="companyEdited"
+             [ngbTypeahead]="search"
+             [inputFormatter]="resultFormatter" [resultFormatter]="resultFormatter"/>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="name-text-input" class="col-4 col-form-label">Name</label>
+    <div class="col-8">
+      <input class="form-control" type="text" name="name" [(ngModel)]="customerEdited.name" placeholder="name" id="name-text-input">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="email-text-input" class="col-4 col-form-label">Email</label>
+    <div class="col-8">
+      <input class="form-control" type="text" name="email" [(ngModel)]="customerEdited.email" placeholder="email" id="email-text-input">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="directPhone-text-input" class="col-4 col-form-label">Direct Phone</label>
+    <div class="col-8">
+      <input class="form-control" type="text" name="directPhone" [(ngModel)]="customerEdited.directPhone" placeholder="directPhone" id="directPhone-text-input">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="mobilePhone-text-input" class="col-4 col-form-label">Mobile</label>
+    <div class="col-8">
+      <input class="form-control" type="text" name="mobilePhone" [(ngModel)]="customerEdited.mobilePhone" placeholder="mobilePhone" id="mobilePhone-text-input">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="source-text-input" class="col-4 col-form-label">Source</label>
+    <div class="col-8">
+      <input class="form-control" type="text" name="source" [(ngModel)]="customerEdited.source" placeholder="source" id="source-text-input">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="position-text-input" class="col-4 col-form-label">Position</label>
+    <div class="col-8">
+      <input class="form-control" type="text" name="position" [(ngModel)]="customerEdited.position" placeholder="position" id="position-text-input">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="twitter-text-input" class="col-4 col-form-label">Twitter</label>
+    <div class="col-8">
+      <input class="form-control" type="text" name="twitter" [(ngModel)]="customerEdited.twitter" placeholder="twitter" id="twitter-text-input">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="facebook-text-input" class="col-4 col-form-label">Facebook</label>
+    <div class="col-8">
+      <input class="form-control" type="text" name="facebook" [(ngModel)]="customerEdited.facebook" placeholder="facebook" id="facebook-text-input">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="linkedIn-text-input" class="col-4 col-form-label">LinkedIn</label>
+    <div class="col-8">
+      <input class="form-control" type="text" name="linkedIn" [(ngModel)]="customerEdited.linkedIn" placeholder="linkedIn" id="linkedIn-text-input">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="skype-text-input" class="col-4 col-form-label">Skype</label>
+    <div class="col-8">
+      <input class="form-control" type="text" name="skype" [(ngModel)]="customerEdited.skype" placeholder="skype" id="skype-text-input">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="isMainContact-text-input" class="col-4 col-form-label">Is main contact?</label>
+    <div class="col-8">
+      <input class="form-control" type="checkbox" name="mobile" [(checked)]="customerEdited.isMainContact"
+             placeholder="isMainContact" id = "isMainContact-text-input">
+    </div>
+  </div>
+
+
+
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-sm btn-outline-dark btn-warning" [disabled]="!form.form.valid">Update
+        customer
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-dark" (click)="c('Close click')">Close</button>
+    </div>
+
+  </form>
+  </div>
+</ng-template>
+
+<button type="button" class="btn btn-sm btn-primary"
+        (click)="open(content)"><i class="fa fa-edit"></i> Edit
+</button>

@@ -11,7 +11,7 @@
   <h4 class="card-header">Current customers ({{customers.length}})</h4>
   <div class="card-block">
     <table class="table table-bordered table-striped">
-      <thead class="thead-inverse">
+      <thead class="thead-default">
         <tr>
           <th>Name</th>
           <th>Email</th>
@@ -20,9 +20,7 @@
           <th>Company</th>
           <th>Source</th>
           <th>Position</th>
-          <th>Quotes</th>
-          <th></th>
-          <th></th>
+          <th colspan="2">Action</th>
         </tr>
       </thead>
       <tbody *ngIf="customers.length === 0">
@@ -39,8 +37,7 @@
           <td>{{cust.company.name}}</td>
           <td>{{cust.customer.source}}</td>
           <td>{{cust.customer.position}}</td>
-          <td><a [routerLink]="['/enquiries']" [queryParams]="{e:cust.company.email}" routerLinkActive="active">Quotes</a></td>
-          <td><button class="btn btn-sm btn-warning" (click)="enableEditing(cust)"><i class="fa fa-pencil"></i> Edit</button></td>
+         <td><edit-customer [customer]="cust.customer" [company]="cust.company"></edit-customer></td>
             <td><button class="btn btn-sm btn-danger" (click)="deleteCustomer(cust)"><i class="fa fa-trash"></i> Delete</button>
           </td>
         </tr>
@@ -51,9 +48,6 @@
             <form class="form-inline" #form="ngForm" (ngSubmit)="editCustomer(cust)" style="display:inline">
               <div class="form-group">
                 <input class="form-control" type="text" name="name" [(ngModel)]="customer.customer.name" placeholder="name" required>
-              </div>
-              <div class="form-group">
-                <input class="form-control" type="text" name="salutation" [(ngModel)]="customer.customer.salutation" placeholder="salutation">
               </div>
               <div class="form-group">
                 <input class="form-control" type="text" name="email" [(ngModel)]="customer.customer.email" placeholder="email" required>
@@ -90,11 +84,6 @@
                   <option *ngFor="let c of companies" [ngValue]="c.id">{{c.name}}</option>
                 </select>
               </div>
-              <div class="form-group">
-                <select class="form-control" name="handlerId" [(ngModel)]="customer.customer.handlerId" placeholder="handlerId">
-                  <option *ngFor="let h of handlers" [ngValue]="h.id">{{h.name}}</option>
-                </select>
-              </div>
               <button class="btn btn-sm btn-primary" type="submit" [disabled]="!form.form.valid"><i class="fa fa-floppy-o"></i> Save</button>
             </form>
             <button class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button>
@@ -113,9 +102,6 @@
           <input class="form-control" type="text" name="name" formControlName="name" placeholder="name">
       </div>
       <div class="form-group">
-        <input class="form-control" type="text" name="salutation" formControlName="salutation" placeholder="salutation">
-      </div>
-      <div class="form-group">
         <input class="form-control" type="text" name="email" formControlName="email" placeholder="email">
       </div>
       <div class="form-group">
@@ -131,11 +117,6 @@
       <div class="form-group">
         <select class="form-control" name="companyId" formControlName="companyId" placeholder="companyId">
           <option *ngFor="let c of companies" [ngValue]="c.id">{{c.name}}</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <select class="form-control" name="handlerId" formControlName="handlerId" placeholder="handlerId">
-          <option *ngFor="let h of handlers" [ngValue]="h.id">{{h.name}}</option>
         </select>
       </div>
       <button class="btn btn-primary" type="submit" [disabled]="!addCustomerForm.valid"><i class="fa fa-floppy-o"></i> Add</button>

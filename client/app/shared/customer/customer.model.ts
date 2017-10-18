@@ -1,7 +1,6 @@
 export class Customer {
   constructor(public id: number,
               public name: string,
-              public salutation: string,
               public email: string,
               public directPhone: string,
               public mobilePhone: string,
@@ -12,7 +11,6 @@ export class Customer {
               public facebook: string,
               public linkedIn: string,
               public skype: string,
-              public handlerId: number,
               public companyId: number
   ) {
 
