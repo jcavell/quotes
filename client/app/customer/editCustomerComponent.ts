@@ -23,10 +23,10 @@ export class EditCustomerComponent implements OnInit {
   private modalRef: NgbModalRef;
   @Input() customerRecord: CustomerRecord;
 
-  customerEdited: Customer;
-  companyEdited: Company;
-  invoiceAddressEdited: Address;
-  deliveryAddressEdited: Address;
+  customer: Customer;
+  company: Company;
+  invoiceAddress: Address;
+  deliveryAddress: Address;
 
   updateMessage = 'Editing of customer cancelled';
 
@@ -41,10 +41,10 @@ export class EditCustomerComponent implements OnInit {
 
   ngOnInit() {
     this.getCompanies();
-    this.companyEdited = _.clone(this.customerRecord.company);
-    this.customerEdited = _.clone(this.customerRecord.customer);
-    this.invoiceAddressEdited = _.clone(this.customerRecord.invoiceAddress);
-    this.deliveryAddressEdited = _.clone(this.customerRecord.deliveryAddress);
+    this.company = _.clone(this.customerRecord.company);
+    this.customer = _.clone(this.customerRecord.customer);
+    this.invoiceAddress = _.clone(this.customerRecord.invoiceAddress);
+    this.deliveryAddress = _.clone(this.customerRecord.deliveryAddress);
   }
 
   search = (text$: Observable<string>) =>
@@ -61,53 +61,96 @@ export class EditCustomerComponent implements OnInit {
   }
 
 
-  updateAddress(address: Address) {
-      this.addressService.updateAddress(address).subscribe(
+  updateInvoiceAddress(): Observable<Address>  {
+    const addressObserver = Observable.of(this.invoiceAddress);
+    if (!_.isEqual(this.customerRecord.invoiceAddress, this.invoiceAddress)) {
+      this.addressService.updateAddress(this.invoiceAddress).subscribe(
         res => {
-          // don't do anything much
+          //
         },
-        error => console.log('ERROR')
-      );
-  }
-  updateAddresses() {
-    if (!_.isEqual(this.customerRecord.invoiceAddress, this.invoiceAddressEdited)) {
-      this.updateAddress(this.invoiceAddressEdited);
-      this.customerEdited.invoiceAddressId = this.invoiceAddressEdited.id;
-    }
-    if (!_.isEqual(this.customerRecord.deliveryAddress, this.deliveryAddressEdited)) {
-      this.updateAddress(this.deliveryAddressEdited);
-      this.customerEdited.deliveryAddressId = this.deliveryAddressEdited.id;
-    }
-  }
-  updateCustomer() {
-    if (!_.isEqual(this.customerRecord.customer, this.customerEdited)) {
-      this.customerService.editCustomer(this.customerEdited).subscribe(
-        res => {
-          this.customerRecord.company = this.companyEdited;
-          this.customerRecord.customer = this.customerEdited;
-        },
-        error => console.log('ERROR')
+        error => Observable.throw(new Error('Could not update invoice address: ' + JSON.stringify(error)))
       );
     }
+    return addressObserver;
+  }
+
+  updateDeliveryAddress(): Observable<Address>  {
+    const addressObserver = Observable.of(this.deliveryAddress);
+    if (!_.isEqual(this.customerRecord.deliveryAddress, this.deliveryAddress)) {
+      this.addressService.updateAddress(this.deliveryAddress).subscribe(
+        res => {
+          this.customer.deliveryAddressId = this.deliveryAddress.id;
+        },
+        error => Observable.throw(new Error('Could not update delivery address: ' + JSON.stringify(error)))
+      );
+    }
+    return addressObserver;
+  }
+
+  updateCustomer(): Observable<Customer> {
+    const customerObserver = Observable.of(this.customer);
+    if (
+      !_.isEqual(this.customerRecord.customer, this.customer) ||
+      !_.isEqual(this.customerRecord.invoiceAddress, this.invoiceAddress) ||
+      !_.isEqual(this.customerRecord.deliveryAddress, this.deliveryAddress) ||
+      !_.isEqual(this.customerRecord.company, this.company)
+    ) {
+      console.log('Updating customer to: ' + JSON.stringify(this.customer));
+      this.customerService.editCustomer(this.customer).subscribe(
+        res => {
+          this.customerRecord.customer = _.clone(this.customer);
+        },
+        error => Observable.throw(new Error('Could not update customer: ' + JSON.stringify(error)))
+      );
+    }
+    return customerObserver;
   }
 
 
-  updateCompany() {
-    if (!_.isEqual(this.customerRecord.company, this.companyEdited)) {
-      this.companyService.editCompany(this.companyEdited).subscribe(
+  updateCompany(): Observable<Company> {
+    const companyObserver = Observable.of(this.company);
+    if (!_.isEqual(this.customerRecord.company, this.company)) {
+      console.log('Updating company to: ' + JSON.stringify(this.company));
+      this.companyService.editCompany(this.company).subscribe(
         res => {
-          this.customerEdited.companyId = this.companyEdited.id;
         },
-        error => console.log('ERROR')
+        error => Observable.throw(new Error('Could not update company: ' + JSON.stringify(error)))
       );
     }
+    return companyObserver;
   }
 
   updateAll() {
-    // TODO - do sequentially
-    this.updateCompany();
-    this.updateAddresses();
-    this.updateCustomer();
+    // TODO should these be nested?
+    this.updateCompany().subscribe(
+      res => {
+        this.customer.companyId = this.company.id;
+        this.customerRecord.company = this.company;
+      },
+      error => console.log((JSON.stringify(error)))
+    );
+
+    this.updateInvoiceAddress().subscribe(
+      res => {
+        this.customer.invoiceAddressId = this.invoiceAddress.id;
+      },
+      error => console.log((JSON.stringify(error)))
+    );
+
+    this.updateDeliveryAddress().subscribe(
+      res => {
+        this.customer.deliveryAddressId = this.deliveryAddress.id;
+      },
+      error => console.log((JSON.stringify(error)))
+    );
+
+    this.updateCustomer().subscribe(
+      res => {
+        console.log('Customer updated');
+      },
+      error => console.log((JSON.stringify(error)))
+    );
+
 
     this.updateMessage = 'Customer updated';
     this.modalRef.close();

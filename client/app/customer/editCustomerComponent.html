@@ -19,77 +19,77 @@
         <div class="form-group row">
     <label for="name-text-input" class="col-4 col-form-label">Name</label>
     <div class="col-8">
-      <input class="form-control" type="text" name="name" [(ngModel)]="customerEdited.name" placeholder="name" id="name-text-input">
+      <input class="form-control" type="text" name="name" [(ngModel)]="customer.name" placeholder="name" id="name-text-input">
     </div>
   </div>
 
   <div class="form-group row">
     <label for="email-text-input" class="col-4 col-form-label">Email</label>
     <div class="col-8">
-      <input class="form-control" type="text" name="email" [(ngModel)]="customerEdited.email" placeholder="email" id="email-text-input">
+      <input class="form-control" type="text" name="email" [(ngModel)]="customer.email" placeholder="email" id="email-text-input">
     </div>
   </div>
 
   <div class="form-group row">
     <label for="directPhone-text-input" class="col-4 col-form-label">Direct Phone</label>
     <div class="col-8">
-      <input class="form-control" type="text" name="directPhone" [(ngModel)]="customerEdited.directPhone" placeholder="directPhone" id="directPhone-text-input">
+      <input class="form-control" type="text" name="directPhone" [(ngModel)]="customer.directPhone" placeholder="directPhone" id="directPhone-text-input">
     </div>
   </div>
 
   <div class="form-group row">
     <label for="mobilePhone-text-input" class="col-4 col-form-label">Mobile</label>
     <div class="col-8">
-      <input class="form-control" type="text" name="mobilePhone" [(ngModel)]="customerEdited.mobilePhone" placeholder="mobilePhone" id="mobilePhone-text-input">
+      <input class="form-control" type="text" name="mobilePhone" [(ngModel)]="customer.mobilePhone" placeholder="mobilePhone" id="mobilePhone-text-input">
     </div>
   </div>
 
   <div class="form-group row">
     <label for="source-text-input" class="col-4 col-form-label">Source</label>
     <div class="col-8">
-      <input class="form-control" type="text" name="source" [(ngModel)]="customerEdited.source" placeholder="source" id="source-text-input">
+      <input class="form-control" type="text" name="source" [(ngModel)]="customer.source" placeholder="source" id="source-text-input">
     </div>
   </div>
 
   <div class="form-group row">
     <label for="position-text-input" class="col-4 col-form-label">Position</label>
     <div class="col-8">
-      <input class="form-control" type="text" name="position" [(ngModel)]="customerEdited.position" placeholder="position" id="position-text-input">
+      <input class="form-control" type="text" name="position" [(ngModel)]="customer.position" placeholder="position" id="position-text-input">
     </div>
   </div>
 
   <div class="form-group row">
     <label for="twitter-text-input" class="col-4 col-form-label">Twitter</label>
     <div class="col-8">
-      <input class="form-control" type="text" name="twitter" [(ngModel)]="customerEdited.twitter" placeholder="twitter" id="twitter-text-input">
+      <input class="form-control" type="text" name="twitter" [(ngModel)]="customer.twitter" placeholder="twitter" id="twitter-text-input">
     </div>
   </div>
 
   <div class="form-group row">
     <label for="facebook-text-input" class="col-4 col-form-label">Facebook</label>
     <div class="col-8">
-      <input class="form-control" type="text" name="facebook" [(ngModel)]="customerEdited.facebook" placeholder="facebook" id="facebook-text-input">
+      <input class="form-control" type="text" name="facebook" [(ngModel)]="customer.facebook" placeholder="facebook" id="facebook-text-input">
     </div>
   </div>
 
   <div class="form-group row">
     <label for="linkedIn-text-input" class="col-4 col-form-label">LinkedIn</label>
     <div class="col-8">
-      <input class="form-control" type="text" name="linkedIn" [(ngModel)]="customerEdited.linkedIn" placeholder="linkedIn" id="linkedIn-text-input">
+      <input class="form-control" type="text" name="linkedIn" [(ngModel)]="customer.linkedIn" placeholder="linkedIn" id="linkedIn-text-input">
     </div>
   </div>
 
   <div class="form-group row">
     <label for="skype-text-input" class="col-4 col-form-label">Skype</label>
     <div class="col-8">
-      <input class="form-control" type="text" name="skype" [(ngModel)]="customerEdited.skype" placeholder="skype" id="skype-text-input">
+      <input class="form-control" type="text" name="skype" [(ngModel)]="customer.skype" placeholder="skype" id="skype-text-input">
     </div>
   </div>
 
   <div class="form-group row">
     <label for="isMainContact-text-input" class="col-4 col-form-label">Main contact?</label>
     <div class="col-8">
-      <input class="form-control" type="checkbox" name="isMainContact" [(checked)]="customerEdited.isMainContact"
+      <input class="form-control" type="checkbox" name="isMainContact" [(checked)]="customer.isMainContact"
              placeholder="isMainContact" id = "isMainContact-text-input">
     </div>
   </div>
@@ -97,7 +97,7 @@
     <div class="form-group row">
       <label for="active-text-input" class="col-4 col-form-label">Active?</label>
       <div class="col-8">
-        <input class="form-control" type="checkbox" name="active" [(checked)]="customerEdited.active"
+        <input class="form-control" type="checkbox" name="active" [(checked)]="customer.active"
                placeholder="active" id = "active-text-input">
       </div>
     </div>
@@ -110,7 +110,7 @@
           <div class="form-group row">
             <label for="company-text-input" class="col-4 col-form-label">Name</label>
             <div class="col-8">
-              <input name = "company" id="company-text-input" type="text" class="form-control" [(ngModel)]="companyEdited"
+              <input name = "company" id="company-text-input" type="text" class="form-control" [(ngModel)]="company"
                      [ngbTypeahead]="search"
                      [inputFormatter]="resultFormatter" [resultFormatter]="resultFormatter"/>
             </div>
@@ -119,63 +119,63 @@
           <div class="form-group row">
             <label for="phone1-text-input" class="col-4 col-form-label">Phone1</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="phone1" [(ngModel)]="companyEdited.phone1" placeholder="phone1" id="phone1-text-input">
+              <input class="form-control" type="text" name="phone1" [(ngModel)]="company.phone1" placeholder="phone1" id="phone1-text-input">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="phone2-text-input" class="col-4 col-form-label">Phone2</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="phone2" [(ngModel)]="companyEdited.phone2" placeholder="phone2" id="phone2-text-input">
+              <input class="form-control" type="text" name="phone2" [(ngModel)]="company.phone2" placeholder="phone2" id="phone2-text-input">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="phone3-text-input" class="col-4 col-form-label">Phone3</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="phone3" [(ngModel)]="companyEdited.phone3" placeholder="phone3" id="phone3-text-input">
+              <input class="form-control" type="text" name="phone3" [(ngModel)]="company.phone3" placeholder="phone3" id="phone3-text-input">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="website-text-input" class="col-4 col-form-label">Website</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="website" [(ngModel)]="companyEdited.website" placeholder="website" id="website-text-input">
+              <input class="form-control" type="text" name="website" [(ngModel)]="company.website" placeholder="website" id="website-text-input">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="company-twitter-text-input" class="col-4 col-form-label">Twitter</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="twitter" [(ngModel)]="companyEdited.twitter" placeholder="twitter" id="company-twitter-text-input">
+              <input class="form-control" type="text" name="twitter" [(ngModel)]="company.twitter" placeholder="twitter" id="company-twitter-text-input">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="company-facebook-text-input" class="col-4 col-form-label">Facebook</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="facebook" [(ngModel)]="companyEdited.facebook" placeholder="facebook" id="company-facebook-text-input">
+              <input class="form-control" type="text" name="facebook" [(ngModel)]="company.facebook" placeholder="facebook" id="company-facebook-text-input">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="company-linkedIn-text-input" class="col-4 col-form-label">LinkedIn</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="linkedIn" [(ngModel)]="companyEdited.linkedIn" placeholder="linkedIn" id="company-linkedIn-text-input">
+              <input class="form-control" type="text" name="linkedIn" [(ngModel)]="company.linkedIn" placeholder="linkedIn" id="company-linkedIn-text-input">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="company-source-text-input" class="col-4 col-form-label">Source</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="source" [(ngModel)]="companyEdited.source" placeholder="source" id="company-source-text-input">
+              <input class="form-control" type="text" name="source" [(ngModel)]="company.source" placeholder="source" id="company-source-text-input">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="company-active-text-input" class="col-4 col-form-label">Active?</label>
             <div class="col-8">
-              <input class="form-control" type="checkbox" name="active" [(checked)]="companyEdited.active"
+              <input class="form-control" type="checkbox" name="active" [(checked)]="company.active"
                      placeholder="active" id = "company-active-text-input">
             </div>
           </div>
@@ -192,42 +192,42 @@
           <div class="form-group row">
             <label for="invoice-address-name-text-input" class="col-4 col-form-label">Name</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="name" [(ngModel)]="invoiceAddressEdited.name" placeholder="name" id="invoice-address-name-text-input">
+              <input class="form-control" type="text" name="name" [(ngModel)]="invoiceAddress.name" placeholder="name" id="invoice-address-name-text-input">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="invoice-address-company-text-input" class="col-4 col-form-label">Company</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="company" [(ngModel)]="invoiceAddressEdited.company" placeholder="company" id="invoice-address-company-text-input">
+              <input class="form-control" type="text" name="company" [(ngModel)]="invoiceAddress.company" placeholder="company" id="invoice-address-company-text-input">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="invoice-address-fao-text-input" class="col-4 col-form-label">Fao</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="fao" [(ngModel)]="invoiceAddressEdited.fao" placeholder="fao" id="invoice-address-fao-text-input">
+              <input class="form-control" type="text" name="fao" [(ngModel)]="invoiceAddress.fao" placeholder="fao" id="invoice-address-fao-text-input">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="invoice-address-line1-text-input" class="col-4 col-form-label">Line1</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="line1" [(ngModel)]="invoiceAddressEdited.line1" placeholder="line1" id="invoice-address-line1-text-input">
+              <input class="form-control" type="text" name="line1" [(ngModel)]="invoiceAddress.line1" placeholder="line1" id="invoice-address-line1-text-input">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="invoice-address-line2-text-input" class="col-4 col-form-label">Line2</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="line2" [(ngModel)]="invoiceAddressEdited.line2" placeholder="line2" id="invoice-address-line2-text-input">
+              <input class="form-control" type="text" name="line2" [(ngModel)]="invoiceAddress.line2" placeholder="line2" id="invoice-address-line2-text-input">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="invoice-address-line3-text-input" class="col-4 col-form-label">Line3</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="line3" [(ngModel)]="invoiceAddressEdited.line3" placeholder="line3" id="invoice-address-line3-text-input">
+              <input class="form-control" type="text" name="line3" [(ngModel)]="invoiceAddress.line3" placeholder="line3" id="invoice-address-line3-text-input">
             </div>
           </div>
 
@@ -235,28 +235,28 @@
           <div class="form-group row">
             <label for="invoice-address-townCity-text-input" class="col-4 col-form-label">TownCity</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="townCity" [(ngModel)]="invoiceAddressEdited.townCity" placeholder="townCity" id="invoice-address-townCity-text-input">
+              <input class="form-control" type="text" name="townCity" [(ngModel)]="invoiceAddress.townCity" placeholder="townCity" id="invoice-address-townCity-text-input">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="invoice-address-county-text-input" class="col-4 col-form-label">County</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="county" [(ngModel)]="invoiceAddressEdited.county" placeholder="county" id="invoice-address-county-text-input">
+              <input class="form-control" type="text" name="county" [(ngModel)]="invoiceAddress.county" placeholder="county" id="invoice-address-county-text-input">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="invoice-address-postcode-text-input" class="col-4 col-form-label">Postcode</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="postcode" [(ngModel)]="invoiceAddressEdited.postcode" placeholder="postcode" id="invoice-address-postcode-text-input">
+              <input class="form-control" type="text" name="postcode" [(ngModel)]="invoiceAddress.postcode" placeholder="postcode" id="invoice-address-postcode-text-input">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="invoice-address-country-text-input" class="col-4 col-form-label">Country</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="country" [(ngModel)]="invoiceAddressEdited.country" placeholder="country" id="invoice-address-country-text-input">
+              <input class="form-control" type="text" name="country" [(ngModel)]="invoiceAddress.country" placeholder="country" id="invoice-address-country-text-input">
             </div>
           </div>
 
@@ -272,42 +272,42 @@
           <div class="form-group row">
             <label for="delivery-address-name-text-input" class="col-4 col-form-label">Name</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="name" [(ngModel)]="deliveryAddressEdited.name" placeholder="name" id="delivery-address-name-text-input">
+              <input class="form-control" type="text" name="name" [(ngModel)]="deliveryAddress.name" placeholder="name" id="delivery-address-name-text-input">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="delivery-address-company-text-input" class="col-4 col-form-label">Company</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="company" [(ngModel)]="deliveryAddressEdited.company" placeholder="company" id="delivery-address-company-text-input">
+              <input class="form-control" type="text" name="company" [(ngModel)]="deliveryAddress.company" placeholder="company" id="delivery-address-company-text-input">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="delivery-address-fao-text-input" class="col-4 col-form-label">Fao</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="fao" [(ngModel)]="deliveryAddressEdited.fao" placeholder="fao" id="delivery-address-fao-text-input">
+              <input class="form-control" type="text" name="fao" [(ngModel)]="deliveryAddress.fao" placeholder="fao" id="delivery-address-fao-text-input">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="delivery-address-line1-text-input" class="col-4 col-form-label">Line1</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="line1" [(ngModel)]="deliveryAddressEdited.line1" placeholder="line1" id="delivery-address-line1-text-input">
+              <input class="form-control" type="text" name="line1" [(ngModel)]="deliveryAddress.line1" placeholder="line1" id="delivery-address-line1-text-input">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="delivery-address-line2-text-input" class="col-4 col-form-label">Line2</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="line2" [(ngModel)]="deliveryAddressEdited.line2" placeholder="line2" id="delivery-address-line2-text-input">
+              <input class="form-control" type="text" name="line2" [(ngModel)]="deliveryAddress.line2" placeholder="line2" id="delivery-address-line2-text-input">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="delivery-address-line3-text-input" class="col-4 col-form-label">Line3</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="line3" [(ngModel)]="deliveryAddressEdited.line3" placeholder="line3" id="delivery-address-line3-text-input">
+              <input class="form-control" type="text" name="line3" [(ngModel)]="deliveryAddress.line3" placeholder="line3" id="delivery-address-line3-text-input">
             </div>
           </div>
 
@@ -315,28 +315,28 @@
           <div class="form-group row">
             <label for="delivery-address-townCity-text-input" class="col-4 col-form-label">TownCity</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="townCity" [(ngModel)]="deliveryAddressEdited.townCity" placeholder="townCity" id="delivery-address-townCity-text-input">
+              <input class="form-control" type="text" name="townCity" [(ngModel)]="deliveryAddress.townCity" placeholder="townCity" id="delivery-address-townCity-text-input">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="delivery-address-county-text-input" class="col-4 col-form-label">County</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="county" [(ngModel)]="deliveryAddressEdited.county" placeholder="county" id="delivery-address-county-text-input">
+              <input class="form-control" type="text" name="county" [(ngModel)]="deliveryAddress.county" placeholder="county" id="delivery-address-county-text-input">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="delivery-address-postcode-text-input" class="col-4 col-form-label">Postcode</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="postcode" [(ngModel)]="deliveryAddressEdited.postcode" placeholder="postcode" id="delivery-address-postcode-text-input">
+              <input class="form-control" type="text" name="postcode" [(ngModel)]="deliveryAddress.postcode" placeholder="postcode" id="delivery-address-postcode-text-input">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="delivery-address-country-text-input" class="col-4 col-form-label">Country</label>
             <div class="col-8">
-              <input class="form-control" type="text" name="country" [(ngModel)]="deliveryAddressEdited.country" placeholder="country" id="delivery-address-country-text-input">
+              <input class="form-control" type="text" name="country" [(ngModel)]="deliveryAddress.country" placeholder="country" id="delivery-address-country-text-input">
             </div>
           </div>
 
