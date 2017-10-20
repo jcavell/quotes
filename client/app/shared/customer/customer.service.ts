@@ -4,6 +4,7 @@ import {Headers, Http, RequestOptions} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import "rxjs/add/operator/map";
 import {Customer} from "./customer.model";
+import {CustomerRecord} from "./customerRecord.model";
 
 @Injectable()
 export class CustomerService {
@@ -13,11 +14,11 @@ export class CustomerService {
 
   constructor(private http: Http) { }
 
-  getCustomers(): Observable<any> {
+  getCustomerRecords(): Observable<CustomerRecord[]> {
     return this.http.get('http://localhost:9000/customers').map(res => res.json());
   }
 
-  addCustomer(customer: Customer): Observable<Customer> {
+  addCustomer(customer: Customer): Observable<CustomerRecord> {
     console.log("Adding customer "+ JSON.stringify(customer));
     return this.http.post('http://localhost:9000/customers', customer, this.options).map(res => res.json());
   }

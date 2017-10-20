@@ -6,6 +6,8 @@ import {CustomerService} from "../shared/customer/customer.service";
 import {Customer} from "../shared/customer/customer.model";
 import {CompanyService} from "../shared/company/company.service";
 import {UserService} from "../shared/user/user.service";
+import {CustomerRecord, IAlert} from "../shared/customer/customerRecord.model";
+import {Company} from "../shared/company/company.model";
 
 @Component({
   selector: 'app-customer',
@@ -14,12 +16,12 @@ import {UserService} from "../shared/user/user.service";
 })
 export class CustomerComponent implements OnInit {
 
-  customers = [];
-  companies = [];
+  customers: CustomerRecord[];
+  companies: Company[];
 
   isLoading = true;
 
-  customer = {};
+  customer: CustomerRecord;
 
   isEditing = false;
 
@@ -68,7 +70,7 @@ export class CustomerComponent implements OnInit {
   }
 
   getCustomers() {
-    this.customerService.getCustomers().subscribe(
+    this.customerService.getCustomerRecords().subscribe(
       data => this.customers = data,
       error => console.log(error),
       () => this.isLoading = false
@@ -79,7 +81,7 @@ export class CustomerComponent implements OnInit {
     this.companyService.getCompanies().subscribe(
       data => {
         this.companies = data;
-        this.companies.unshift({'id': '', 'name': 'company'});
+        // this.companies.unshift({'id': '', 'name': 'company'});
       },
       error => console.log(error),
       () => this.isLoading = false
@@ -107,9 +109,8 @@ export class CustomerComponent implements OnInit {
       true // active
     );
     this.customerService.addCustomer(customer).subscribe(
-      res => {
-        const newcustomer = res.json();
-        this.customers.push(newcustomer);
+      newCustomer => {
+        this.customers.push(newCustomer);
         this.addCustomerForm.reset();
         this.toast.setMessage('item added successfully.', 'success');
       },
@@ -124,34 +125,18 @@ export class CustomerComponent implements OnInit {
 
   cancelEditing() {
     this.isEditing = false;
-    this.customer = {};
+    this.customer = undefined;
     this.toast.setMessage('item editing cancelled.', 'warning');
     // reload the customers to reset the editing
     this.getCustomers();
   }
-
-  // editCustomer(customerCompanyHandler) {
-  //   this.customerService.editCustomer(customerCompanyHandler.cust).subscribe(
-  //     res => {
-  //       this.isEditing = false;
-  //       this.customer = customerCompanyHandler;
-  //       const companyIndex = this.companies.map(elem => {
-  //         return elem.id;
-  //       }).indexOf(customerCompanyHandler.cust.companyId)
-  //       const companyName = this.companies[companyIndex].name;
-  //       customerCompanyHandler.company.name = companyName;
-  //       this.toast.setMessage('item edited successfully.', 'success');
-  //     },
-  //     error => this.toast.setMessage('Error editing customer: ' + JSON.stringify(error).substr(0, 200), 'danger')
-  //   );
-  // }
 
   deleteCustomer(customer) {
     if (window.confirm('Are you sure you want to permanently delete this item?')) {
       this.customerService.deleteCustomer(customer.customer).subscribe(
         res => {
           const pos = this.customers.map(elem => {
-            return elem._id;
+            return elem.customer.id;
           }).indexOf(customer.customer._id);
           this.customers.splice(pos, 1);
           this.toast.setMessage('item deleted successfully.', 'success');
@@ -161,4 +146,8 @@ export class CustomerComponent implements OnInit {
     }
   }
 
+  public closeAlert(cust: CustomerRecord, alert: IAlert) {
+    const index: number = cust.alerts.indexOf(alert);
+    cust.alerts.splice(index, 1);
+  }
 }

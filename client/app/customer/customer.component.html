@@ -8,7 +8,7 @@
 <app-toast [message]="toast.message"></app-toast>
 
 <div class="card" *ngIf="!isLoading">
-  <h4 class="card-header">Current customers ({{customers.length}})</h4>
+  <h4 class="card-header">Current customers</h4>
   <div class="card-block">
     <table class="table table-bordered table-striped">
       <thead class="thead-default">
@@ -23,7 +23,7 @@
           <th colspan="2">Action</th>
         </tr>
       </thead>
-      <tbody *ngIf="customers.length === 0">
+      <tbody *ngIf="!customers">
         <tr>
           <td colspan="17">There are no customers in the DB. Add a new Customer below.</td>
         </tr>
@@ -39,6 +39,9 @@
           <td>{{cust.customer.position}}</td>
          <td><edit-customer [customerRecord]="cust"></edit-customer></td>
             <td><button class="btn btn-sm btn-danger" (click)="deleteCustomer(cust)"><i class="fa fa-trash"></i> Delete</button>
+              <p *ngFor="let alert of cust.alerts">
+                <ngb-alert [type]="alert.type" (close)="closeAlert(cust, alert)">{{ alert.message }}</ngb-alert>
+              </p>
           </td>
         </tr>
       </tbody>

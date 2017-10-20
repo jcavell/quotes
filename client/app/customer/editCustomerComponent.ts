@@ -29,9 +29,6 @@ export class EditCustomerComponent implements OnInit {
   invoiceAddress: Address;
   deliveryAddress: Address;
 
-  updateMessage = 'Editing of customer cancelled';
-  errorMessage = '';
-
   companies: Company[];
 
   constructor(private modalService: NgbModal,
@@ -41,6 +38,7 @@ export class EditCustomerComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.customerRecord.alerts = [];
     this.getCompanies();
     this.company = _.clone(this.customerRecord.company);
     this.customer = _.clone(this.customerRecord.customer);
@@ -107,11 +105,21 @@ export class EditCustomerComponent implements OnInit {
       return this.updateCustomer();
     }).subscribe(
       customer => {
-        this.customerRecord.customer = customer;
-        console.log('Updated customer ' + JSON.stringify(customer));
+        if (!_.isEqual(this.customer, this.customerRecord.customer)) {
+          this.customerRecord.alerts.push({
+            id: this.customerRecord.alerts.length + 1,
+            type: 'success',
+            message: 'Updated customer'
+          });
+        }
+        this.customerRecord.customer = _.clone(customer);
       },
       error => {
-        console.log('ERROR updating customer ' + JSON.stringify(error));
+        this.customerRecord.alerts.push({
+          id: this.customerRecord.alerts.length + 1,
+          type: 'success',
+          message: 'ERROR updating customer: ' + JSON.stringify(error)
+        });
       }
     );
     this.modalRef.close();
@@ -119,7 +127,7 @@ export class EditCustomerComponent implements OnInit {
 
   getCompanies() {
     this.companyService.getCompanies().subscribe(
-      data => this.companies = data,
+      companies => this.companies = companies,
       error => console.log(error)
     );
   }
