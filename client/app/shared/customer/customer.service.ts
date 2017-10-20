@@ -17,16 +17,16 @@ export class CustomerService {
     return this.http.get('http://localhost:9000/customers').map(res => res.json());
   }
 
-  addCustomer(customer: Customer): Observable<any> {
+  addCustomer(customer: Customer): Observable<Customer> {
     console.log("Adding customer "+ JSON.stringify(customer));
-    return this.http.post('http://localhost:9000/customers', customer, this.options);
+    return this.http.post('http://localhost:9000/customers', customer, this.options).map(res => res.json());
   }
 
-  editCustomer(customer: Customer): Observable<any> {
-    return this.http.put(`http://localhost:9000/customers/${customer.id}`, JSON.stringify(customer), this.options);
+  editCustomer(customer: Customer): Observable<Customer> {
+    return this.http.put(`http://localhost:9000/customers/${customer.id}`, JSON.stringify(customer), this.options).map(res => res.json());
   }
 
-  deleteCustomer(customer: Customer): Observable<any> {
-    return this.http.delete(`http://localhost:9000/customers/${customer.id}`, this.options);
+  deleteCustomer(customer: Customer): Observable<Customer> {
+    return this.http.delete(`http://localhost:9000/customers/${customer.id}`, this.options).map(res => res.json());
   }
 }

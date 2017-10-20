@@ -28,7 +28,7 @@ export class EditAddressModalComponent implements CloseGuard, ModalComponent<Edi
 
 
   updateAddress(address: Address) {
-    this.addressService.updateAddress(address).subscribe(
+    this.addressService.upsertAddress(address).subscribe(
       res => {
         console.log("updated: " + JSON.stringify(res));
         this.dismiss();

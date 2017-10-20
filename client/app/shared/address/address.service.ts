@@ -14,9 +14,13 @@ export class AddressService {
   constructor(private http: Http) {}
 
 
-updateAddress(address: Address): Observable<Address> {
-  return this.http.put(`http://localhost:9000/addresses/${address.id}`, JSON.stringify(address), this.options)
-                    .map((res: Response) => res.json())
+upsertAddress(address: Address): Observable<Address> {
+
+  const action = address.id ?
+    this.http.put(`http://localhost:9000/addresses/${address.id}`, JSON.stringify(address), this.options) :
+    this.http.post(`http://localhost:9000/addresses`, JSON.stringify(address), this.options);
+
+  return action.map((res: Response) => res.json())
     //              .do(data => console.log('server data:', data))  // debug
                     .catch(this.handleError);
   }

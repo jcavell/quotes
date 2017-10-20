@@ -12,10 +12,10 @@ import {Company} from "../shared/company/company.model";
 })
 export class CompanyComponent implements OnInit {
 
-  companies = [];
+  companies: Company[];
   isLoading = true;
 
-  company = {};
+  company: Company;
   isEditing = false;
 
   addCompanyForm: FormGroup;
@@ -45,9 +45,8 @@ export class CompanyComponent implements OnInit {
   addCompany() {
     const company = new Company(0, this.addCompanyForm.value.name, "", "", "", "", "", "", "", "", true);
     this.companyService.addCompany(company).subscribe(
-      res => {
-        const newcompany = res.json();
-        this.companies.push(newcompany);
+      newCompany => {
+        this.companies.push(newCompany);
         this.addCompanyForm.reset();
         this.toast.setMessage('item added successfully.', 'success');
       },
@@ -62,7 +61,7 @@ export class CompanyComponent implements OnInit {
 
   cancelEditing() {
     this.isEditing = false;
-    this.company = {};
+    this.company = undefined;
     this.toast.setMessage('item editing cancelled.', 'warning');
     // reload the companies to reset the editing
     this.getCompanies();
@@ -83,7 +82,7 @@ export class CompanyComponent implements OnInit {
     if (window.confirm('Are you sure you want to permanently delete this company?')) {
       this.companyService.deleteCompany(company).subscribe(
         res => {
-          const pos = this.companies.map(elem => { return elem._id; }).indexOf(company._id);
+          const pos = this.companies.map(elem => { return elem.id; }).indexOf(company._id);
           this.companies.splice(pos, 1);
           this.toast.setMessage('company deleted successfully.', 'success');
         },

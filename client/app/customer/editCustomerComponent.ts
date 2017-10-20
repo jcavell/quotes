@@ -29,22 +29,32 @@ export class EditCustomerComponent implements OnInit {
   deliveryAddress: Address;
 
   updateMessage = 'Editing of customer cancelled';
+  errorMessage = '';
 
   companies: Company[];
 
   constructor(private modalService: NgbModal,
               public companyService: CompanyService,
               public customerService: CustomerService,
-              public addressService: AddressService
-  ) {
+              public addressService: AddressService) {
   }
 
   ngOnInit() {
     this.getCompanies();
     this.company = _.clone(this.customerRecord.company);
     this.customer = _.clone(this.customerRecord.customer);
-    this.invoiceAddress = _.clone(this.customerRecord.invoiceAddress);
-    this.deliveryAddress = _.clone(this.customerRecord.deliveryAddress);
+
+    // if (this.invoiceAddress == null) {
+    //   this.invoiceAddress = new Address(null, null, null, null, null, null, null, null, null, null, null, null);
+    // } else {
+      this.invoiceAddress = _.clone(this.customerRecord.invoiceAddress);
+   // }
+
+    // if (this.deliveryAddress == null) {
+    //   this.deliveryAddress = new Address(null, null, null, null, null, null, null, null, null, null, null, null);
+    // } else {
+      this.deliveryAddress = _.clone(this.customerRecord.deliveryAddress);
+   // }
   }
 
   search = (text$: Observable<string>) =>
@@ -52,7 +62,7 @@ export class EditCustomerComponent implements OnInit {
       .debounceTime(200)
       .distinctUntilChanged()
       .map(term => term.length < 2 ? []
-          : this.companies.filter(c => c.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10));
+        : this.companies.filter(c => c.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10));
 
   resultFormatter = (c: Company) => c.name;
 
@@ -61,98 +71,57 @@ export class EditCustomerComponent implements OnInit {
   }
 
 
-  updateInvoiceAddress(): Observable<Address>  {
-    const addressObserver = Observable.of(this.invoiceAddress);
-    if (!_.isEqual(this.customerRecord.invoiceAddress, this.invoiceAddress)) {
-      this.addressService.updateAddress(this.invoiceAddress).subscribe(
-        res => {
-          //
-        },
-        error => Observable.throw(new Error('Could not update invoice address: ' + JSON.stringify(error)))
-      );
-    }
-    return addressObserver;
+  upsertInvoiceAddressPromise(): Observable<Address>  {
+    return _.isEqual(this.customerRecord.invoiceAddress, this.invoiceAddress) ?
+      Observable.of(this.invoiceAddress) :
+      this.addressService.upsertAddress(this.invoiceAddress);
   }
 
-  updateDeliveryAddress(): Observable<Address>  {
-    const addressObserver = Observable.of(this.deliveryAddress);
-    if (!_.isEqual(this.customerRecord.deliveryAddress, this.deliveryAddress)) {
-      this.addressService.updateAddress(this.deliveryAddress).subscribe(
-        res => {
-          this.customer.deliveryAddressId = this.deliveryAddress.id;
-        },
-        error => Observable.throw(new Error('Could not update delivery address: ' + JSON.stringify(error)))
-      );
-    }
-    return addressObserver;
+  upsertDeliveryAddressPromise(): Observable<Address> {
+    return _.isEqual(this.customerRecord.deliveryAddress, this.deliveryAddress) ?
+      Observable.of(this.deliveryAddress) :
+      this.addressService.upsertAddress(this.deliveryAddress);
   }
 
-  updateCustomer(): Observable<Customer> {
-    const customerObserver = Observable.of(this.customer);
-    if (
-      !_.isEqual(this.customerRecord.customer, this.customer) ||
-      !_.isEqual(this.customerRecord.invoiceAddress, this.invoiceAddress) ||
-      !_.isEqual(this.customerRecord.deliveryAddress, this.deliveryAddress) ||
-      !_.isEqual(this.customerRecord.company, this.company)
-    ) {
-      console.log('Updating customer to: ' + JSON.stringify(this.customer));
-      this.customerService.editCustomer(this.customer).subscribe(
-        res => {
-          this.customerRecord.customer = _.clone(this.customer);
-        },
-        error => Observable.throw(new Error('Could not update customer: ' + JSON.stringify(error)))
-      );
-    }
-    return customerObserver;
+  updateCompanyPromise(): Observable<Company> {
+    return _.isEqual(this.customerRecord.company, this.company) ?
+      Observable.of(this.company) :
+      this.companyService.editCompany(this.company);
   }
 
-
-  updateCompany(): Observable<Company> {
-    const companyObserver = Observable.of(this.company);
-    if (!_.isEqual(this.customerRecord.company, this.company)) {
-      console.log('Updating company to: ' + JSON.stringify(this.company));
-      this.companyService.editCompany(this.company).subscribe(
-        res => {
-        },
-        error => Observable.throw(new Error('Could not update company: ' + JSON.stringify(error)))
-      );
-    }
-    return companyObserver;
+  updateCustomerPromise(): Observable<Customer> {
+    return _.isEqual(this.customerRecord.customer, this.customer) &&
+    _.isEqual(this.customerRecord.invoiceAddress, this.invoiceAddress) &&
+    _.isEqual(this.customerRecord.deliveryAddress, this.deliveryAddress) &&
+    _.isEqual(this.customerRecord.company, this.company) ?
+      Observable.of(this.customer) :
+      this.customerService.editCustomer(this.customer);
   }
+
 
   updateAll() {
-    // TODO should these be nested?
-    this.updateCompany().subscribe(
-      res => {
-        this.customer.companyId = this.company.id;
-        this.customerRecord.company = this.company;
+    this.upsertInvoiceAddressPromise().flatMap((a) => {
+      this.customer.invoiceAddressId = a.id;
+      return this.upsertDeliveryAddressPromise();
+    }).
+    flatMap((a) => {
+      this.customer.deliveryAddressId = a.id;
+      return this.updateCompanyPromise();
+    }).
+    flatMap((c) => {
+      this.customer.companyId = c.id;
+      this.customerRecord.company = _.clone(c);
+      console.log('Updated company ' + JSON.stringify(c));
+      return this.updateCustomerPromise();
+    }).subscribe(
+      customer => {
+        this.customerRecord.customer = customer;
+        console.log('Updated customer ' + JSON.stringify(customer));
       },
-      error => console.log((JSON.stringify(error)))
+      error => {
+        console.log('ERROR updating customer ' + JSON.stringify(error));
+      }
     );
-
-    this.updateInvoiceAddress().subscribe(
-      res => {
-        this.customer.invoiceAddressId = this.invoiceAddress.id;
-      },
-      error => console.log((JSON.stringify(error)))
-    );
-
-    this.updateDeliveryAddress().subscribe(
-      res => {
-        this.customer.deliveryAddressId = this.deliveryAddress.id;
-      },
-      error => console.log((JSON.stringify(error)))
-    );
-
-    this.updateCustomer().subscribe(
-      res => {
-        console.log('Customer updated');
-      },
-      error => console.log((JSON.stringify(error)))
-    );
-
-
-    this.updateMessage = 'Customer updated';
     this.modalRef.close();
   }
 

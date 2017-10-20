@@ -13,16 +13,16 @@ export class CompanyService {
 
   constructor(private http: Http) { }
 
-  getCompanies(): Observable<any> {
+  getCompanies(): Observable<Company[]> {
     return this.http.get('http://localhost:9000/companies').map(res => res.json());
   }
 
-  addCompany(company: Company): Observable<any> {
-    return this.http.post('http://localhost:9000/companies', company, this.options);
+  addCompany(company: Company): Observable<Company> {
+    return this.http.post('http://localhost:9000/companies', company, this.options).map(res => res.json());
   }
 
-  editCompany(company: Company): Observable<any> {
-    return this.http.put(`http://localhost:9000/companies/${company.id}`, JSON.stringify(company), this.options);
+  editCompany(company: Company): Observable<Company> {
+    return this.http.put(`http://localhost:9000/companies/${company.id}`, JSON.stringify(company), this.options).map(res => res.json());
   }
 
   deleteCompany(company: Company): Observable<any> {
