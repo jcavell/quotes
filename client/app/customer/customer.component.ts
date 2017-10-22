@@ -31,7 +31,7 @@ export class CustomerComponent implements OnInit {
   email = new FormControl('', Validators.minLength(6));
   directPhone = new FormControl('');
   mobilePhone = new FormControl('', Validators.minLength(8));
-  source = new FormControl('');
+  private searchAndOrderParams;
   position = new FormControl('');
   isMainContact = new FormControl('');
   twitter = new FormControl('');
@@ -52,13 +52,13 @@ export class CustomerComponent implements OnInit {
     this.getCustomers();
     this.getCompanies();
 
+    this.searchAndOrderParams = {};
 
     this.addCustomerForm = this.formBuilder.group({
       name: this.name,
       email: this.email,
       directPhone: this.directPhone,
       mobilePhone: this.mobilePhone,
-      source: this.source,
       position: this.position,
       isMainContact: this.isMainContact,
       twitter: this.twitter,
@@ -70,11 +70,35 @@ export class CustomerComponent implements OnInit {
   }
 
   getCustomers() {
-    this.customerService.getCustomerRecords().subscribe(
+    this.customerService.getCustomerRecords(this.searchAndOrderParams).subscribe(
       data => this.customers = data,
       error => console.log(error),
       () => this.isLoading = false
     );
+  }
+
+  getClass(field: string): string {
+    let clazz: string;
+    if (this.searchAndOrderParams['orderField'] === field) {
+      if (this.searchAndOrderParams['orderAsc']) {
+        clazz = 'fa fa-sort-asc';
+      } else {
+        clazz = 'fa fa-sort-desc';
+      }
+    } else {
+      clazz = 'fa fa-sort';
+    }
+    return clazz;
+  }
+
+  orderBy(field: string) {
+    if (this.searchAndOrderParams['orderField'] === field && this.searchAndOrderParams['orderAsc']) {
+      this.searchAndOrderParams['orderAsc'] = false;
+    } else {
+      this.searchAndOrderParams['orderAsc'] = true;
+    }
+    this.searchAndOrderParams['orderField'] = field;
+    this.getCustomers();
   }
 
   getCompanies() {

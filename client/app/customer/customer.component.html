@@ -13,8 +13,8 @@
     <table class="table table-bordered table-striped">
       <thead class="thead-default">
         <tr>
-          <th>Name</th>
-          <th>Email</th>
+          <th (click) = "orderBy('name')"><i class="{{getClass('name')}}"></i> Name</th>
+          <th (click) = "orderBy('email')"><i class="{{getClass('email')}}"></i> Email</th>
           <th>Direct phone</th>
           <th>Mobile phone</th>
           <th>Company</th>

@@ -14,8 +14,12 @@ export class CustomerService {
 
   constructor(private http: Http) { }
 
-  getCustomerRecords(): Observable<CustomerRecord[]> {
-    return this.http.get('http://localhost:9000/customers').map(res => res.json());
+  private getOptions(params) {
+    return new RequestOptions({ headers: this.headers, params: params });
+  }
+
+  getCustomerRecords(params): Observable<CustomerRecord[]> {
+    return this.http.get('http://localhost:9000/customers', this.getOptions(params)).map(res => res.json());
   }
 
   addCustomer(customer: Customer): Observable<CustomerRecord> {
