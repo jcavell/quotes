@@ -8,7 +8,9 @@
 <app-toast [message]="toast.message"></app-toast>
 
 <div class="card" *ngIf="!isLoading">
-  <h4 class="card-header">Current customers</h4>
+  <h4 class="card-header">Customers &nbsp;<i class = "fa fa-search"></i><input
+    (keyup)="searchTerm$.next($event.target.value)">
+  </h4>
   <div class="card-block">
     <table class="table table-bordered table-striped">
       <thead class="thead-default">
@@ -25,7 +27,7 @@
       </thead>
       <tbody *ngIf="!customers">
         <tr>
-          <td colspan="17">There are no customers in the DB. Add a new Customer below.</td>
+          <td colspan="17">Please search for customers.</td>
         </tr>
       </tbody>
       <tbody *ngIf="!isEditing">

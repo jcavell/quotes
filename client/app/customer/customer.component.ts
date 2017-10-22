@@ -8,6 +8,7 @@ import {CompanyService} from "../shared/company/company.service";
 import {UserService} from "../shared/user/user.service";
 import {CustomerRecord, IAlert} from "../shared/customer/customerRecord.model";
 import {Company} from "../shared/company/company.model";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-customer',
@@ -31,7 +32,6 @@ export class CustomerComponent implements OnInit {
   email = new FormControl('', Validators.minLength(6));
   directPhone = new FormControl('');
   mobilePhone = new FormControl('', Validators.minLength(8));
-  private searchAndOrderParams;
   position = new FormControl('');
   isMainContact = new FormControl('');
   twitter = new FormControl('');
@@ -39,6 +39,9 @@ export class CustomerComponent implements OnInit {
   linkedIn = new FormControl('');
   skype = new FormControl('');
   companyId = new FormControl('', Validators.pattern('\\d+'));
+
+  private orderParams;
+  searchTerm$ = new Subject<string>();
 
   constructor(private http: Http,
               private customerService: CustomerService,
@@ -48,11 +51,19 @@ export class CustomerComponent implements OnInit {
               private formBuilder: FormBuilder) {
   }
 
-  ngOnInit() {
-    this.getCustomers();
-    this.getCompanies();
 
-    this.searchAndOrderParams = {};
+
+  ngOnInit() {
+
+    this.orderParams = {};
+
+    this.customerService.search(this.searchTerm$, this.orderParams)
+      .subscribe(customerRecords => {
+        this.customers = customerRecords;
+      });
+
+    // this.getCustomers();
+    this.getCompanies();
 
     this.addCustomerForm = this.formBuilder.group({
       name: this.name,
@@ -70,7 +81,7 @@ export class CustomerComponent implements OnInit {
   }
 
   getCustomers() {
-    this.customerService.getCustomerRecords(this.searchAndOrderParams).subscribe(
+    this.customerService.getCustomerRecords(this.orderParams).subscribe(
       data => this.customers = data,
       error => console.log(error),
       () => this.isLoading = false
@@ -79,11 +90,11 @@ export class CustomerComponent implements OnInit {
 
   getClass(field: string): string {
     let clazz: string;
-    if (this.searchAndOrderParams['orderField'] === field) {
-      if (this.searchAndOrderParams['orderAsc']) {
-        clazz = 'fa fa-sort-asc';
-      } else {
+    if (this.orderParams['orderField'] === field) {
+      if (this.orderParams['orderAsc']) {
         clazz = 'fa fa-sort-desc';
+      } else {
+        clazz = 'fa fa-sort-asc';
       }
     } else {
       clazz = 'fa fa-sort';
@@ -92,12 +103,12 @@ export class CustomerComponent implements OnInit {
   }
 
   orderBy(field: string) {
-    if (this.searchAndOrderParams['orderField'] === field && this.searchAndOrderParams['orderAsc']) {
-      this.searchAndOrderParams['orderAsc'] = false;
+    if (this.orderParams['orderField'] === field && this.orderParams['orderAsc']) {
+      this.orderParams['orderAsc'] = false;
     } else {
-      this.searchAndOrderParams['orderAsc'] = true;
+      this.orderParams['orderAsc'] = true;
     }
-    this.searchAndOrderParams['orderField'] = field;
+    this.orderParams['orderField'] = field;
     this.getCustomers();
   }
 

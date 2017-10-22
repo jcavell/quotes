@@ -3,8 +3,12 @@ import {Headers, Http, RequestOptions} from "@angular/http";
 
 import {Observable} from "rxjs/Observable";
 import "rxjs/add/operator/map";
+import "rxjs/add/operator/debounceTime";
+import "rxjs/add/operator/distinctUntilChanged";
+import "rxjs/add/operator/switchMap";
 import {Customer} from "./customer.model";
 import {CustomerRecord} from "./customerRecord.model";
+import _ from "lodash";
 
 @Injectable()
 export class CustomerService {
@@ -16,6 +20,16 @@ export class CustomerService {
 
   private getOptions(params) {
     return new RequestOptions({ headers: this.headers, params: params });
+  }
+
+  search(terms: Observable<string>, params): Observable<CustomerRecord[]> {
+    return terms.debounceTime(400)
+      .distinctUntilChanged()
+      .switchMap(term => {
+        params['searchField'] = 'multi';
+        params['searchValue'] = term;
+        return _.isEmpty(term) ? Observable.of([]) : this.getCustomerRecords(params);
+      });
   }
 
   getCustomerRecords(params): Observable<CustomerRecord[]> {
