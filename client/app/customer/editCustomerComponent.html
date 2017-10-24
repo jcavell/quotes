@@ -368,7 +368,7 @@
   </div>
 </ng-template>
 
-<div *ngIf="customer.id;else create_customer_button">
+<div *ngIf="customerRecord.customer.id;else create_customer_button">
   <button type="button" class="btn btn-sm btn-primary"
           (click)="open(content)"><i class="fa fa-edit"></i> Edit
   </button>

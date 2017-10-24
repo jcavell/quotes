@@ -1,13 +1,6 @@
-<div class="card" *ngIf="isLoading">
-  <h4 class="card-header">Loading...</h4>
-  <div class="card-block text-xs-center">
-    <i class="fa fa-circle-o-notch fa-spin fa-3x"></i>
-  </div>
-</div>
-
 <app-toast [message]="toast.message"></app-toast>
 
-<div class="card" *ngIf="!isLoading">
+<div class="card">
   <h4 class="card-header">Customers &nbsp;<i class = "fa fa-search"></i><input
     (keyup)="searchTerm$.next($event.target.value)">
   </h4>
