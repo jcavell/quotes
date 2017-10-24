@@ -30,7 +30,7 @@
           <td colspan="17">Please search for customers.</td>
         </tr>
       </tbody>
-      <tbody *ngIf="!isEditing">
+      <tbody>
         <tr *ngFor="let cust of customers">
           <td>{{cust.customer.name}}</td>
           <td>{{cust.customer.email}}</td>
@@ -47,84 +47,9 @@
           </td>
         </tr>
       </tbody>
-      <tbody *ngIf="isEditing">
-        <tr>
-          <td colspan="17">
-            <form class="form-inline" #form="ngForm" (ngSubmit)="editCustomer(cust)" style="display:inline">
-              <div class="form-group">
-                <input class="form-control" type="text" name="name" [(ngModel)]="customer.customer.name" placeholder="name" required>
-              </div>
-              <div class="form-group">
-                <input class="form-control" type="text" name="email" [(ngModel)]="customer.customer.email" placeholder="email" required>
-              </div>
-              <div class="form-group">
-                <input class="form-control" type="text" name="directPhone" [(ngModel)]="customer.customer.directPhone" placeholder="directPhone">
-              </div>
-              <div class="form-group">
-                <input class="form-control" type="text" name="mobile" [(ngModel)]="customer.customer.mobilePhone" placeholder="mobilePhone">
-              </div>
-              <div class="form-group">
-                <input class="form-control" type="text" name="mobile" [(ngModel)]="customer.customer.source" placeholder="source">
-              </div>
-              <div class="form-group">
-                <input class="form-control" type="text" name="mobile" [(ngModel)]="customer.customer.position" placeholder="position">
-              </div>
-              <div class="form-group">
-                <input class="form-control" type="checkbox" name="mobile" [(checked)]="customer.customer.isMainContact" placeholder="isMainContact">
-              </div>
-              <div class="form-group">
-                <input class="form-control" type="text" name="mobile" [(ngModel)]="customer.customer.twitter" placeholder="twitter">
-              </div>
-              <div class="form-group">
-                <input class="form-control" type="text" name="mobile" [(ngModel)]="customer.customer.facebook" placeholder="facebook">
-              </div>
-              <div class="form-group">
-                <input class="form-control" type="text" name="mobile" [(ngModel)]="customer.customer.linkedIn" placeholder="linkedIn">
-              </div>
-              <div class="form-group">
-                <input class="form-control" type="text" name="mobile" [(ngModel)]="customer.customer.skype" placeholder="skype">
-              </div>
-              <div class="form-group">
-                <select class="form-control" name="companyId" [(ngModel)]="customer.customer.companyId" placeholder="companyId">
-                  <option *ngFor="let c of companies" [ngValue]="c.id">{{c.name}}</option>
-                </select>
-              </div>
-              <button class="btn btn-sm btn-primary" type="submit" [disabled]="!form.form.valid"><i class="fa fa-floppy-o"></i> Save</button>
-            </form>
-            <button class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button>
-          </td>
-        </tr>
-      </tbody>
     </table>
   </div>
 </div>
+<edit-customer (onCustomerCreated)="customerCreated($event)" [customerRecord]="newCustomerRecord()"></edit-customer>
 
-<div class="card" *ngIf="!isEditing">
-  <h4 class="card-header">Add new Customer</h4>
-  <div class="card-block">
-    <form class="form-inline" [formGroup]="addCustomerForm" (ngSubmit)="addCustomer()" style="text-align:center">
-      <div class="form-group">
-          <input class="form-control" type="text" name="name" formControlName="name" placeholder="name">
-      </div>
-      <div class="form-group">
-        <input class="form-control" type="text" name="email" formControlName="email" placeholder="email">
-      </div>
-      <div class="form-group">
-        <input class="form-control" type="text" name="directPhone" formControlName="directPhone" placeholder="directPhone">
-      </div>
-      <div class="form-group">
-        <input class="form-control" type="text" name="mobilePhone" formControlName="mobilePhone" placeholder="mobilePhone">
-      </div>
-      <div class="form-group">
-        <label>Is main contact?</label>
-        <input class="form-control" type="checkbox" name="isMainContact" formControlName="isMainContact" placeholder="isMainContact">
-      </div>
-      <div class="form-group">
-        <select class="form-control" name="companyId" formControlName="companyId" placeholder="companyId">
-          <option *ngFor="let c of companies" [ngValue]="c.id">{{c.name}}</option>
-        </select>
-      </div>
-      <button class="btn btn-primary" type="submit" [disabled]="!addCustomerForm.valid"><i class="fa fa-floppy-o"></i> Add</button>
-    </form>
-  </div>
-</div>
+

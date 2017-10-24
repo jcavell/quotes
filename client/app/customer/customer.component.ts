@@ -55,6 +55,7 @@ export class CustomerComponent implements OnInit {
 
   ngOnInit() {
 
+    this.customers = [];
     this.orderParams = {};
 
     this.customerService.search(this.searchTerm$, this.orderParams)
@@ -112,6 +113,13 @@ export class CustomerComponent implements OnInit {
     this.getCustomers();
   }
 
+  newCustomerRecord(){
+    return new CustomerRecord()
+  }
+
+  customerCreated(cr: CustomerRecord) {
+    this.customers.push(cr);
+  }
   getCompanies() {
     this.companyService.getCompanies().subscribe(
       data => {
@@ -127,6 +135,7 @@ export class CustomerComponent implements OnInit {
     const customer = new Customer(
       0,
       this.addCustomerForm.value.name,
+      '',
       this.addCustomerForm.value.email,
       this.addCustomerForm.value.directPhone,
       this.addCustomerForm.value.mobilePhone,

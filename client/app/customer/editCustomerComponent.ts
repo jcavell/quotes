@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 
 import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {Company} from "../shared/company/company.model";
@@ -23,6 +23,7 @@ import {isNullOrUndefined} from "util";
 export class EditCustomerComponent implements OnInit {
   private modalRef: NgbModalRef;
   @Input() customerRecord: CustomerRecord;
+  @Output() onCustomerCreated = new EventEmitter<CustomerRecord>();
 
   customer: Customer;
   company: Company;
@@ -38,22 +39,36 @@ export class EditCustomerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.customerRecord.alerts = [];
-    this.getCompanies();
-    this.company = _.clone(this.customerRecord.company);
     this.customer = _.clone(this.customerRecord.customer);
+    this.company =  _.clone(this.customerRecord.company);
+
     this.invoiceAddress = isNullOrUndefined(this.customerRecord.invoiceAddress) ? new Address() : _.clone(this.customerRecord.invoiceAddress);
     this.deliveryAddress = isNullOrUndefined(this.customerRecord.deliveryAddress) ? new Address() : _.clone(this.customerRecord.deliveryAddress);
+
+    this.customerRecord.alerts = [];
+    this.getCompanies();
+
+    console.log("After ngOnInit, company is: " + JSON.stringify(this.company));
   }
 
   search = (text$: Observable<string>) =>
     text$
       .debounceTime(200)
       .distinctUntilChanged()
-      .map(term => term.length < 2 ? []
-        : this.companies.filter(c => c.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10));
+      .map(term => {
+        if (term.length < 2) {
+          return [];
+        } else {
+          const matchingCompanies = this.companies.filter(c => c.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10);
+          if (matchingCompanies.length > 0) {
+            return matchingCompanies;
+          } else {
+            return [new Company(undefined, term, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, true)];
+          }
+        }})
 
-  resultFormatter = (c: Company) => c.name;
+  inputFormatter = (c: Company) => c.name;
+  resultFormatter = (c: Company) => c.name + (c.id ? "" : " (new)");
 
   open(content) {
     this.modalRef = this.modalService.open(content, {size: 'lg'});
@@ -73,43 +88,46 @@ export class EditCustomerComponent implements OnInit {
       this.addressService.upsertAddress(this.deliveryAddress);
   }
 
-  updateCompany(): Observable<Company> {
+  upsertCompany(): Observable<Company> {
+    console.log("WILL UPSERT " + JSON.stringify(this.company));
     return _.isEqual(this.customerRecord.company, this.company) ?
       Observable.of(this.company) :
-      this.companyService.editCompany(this.company);
+      this.companyService.upsertCompany(this.company);
   }
 
-  updateCustomer(): Observable<Customer> {
-    return _.isEqual(this.customerRecord.customer, this.customer) &&
-    _.isEqual(this.customerRecord.invoiceAddress, this.invoiceAddress) &&
-    _.isEqual(this.customerRecord.deliveryAddress, this.deliveryAddress) &&
-    _.isEqual(this.customerRecord.company, this.company) ?
+  upsertCustomer(): Observable<Customer> {
+    return this.customer.isEmpty()  || this.customerRecord.isEqual(this.customer, this.company, this.invoiceAddress, this.deliveryAddress) ?
       Observable.of(this.customer) :
-      this.customerService.editCustomer(this.customer);
+      this.customerService.upsertCustomer(this.customer);
   }
 
 
   updateAll() {
-    this.upsertInvoiceAddress().flatMap(a => {
+    this.upsertInvoiceAddress().concatMap(a => {
       this.customer.invoiceAddressId = a.id;
       return this.upsertDeliveryAddress();
     }).
-    flatMap(a => {
+    concatMap(a => {
       this.customer.deliveryAddressId = a.id;
-      return this.updateCompany();
+      return this.upsertCompany();
     }).
-    flatMap(c => {
+    concatMap(c => {
       this.customer.companyId = c.id;
       this.customerRecord.company = _.clone(c);
-      console.log('Updated company ' + JSON.stringify(c));
-      return this.updateCustomer();
+      return this.upsertCustomer();
     }).subscribe(
       customer => {
+        let upsertMessage = 'Updated customer';
         if (!_.isEqual(this.customer, this.customerRecord.customer)) {
+          if (this.customerRecord.customer.id === undefined) {
+            // new customer
+            this.onCustomerCreated.emit(this.customerRecord);
+            upsertMessage = 'Inserted new customer';
+          }
           this.customerRecord.alerts.push({
             id: this.customerRecord.alerts.length + 1,
             type: 'success',
-            message: 'Updated customer'
+            message: upsertMessage
           });
         }
         this.customerRecord.customer = _.clone(customer);
@@ -127,7 +145,9 @@ export class EditCustomerComponent implements OnInit {
 
   getCompanies() {
     this.companyService.getCompanies().subscribe(
-      companies => this.companies = companies,
+      companies => {
+        this.companies = companies;
+      },
       error => console.log(error)
     );
   }

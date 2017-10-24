@@ -35,7 +35,7 @@
       <tbody *ngIf="isEditing">
         <tr>
           <td colspan="4">
-            <form class="form-inline" #form="ngForm" (ngSubmit)="editCompany(company)" style="display:inline">
+            <form class="form-inline" #form="ngForm" (ngSubmit)="upsertCompany(company)" style="display:inline">
               <div class="form-group">
                   <input class="form-control" type="text" name="name" [(ngModel)]="company.name" placeholder="name" required>
               </div>

@@ -1,7 +1,15 @@
 <ng-template #content let-c="close" let-d="dismiss">
 
   <div class="modal-header">
-    <h4 class="modal-title">Edit Customer</h4>
+
+    <div *ngIf="customer.id;else create_customer">
+      <h4 class="modal-title">Edit Customer</h4>
+    </div>
+    <ng-template #create_customer>
+      <h4 class="modal-title">Create Customer</h4>
+    </ng-template>
+
+
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -19,14 +27,14 @@
         <div class="form-group row">
     <label for="name-text-input" class="col-4 col-form-label">Name</label>
     <div class="col-8">
-      <input class="form-control" type="text" name="name" [(ngModel)]="customer.name" placeholder="name" id="name-text-input">
+      <input required class="form-control" type="text" name="name" [(ngModel)]="customer.name" placeholder="name" id="name-text-input">
     </div>
   </div>
 
   <div class="form-group row">
     <label for="email-text-input" class="col-4 col-form-label">Email</label>
     <div class="col-8">
-      <input class="form-control" type="text" name="email" [(ngModel)]="customer.email" placeholder="email" id="email-text-input">
+      <input required class="form-control" type="text" name="email" [(ngModel)]="customer.email" placeholder="email" id="email-text-input">
     </div>
   </div>
 
@@ -110,9 +118,10 @@
           <div class="form-group row">
             <label for="company-text-input" class="col-4 col-form-label">Name</label>
             <div class="col-8">
-              <input name = "company" id="company-text-input" type="text" class="form-control" [(ngModel)]="company"
+              <input required name = "company" id="company-text-input" type="text" class="form-control" [(ngModel)]="company"
+
                      [ngbTypeahead]="search"
-                     [inputFormatter]="resultFormatter" [resultFormatter]="resultFormatter"/>
+                     [inputFormatter]="inputFormatter" [resultFormatter]="resultFormatter"/>
             </div>
           </div>
 
@@ -359,6 +368,14 @@
   </div>
 </ng-template>
 
-<button type="button" class="btn btn-sm btn-primary"
-        (click)="open(content)"><i class="fa fa-edit"></i> Edit
-</button>
+<div *ngIf="customer.id;else create_customer_button">
+  <button type="button" class="btn btn-sm btn-primary"
+          (click)="open(content)"><i class="fa fa-edit"></i> Edit
+  </button>
+</div>
+<ng-template #create_customer_button>
+  <button type="button" class="btn btn-sm btn-primary"
+          (click)="open(content)"><i class="fa fa-edit"></i> Create
+  </button>
+</ng-template>
+

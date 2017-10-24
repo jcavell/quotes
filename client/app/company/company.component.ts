@@ -68,7 +68,7 @@ export class CompanyComponent implements OnInit {
   }
 
   editCompany(company) {
-    this.companyService.editCompany(company).subscribe(
+    this.companyService.upsertCompany(company).subscribe(
       res => {
         this.isEditing = false;
         this.company = company;

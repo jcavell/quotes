@@ -21,8 +21,13 @@ export class CompanyService {
     return this.http.post('http://localhost:9000/companies', company, this.options).map(res => res.json());
   }
 
-  editCompany(company: Company): Observable<Company> {
-    return this.http.put(`http://localhost:9000/companies/${company.id}`, JSON.stringify(company), this.options).map(res => res.json());
+  upsertCompany(company: Company): Observable<Company> {
+    console.log('Upsert company ' + company.name + ' ' + company.phone1);
+    const action = company.id ?
+      this.http.put(`http://localhost:9000/companies/${company.id}`, JSON.stringify(company), this.options) :
+      this.http.post(`http://localhost:9000/companies`, JSON.stringify(company), this.options);
+
+    return action.map(res => res.json());
   }
 
   deleteCompany(company: Company): Observable<any> {

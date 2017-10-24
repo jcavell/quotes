@@ -1,15 +1,15 @@
 export class Company {
-  constructor(public id: number,
-              public name: string,
-              public phone1: string,
-              public phone2: string,
-              public phone3: string,
-              public website: string,
-              public twitter: string,
-              public facebook: string,
-              public linkedIn: string,
-              public source: string,
-              public active: boolean
+  constructor(public id: number = undefined,
+              public name: string = '',
+              public phone1: string = undefined,
+              public phone2: string = undefined,
+              public phone3: string = undefined,
+              public website: string = undefined,
+              public twitter: string = undefined,
+              public facebook: string = undefined,
+              public linkedIn: string = undefined,
+              public source: string = undefined,
+              public active: boolean = true
 
   ) {
 

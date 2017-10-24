@@ -37,12 +37,15 @@ export class CustomerService {
   }
 
   addCustomer(customer: Customer): Observable<CustomerRecord> {
-    console.log("Adding customer "+ JSON.stringify(customer));
     return this.http.post('http://localhost:9000/customers', customer, this.options).map(res => res.json());
   }
 
-  editCustomer(customer: Customer): Observable<Customer> {
-    return this.http.put(`http://localhost:9000/customers/${customer.id}`, JSON.stringify(customer), this.options).map(res => res.json());
+  upsertCustomer(customer: Customer): Observable<Customer> {
+    const action = customer.id ?
+      this.http.put(`http://localhost:9000/customers/${customer.id}`, JSON.stringify(customer), this.options) :
+      this.http.post(`http://localhost:9000/customers`, JSON.stringify(customer), this.options);
+
+    return action.map(res => res.json());
   }
 
   deleteCustomer(customer: Customer): Observable<Customer> {
