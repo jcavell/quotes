@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
+import {Component, EventEmitter, Input, Output} from "@angular/core";
 
 import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {Company} from "../shared/company/company.model";
@@ -20,7 +20,7 @@ import {isNullOrUndefined} from "util";
   selector: 'edit-customer',
   templateUrl: './editCustomerComponent.html'
 })
-export class EditCustomerComponent implements OnInit {
+export class EditCustomerComponent {
   private modalRef: NgbModalRef;
   @Input() customerRecord: CustomerRecord;
   @Output() onCustomerCreated = new EventEmitter<CustomerRecord>();
@@ -38,7 +38,7 @@ export class EditCustomerComponent implements OnInit {
               public addressService: AddressService) {
   }
 
-  ngOnInit() {
+  onOpen() {
     this.customer = _.clone(this.customerRecord.customer);
     this.company =  _.clone(this.customerRecord.company);
 
@@ -72,6 +72,7 @@ export class EditCustomerComponent implements OnInit {
 
   open(content) {
     this.modalRef = this.modalService.open(content, {size: 'lg'});
+    this.onOpen();
   }
 
   upsertInvoiceAddress(): Observable<Address>  {
