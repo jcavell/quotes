@@ -47,8 +47,6 @@ export class EditCustomerComponent {
 
     this.customerRecord.alerts = [];
     this.getCompanies();
-
-    console.log("After ngOnInit, company is: " + JSON.stringify(this.company));
   }
 
   search = (text$: Observable<string>) =>
@@ -68,40 +66,71 @@ export class EditCustomerComponent {
         }})
 
   inputFormatter = (c: Company) => c.name;
-  resultFormatter = (c: Company) => c.name + (c.id ? "" : " (new)");
+  resultFormatter = (c: Company) => c.name + (c.id ? '' :  ' (new)');
 
   open(content) {
-    this.modalRef = this.modalService.open(content, {size: 'lg'});
+    this.modalRef = this.modalService.open(content, {size: 'lg', beforeDismiss: this.reset});
     this.onOpen();
   }
 
+  reset() {
+    this.customer = new Customer();
+    this.company = new Company();
+    this.deliveryAddress = new Address();
+    this.invoiceAddress = new Address();
+return true;
+  }
+
+  isValid() {
+    return this.customer.isValid();
+    //  &&
+    //   this.company.isValid() &&
+    //   (this.invoiceAddress.isNew() || this.invoiceAddress.isValid() &&
+    //   (this.deliveryAddress.isNew() || this.deliveryAddress.isValid()));
+  }
+
+  customerUnchanged() {
+    return _.isEqual(JSON.stringify(this.customerRecord.customer), JSON.stringify(this.customer));
+  }
+  companyUnchanged() {
+    return _.isEqual(JSON.stringify(this.customerRecord.company), JSON.stringify(this.company));
+  }
+  invoiceAddressUnchanged() {
+    return _.isEqual(JSON.stringify(this.customerRecord.invoiceAddress), JSON.stringify(this.invoiceAddress));
+  }
+  deliveryAddressUnchanged() {
+    return _.isEqual(JSON.stringify(this.customerRecord.deliveryAddress), JSON.stringify(this.deliveryAddress));
+  }
+  customerEmpty() {
+    return this.customer.id === undefined && this.customer.name === undefined && this.customer.email === undefined;
+  }
+  addressEmpty(address: Address) {
+    return address.id === undefined && address.name === undefined && address.line1 === undefined;
+  }
+
   upsertInvoiceAddress(): Observable<Address>  {
-    return _.isEqual(this.customerRecord.invoiceAddress, this.invoiceAddress ) ||
-            isNullOrUndefined(this.invoiceAddress.name) ?
+    return this.addressEmpty(this.invoiceAddress) || this.invoiceAddressUnchanged() ?
       Observable.of(this.invoiceAddress) :
       this.addressService.upsertAddress(this.invoiceAddress);
   }
 
   upsertDeliveryAddress(): Observable<Address> {
-    return _.isEqual(this.customerRecord.deliveryAddress, this.deliveryAddress) ||
-    isNullOrUndefined(this.deliveryAddress.name) ?
+    return this.addressEmpty(this.deliveryAddress) || this.deliveryAddressUnchanged() ?
       Observable.of(this.deliveryAddress) :
       this.addressService.upsertAddress(this.deliveryAddress);
   }
 
   upsertCompany(): Observable<Company> {
-    console.log("WILL UPSERT " + JSON.stringify(this.company));
-    return _.isEqual(this.customerRecord.company, this.company) ?
+    return this.companyUnchanged() ?
       Observable.of(this.company) :
       this.companyService.upsertCompany(this.company);
   }
 
   upsertCustomer(): Observable<Customer> {
-    return this.customer.isEmpty()  || this.customerRecord.isEqual(this.customer, this.company, this.invoiceAddress, this.deliveryAddress) ?
+    return this.customerEmpty() || this.customerUnchanged() ?
       Observable.of(this.customer) :
       this.customerService.upsertCustomer(this.customer);
   }
-
 
   updateAll() {
     this.upsertInvoiceAddress().concatMap(a => {
@@ -136,8 +165,8 @@ export class EditCustomerComponent {
       error => {
         this.customerRecord.alerts.push({
           id: this.customerRecord.alerts.length + 1,
-          type: 'success',
-          message: 'ERROR updating customer: ' + JSON.stringify(error)
+          type: 'danger',
+          message: 'ERROR: ' + JSON.stringify(error)
         });
       }
     );

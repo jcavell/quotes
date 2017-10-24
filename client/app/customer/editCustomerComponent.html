@@ -118,7 +118,7 @@
           <div class="form-group row">
             <label for="company-text-input" class="col-4 col-form-label">Name</label>
             <div class="col-8">
-              <input required name = "company" id="company-text-input" type="text" class="form-control" [(ngModel)]="company"
+              <input required minlength="2" name = "company" id="company-text-input" type="text" class="form-control" [(ngModel)]="company"
 
                      [ngbTypeahead]="search"
                      [inputFormatter]="inputFormatter" [resultFormatter]="resultFormatter"/>

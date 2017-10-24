@@ -22,19 +22,16 @@ export class Customer {
               public active: boolean = true
   ) {}
 
-  isEqual(customer: Customer) {
-    _.isEqual(this, customer);
-  }
 
   isValid() {
-    return _.isString(this.name) && _.isString(this.email);
+    return _.isString(this.name) && _.isString(this.email) && _.isNumber(this.companyId);
   }
 
   isEmpty() {
     return this.id === undefined && this.name === undefined && this.email === undefined;
   }
 
-  isNew() {
+  public isNew(): boolean {
       return this.id === undefined;
   }
 }

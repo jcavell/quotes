@@ -41,6 +41,7 @@ export class CustomerService {
   }
 
   upsertCustomer(customer: Customer): Observable<Customer> {
+    console.log('Upsert customer ' + JSON.stringify(customer));
     const action = customer.id ?
       this.http.put(`http://localhost:9000/customers/${customer.id}`, JSON.stringify(customer), this.options) :
       this.http.post(`http://localhost:9000/customers`, JSON.stringify(customer), this.options);

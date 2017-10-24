@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 export class Company {
   constructor(public id: number = undefined,
               public name: string = '',
@@ -11,7 +13,17 @@ export class Company {
               public source: string = undefined,
               public active: boolean = true
 
-  ) {
+  ) {}
 
+  isValid() {
+    return _.isString(this.name);
+  }
+
+  isEmpty() {
+    return this.id === undefined && this.name === undefined;
+  }
+
+  isNew() {
+    return this.id === undefined;
   }
 }

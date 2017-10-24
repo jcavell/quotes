@@ -22,7 +22,7 @@ export class CompanyService {
   }
 
   upsertCompany(company: Company): Observable<Company> {
-    console.log('Upsert company ' + company.name + ' ' + company.phone1);
+    console.log('Upsert company ' + JSON.stringify(company));
     const action = company.id ?
       this.http.put(`http://localhost:9000/companies/${company.id}`, JSON.stringify(company), this.options) :
       this.http.post(`http://localhost:9000/companies`, JSON.stringify(company), this.options);
