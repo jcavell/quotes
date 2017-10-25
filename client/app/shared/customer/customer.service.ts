@@ -30,15 +30,18 @@ export class CustomerService {
         params['searchValue'] = term;
         return _.isEmpty(term) ?
           Observable.of([[], 0]) :
-          Observable.zip(this.getCustomerRecords(params), this.getCustomerCount(params));
+          Observable.zip(this.getCustomerRecords(params, 0), this.getCustomerCount(params));
       });
   }
 
-  getCustomerRecords(params): Observable<CustomerRecord[]> {
+  getCustomerRecords(params, page: number): Observable<CustomerRecord[]> {
+    console.log('Getting customer records');
+    params['page'] = page;
     return this.http.get('http://localhost:9000/customers', this.getOptions(params)).map(res => res.json());
   }
 
   getCustomerCount(params): Observable<number> {
+    console.log('Getting customer count');
     return this.http.get('http://localhost:9000/customer-count', this.getOptions(params)).map(res => res.json());
   }
   addCustomer(customer: Customer): Observable<CustomerRecord> {

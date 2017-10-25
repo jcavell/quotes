@@ -6,14 +6,7 @@ export class CustomerRecord {
   constructor(public customer: Customer = new Customer(),
               public company: Company = new Company(),
               public invoiceAddress: Address = undefined,
-              public deliveryAddress: Address = undefined,
-              public alerts: IAlert[] = []) {
+              public deliveryAddress: Address = undefined
+  ) {
   }
-}
-
-
-export interface IAlert {
-  id: number;
-  type: string;
-  message: string;
 }

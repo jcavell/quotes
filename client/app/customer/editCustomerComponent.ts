@@ -14,6 +14,7 @@ import {Address} from "../shared/address/address.model";
 import {AddressService} from "../shared/address/address.service";
 import {CustomerRecord} from "../shared/customer/customerRecord.model";
 import {isNullOrUndefined} from "util";
+import {IAlert} from "../shared/customer/customer.alert";
 
 
 @Component({
@@ -24,6 +25,7 @@ export class EditCustomerComponent {
   private modalRef: NgbModalRef;
   @Input() customerRecord: CustomerRecord;
   @Output() onCustomerCreated = new EventEmitter<CustomerRecord>();
+  @Output() onAlertCreated = new EventEmitter<IAlert>();
 
   customer: Customer;
   company: Company;
@@ -45,7 +47,6 @@ export class EditCustomerComponent {
     this.invoiceAddress = isNullOrUndefined(this.customerRecord.invoiceAddress) ? new Address() : _.clone(this.customerRecord.invoiceAddress);
     this.deliveryAddress = isNullOrUndefined(this.customerRecord.deliveryAddress) ? new Address() : _.clone(this.customerRecord.deliveryAddress);
 
-    this.customerRecord.alerts = [];
     this.getCompanies();
   }
 
@@ -154,8 +155,7 @@ return true;
             this.onCustomerCreated.emit(this.customerRecord);
             upsertMessage = 'Inserted new customer';
           }
-          this.customerRecord.alerts.push({
-            id: this.customerRecord.alerts.length + 1,
+          this.onAlertCreated.emit({
             type: 'success',
             message: upsertMessage
           });
@@ -163,8 +163,7 @@ return true;
         this.customerRecord.customer = _.clone(customer);
       },
       error => {
-        this.customerRecord.alerts.push({
-          id: this.customerRecord.alerts.length + 1,
+        this.onAlertCreated.emit({
           type: 'danger',
           message: 'ERROR: ' + JSON.stringify(error)
         });

@@ -1,13 +1,14 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 import {Http} from "@angular/http";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ToastComponent} from "../shared/toast/toast.component";
 import {CustomerService} from "../shared/customer/customer.service";
 import {CompanyService} from "../shared/company/company.service";
 import {UserService} from "../shared/user/user.service";
-import {CustomerRecord, IAlert} from "../shared/customer/customerRecord.model";
+import {CustomerRecord} from "../shared/customer/customerRecord.model";
 import {Company} from "../shared/company/company.model";
 import {Subject} from "rxjs";
+import {IAlert} from "../shared/customer/customer.alert";
 
 @Component({
   selector: 'app-customer',
@@ -18,10 +19,11 @@ export class CustomerComponent implements OnInit {
 
   customers: CustomerRecord[];
   companies: Company[];
-  page = 1;
+  private _page: number;
   count: number;
   customer: CustomerRecord;
   private orderParams;
+  alert: IAlert;
 
   addCustomerForm: FormGroup;
   name = new FormControl('', Validators.minLength(2));
@@ -46,16 +48,22 @@ export class CustomerComponent implements OnInit {
               private formBuilder: FormBuilder) {
   }
 
+
+  @Input() set page(pageNum: number) {
+    this._page = pageNum;
+    this.getCustomers(pageNum);
+  }
+
+  get page(): number {
+    return this._page;
+  }
+
   ngOnInit() {
 
     this.customers = [];
     this.orderParams = {};
 
-    this.customerService.search(this.searchTerm$, this.orderParams)
-      .subscribe(customerRecords => {
-        this.customers = customerRecords[0];
-        this.count = customerRecords[1];
-      });
+    this.search();
 
     this.addCustomerForm = this.formBuilder.group({
       name: this.name,
@@ -72,8 +80,16 @@ export class CustomerComponent implements OnInit {
     });
   }
 
-  getCustomers() {
-    this.customerService.getCustomerRecords(this.orderParams).subscribe(
+  private search() {
+    return this.customerService.search(this.searchTerm$, this.orderParams)
+      .subscribe(customerRecords => {
+        this.customers = customerRecords[0];
+        this.count = customerRecords[1];
+      });
+  }
+
+  getCustomers(pageNum: number) {
+    this.customerService.getCustomerRecords(this.orderParams, pageNum).subscribe(
       data => this.customers = data,
       error => console.log(error)
     );
@@ -100,15 +116,19 @@ export class CustomerComponent implements OnInit {
       this.orderParams['orderAsc'] = true;
     }
     this.orderParams['orderField'] = field;
-    this.getCustomers();
+    this.getCustomers(this._page);
   }
 
-  newCustomerRecord(){
+  newCustomerRecord() {
     return new CustomerRecord();
   }
 
   customerCreated(cr: CustomerRecord) {
     this.customers.push(cr);
+  }
+
+  alertCreated(alert: IAlert) {
+    this.alert = alert;
   }
 
   deleteCustomer(customer) {
@@ -126,8 +146,7 @@ export class CustomerComponent implements OnInit {
     }
   }
 
-  public closeAlert(cust: CustomerRecord, alert: IAlert) {
-    const index: number = cust.alerts.indexOf(alert);
-    cust.alerts.splice(index, 1);
+  public closeAlert() {
+    this.alert = undefined;
   }
 }

@@ -2,17 +2,22 @@
 
 <div class="card">
 
-  <h4 class="card-header">Customers &nbsp;<i class = "fa fa-search"></i> <input
+  <h3 class="card-header">Search customers</h3>
+  <h4 class="card-body"><i class = "fa fa-search"></i> <input
     (keyup)="searchTerm$.next($event.target.value)">
+    <edit-customer (onCustomerCreated)="customerCreated($event)" (onAlertCreated)="alertCreated($event)" [customerRecord]="newCustomerRecord()"></edit-customer>
   </h4>
 
-  <div *ngIf="count">{{count}} results found
-    <ngb-pagination [collectionSize]="count" [(page)]="page" [maxSize]="5" [rotate]="true" [boundaryLinks]="true"></ngb-pagination>
+  <div *ngIf="alert">
+    <ngb-alert [type]="alert.type" (close)="closeAlert()">{{ alert.message }}</ngb-alert>
   </div>
 
-  <edit-customer (onCustomerCreated)="customerCreated($event)" [customerRecord]="newCustomerRecord()"></edit-customer>
+  <div *ngIf="count">{{count}} customer(s) found
+    <ngb-pagination [collectionSize]="count" [pageSize]="2" [(page)]="page" [maxSize]="5" [rotate]="true"></ngb-pagination>
+  </div>
 
-  <div class="card-block">
+
+  <div *ngIf="count" class="card-block">
     <table class="table table-bordered table-striped">
       <thead class="thead-default">
         <tr>
@@ -40,11 +45,8 @@
           <td>{{cust.company.name}}</td>
           <td>{{cust.customer.source}}</td>
           <td>{{cust.customer.position}}</td>
-         <td><edit-customer [customerRecord]="cust"></edit-customer></td>
+         <td><edit-customer (onCustomerCreated)="customerCreated($event)" (onAlertCreated)="alertCreated($event)"  [customerRecord]="cust"></edit-customer></td>
             <td><button class="btn btn-sm btn-danger" (click)="deleteCustomer(cust)"><i class="fa fa-trash"></i> Delete</button>
-              <p *ngFor="let alert of cust.alerts">
-                <ngb-alert [type]="alert.type" (close)="closeAlert(cust, alert)">{{ alert.message }}</ngb-alert>
-              </p>
           </td>
         </tr>
       </tbody>
