@@ -50,8 +50,10 @@ export class CustomerComponent implements OnInit {
 
 
   @Input() set page(pageNum: number) {
-    this._page = pageNum;
-    this.getCustomers(pageNum);
+    if (!isNaN(pageNum)) {
+      this._page = pageNum;
+      this.getCustomers(pageNum);
+    }
   }
 
   get page(): number {
@@ -85,6 +87,7 @@ export class CustomerComponent implements OnInit {
       .subscribe(customerRecords => {
         this.customers = customerRecords[0];
         this.count = customerRecords[1];
+       this._page = customerRecords[1] ? 1 : undefined;
       });
   }
 

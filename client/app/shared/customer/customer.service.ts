@@ -23,19 +23,20 @@ export class CustomerService {
   }
 
   search(terms: Observable<string>, params): Observable<[CustomerRecord[], number]> {
+    console.log('Search called');
     return terms.debounceTime(400)
       .distinctUntilChanged()
       .switchMap(term => {
         params['searchField'] = 'multi';
         params['searchValue'] = term;
         return _.isEmpty(term) ?
-          Observable.of([[], 0]) :
-          Observable.zip(this.getCustomerRecords(params, 0), this.getCustomerCount(params));
+          Observable.of([[], 1]) :
+          Observable.zip(this.getCustomerRecords(params, 1), this.getCustomerCount(params));
       });
   }
 
   getCustomerRecords(params, page: number): Observable<CustomerRecord[]> {
-    console.log('Getting customer records');
+    console.log('Getting customer records for page ' + page);
     params['page'] = page;
     return this.http.get('http://localhost:9000/customers', this.getOptions(params)).map(res => res.json());
   }
