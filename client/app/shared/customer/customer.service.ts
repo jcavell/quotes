@@ -28,7 +28,9 @@ export class CustomerService {
       .switchMap(term => {
         params['searchField'] = 'multi';
         params['searchValue'] = term;
-        return _.isEmpty(term) ? Observable.of([[], 0]) : Observable.zip(this.getCustomerRecords(params), this.getCustomerCount(params));
+        return _.isEmpty(term) ?
+          Observable.of([[], 0]) :
+          Observable.zip(this.getCustomerRecords(params), this.getCustomerCount(params));
       });
   }
 

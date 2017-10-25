@@ -6,7 +6,9 @@
     (keyup)="searchTerm$.next($event.target.value)">
   </h4>
 
-  <span *ngIf="count">{{count}} results found</span> <ngb-pagination [collectionSize]="count" [(page)]="page" [maxSize]="5" [rotate]="true" [boundaryLinks]="true"></ngb-pagination>
+  <div *ngIf="count">{{count}} results found
+    <ngb-pagination [collectionSize]="count" [(page)]="page" [maxSize]="5" [rotate]="true" [boundaryLinks]="true"></ngb-pagination>
+  </div>
 
   <edit-customer (onCustomerCreated)="customerCreated($event)" [customerRecord]="newCustomerRecord()"></edit-customer>
 
