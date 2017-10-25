@@ -1,9 +1,15 @@
 <app-toast [message]="toast.message"></app-toast>
 
 <div class="card">
-  <h4 class="card-header">Customers &nbsp;<i class = "fa fa-search"></i><input
+
+  <h4 class="card-header">Customers &nbsp;<i class = "fa fa-search"></i> <input
     (keyup)="searchTerm$.next($event.target.value)">
   </h4>
+
+  <span *ngIf="count">{{count}} results found</span> <ngb-pagination [collectionSize]="count" [(page)]="page" [maxSize]="5" [rotate]="true" [boundaryLinks]="true"></ngb-pagination>
+
+  <edit-customer (onCustomerCreated)="customerCreated($event)" [customerRecord]="newCustomerRecord()"></edit-customer>
+
   <div class="card-block">
     <table class="table table-bordered table-striped">
       <thead class="thead-default">
@@ -43,6 +49,5 @@
     </table>
   </div>
 </div>
-<edit-customer (onCustomerCreated)="customerCreated($event)" [customerRecord]="newCustomerRecord()"></edit-customer>
 
 

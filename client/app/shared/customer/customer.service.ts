@@ -22,13 +22,13 @@ export class CustomerService {
     return new RequestOptions({ headers: this.headers, params: params });
   }
 
-  search(terms: Observable<string>, params): Observable<CustomerRecord[]> {
+  search(terms: Observable<string>, params): Observable<[CustomerRecord[], number]> {
     return terms.debounceTime(400)
       .distinctUntilChanged()
       .switchMap(term => {
         params['searchField'] = 'multi';
         params['searchValue'] = term;
-        return _.isEmpty(term) ? Observable.of([]) : this.getCustomerRecords(params);
+        return _.isEmpty(term) ? Observable.of([[], 0]) : Observable.zip(this.getCustomerRecords(params), this.getCustomerCount(params));
       });
   }
 
@@ -36,6 +36,9 @@ export class CustomerService {
     return this.http.get('http://localhost:9000/customers', this.getOptions(params)).map(res => res.json());
   }
 
+  getCustomerCount(params): Observable<number> {
+    return this.http.get('http://localhost:9000/customer-count', this.getOptions(params)).map(res => res.json());
+  }
   addCustomer(customer: Customer): Observable<CustomerRecord> {
     return this.http.post('http://localhost:9000/customers', customer, this.options).map(res => res.json());
   }

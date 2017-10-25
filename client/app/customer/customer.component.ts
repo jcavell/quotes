@@ -18,15 +18,12 @@ export class CustomerComponent implements OnInit {
 
   customers: CustomerRecord[];
   companies: Company[];
-
-  isLoading = true;
-
+  page = 1;
+  count: number;
   customer: CustomerRecord;
-
-  isEditing = false;
+  private orderParams;
 
   addCustomerForm: FormGroup;
-
   name = new FormControl('', Validators.minLength(2));
   email = new FormControl('', Validators.minLength(6));
   directPhone = new FormControl('');
@@ -39,7 +36,6 @@ export class CustomerComponent implements OnInit {
   skype = new FormControl('');
   companyId = new FormControl('', Validators.pattern('\\d+'));
 
-  private orderParams;
   searchTerm$ = new Subject<string>();
 
   constructor(private http: Http,
@@ -50,8 +46,6 @@ export class CustomerComponent implements OnInit {
               private formBuilder: FormBuilder) {
   }
 
-
-
   ngOnInit() {
 
     this.customers = [];
@@ -59,7 +53,8 @@ export class CustomerComponent implements OnInit {
 
     this.customerService.search(this.searchTerm$, this.orderParams)
       .subscribe(customerRecords => {
-        this.customers = customerRecords;
+        this.customers = customerRecords[0];
+        this.count = customerRecords[1];
       });
 
     this.addCustomerForm = this.formBuilder.group({
@@ -80,8 +75,7 @@ export class CustomerComponent implements OnInit {
   getCustomers() {
     this.customerService.getCustomerRecords(this.orderParams).subscribe(
       data => this.customers = data,
-      error => console.log(error),
-      () => this.isLoading = false
+      error => console.log(error)
     );
   }
 
