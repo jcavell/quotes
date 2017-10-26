@@ -52,7 +52,7 @@ export class CustomerComponent implements OnInit {
   @Input() set page(pageNum: number) {
     if (!isNaN(pageNum)) {
       this._page = pageNum;
-      this.getCustomers(pageNum);
+      this.getCustomers();
     }
   }
 
@@ -86,13 +86,13 @@ export class CustomerComponent implements OnInit {
     return this.customerService.search(this.searchTerm$, this.orderParams)
       .subscribe(customerRecords => {
         this.customers = customerRecords[0];
-        this.count = customerRecords[1];
+        this.count = customerRecords[0].length ? customerRecords[1] : 0;
        this._page = customerRecords[1] ? 1 : undefined;
       });
   }
 
-  getCustomers(pageNum: number) {
-    this.customerService.getCustomerRecords(this.orderParams, pageNum).subscribe(
+  getCustomers() {
+    this.customerService.getCustomerRecords(this.orderParams, this._page).subscribe(
       data => this.customers = data,
       error => console.log(error)
     );
@@ -119,7 +119,8 @@ export class CustomerComponent implements OnInit {
       this.orderParams['orderAsc'] = true;
     }
     this.orderParams['orderField'] = field;
-    this.getCustomers(this._page);
+    this._page = 1;
+    this.getCustomers();
   }
 
   newCustomerRecord() {

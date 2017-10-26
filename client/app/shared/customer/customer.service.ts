@@ -26,6 +26,7 @@ export class CustomerService {
     console.log('Search called');
     return terms.debounceTime(400)
       .distinctUntilChanged()
+      .filter(term => term.length > 1)
       .switchMap(term => {
         params['searchField'] = 'multi';
         params['searchValue'] = term;
