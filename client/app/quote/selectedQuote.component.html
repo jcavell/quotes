@@ -3,8 +3,7 @@
 
     <div class="card-block">
 
-      <h4>Details
-        <edit-quote [quote]="quoteRecord.quote"></edit-quote>
+      <h4 class = "card-header"> <edit-quote [quote]="quoteRecord.quote"></edit-quote> Quote details
       </h4>
 
       <table class="table table-responsive table-bordered">
@@ -26,36 +25,14 @@
         </tbody>
       </table>
 
-      <h4>Company
 
-        <button type="button" class="btn btn-sm btn-primary"
-                (click)="openEditQuoteModal(quoteRecord.quote)"><i class="fa fa-edit"></i> Edit
-        </button>
+      <h4 class = "card-header"><edit-customer (onCustomerCreated)="customerCreated($event)" (onAlertCreated)="alertCreated($event)"  [customerRecord]="quoteRecord.customerRecord"></edit-customer>
       </h4>
       <table class="table table-responsive table-bordered">
         <thead class="thead-default">
         <tr>
-          <th>Name</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td>{{quoteRecord.quote.companyName}}</td>
-        </tr>
-        </tbody>
-      </table>
-
-
-      <h4>Customer
-
-        <button type="button" class="btn btn-sm btn-primary"
-                (click)="openEditQuoteModal(quoteRecord.quote)"><i class="fa fa-edit"></i> Edit
-        </button>
-      </h4>
-      <table class="table table-responsive table-bordered">
-        <thead class="thead-default">
-        <tr>
-          <th>Name</th>
+          <th>Customer</th>
+          <th>Company</th>
           <th>Email</th>
           <th>Direct</th>
           <th>Mobile</th>
@@ -63,22 +40,19 @@
         </thead>
         <tbody>
         <tr>
-          <td>{{quoteRecord.quote.customerName}}</td>
-          <td>{{quoteRecord.quote.customerEmail}}</td>
-          <td>{{quoteRecord.quote.customerDirectPhone}}</td>
-          <td>{{quoteRecord.quote.customerMobilePhone}}</td>
+          <td>{{quoteRecord.customerRecord.customer.name}}</td>
+          <td>{{quoteRecord.customerRecord.company.name}}</td>
+          <td>{{quoteRecord.customerRecord.customer.email}}</td>
+          <td>{{quoteRecord.customerRecord.customer.directPhone}}</td>
+          <td>{{quoteRecord.customerRecord.customer.mobilePhone}}</td>
         </tr>
         </tbody>
       </table>
 
-
-      <h4>Addresses</h4>
-
       <table class="table table-responsive table-bordered">
         <thead class="thead-default">
         <tr>
-          <th></th>
-          <th>Type</th>
+          <th>Address type</th>
           <th>Name</th>
           <th>Company</th>
           <th>FAO</th>
@@ -92,49 +66,40 @@
         </thead>
         <tbody>
         <tr>
-          <td>
-            <button type="button" class="btn btn-sm btn-primary"
-                    (click)="openEditAddressModal(quoteRecord.invoiceAddress)"><i class="fa fa-edit"></i> Edit
-            </button>
-          </td>
           <td>Invoice</td>
-          <td>{{quoteRecord.invoiceAddress.name}}</td>
-          <td>{{quoteRecord.invoiceAddress.company}}</td>
-          <td>{{quoteRecord.invoiceAddress.fao}}</td>
-          <td>{{quoteRecord.invoiceAddress.line1}}</td>
-          <td>{{quoteRecord.invoiceAddress.line2}}</td>
-          <td>{{quoteRecord.invoiceAddress.line3}}</td>
-          <td>{{quoteRecord.invoiceAddress.townCity}}</td>
-          <td>{{quoteRecord.invoiceAddress.county}}</td>
-          <td>{{quoteRecord.invoiceAddress.postcode}}</td>
+          <td>{{quoteRecord.customerRecord.invoiceAddress.name}}</td>
+          <td>{{quoteRecord.customerRecord.invoiceAddress.company}}</td>
+          <td>{{quoteRecord.customerRecord.invoiceAddress.fao}}</td>
+          <td>{{quoteRecord.customerRecord.invoiceAddress.line1}}</td>
+          <td>{{quoteRecord.customerRecord.invoiceAddress.line2}}</td>
+          <td>{{quoteRecord.customerRecord.invoiceAddress.line3}}</td>
+          <td>{{quoteRecord.customerRecord.invoiceAddress.townCity}}</td>
+          <td>{{quoteRecord.customerRecord.invoiceAddress.county}}</td>
+          <td>{{quoteRecord.customerRecord.invoiceAddress.postcode}}</td>
         </tr>
         <tr>
-          <td>
-            <button type="button" class="btn btn-sm btn-primary"
-                    (click)="openEditAddressModal(quoteRecord.deliveryAddress)"><i class="fa fa-edit"></i> Edit
-            </button>
-          </td>
           <td>Delivery</td>
-          <td>{{quoteRecord.deliveryAddress.name}}</td>
-          <td>{{quoteRecord.deliveryAddress.company}}</td>
-          <td>{{quoteRecord.deliveryAddress.fao}}</td>
-          <td>{{quoteRecord.deliveryAddress.line1}}</td>
-          <td>{{quoteRecord.deliveryAddress.line2}}</td>
-          <td>{{quoteRecord.deliveryAddress.line3}}</td>
-          <td>{{quoteRecord.deliveryAddress.townCity}}</td>
-          <td>{{quoteRecord.deliveryAddress.county}}</td>
-          <td>{{quoteRecord.deliveryAddress.postcode}}</td>
+          <td>{{quoteRecord.customerRecord.deliveryAddress.name}}</td>
+          <td>{{quoteRecord.customerRecord.deliveryAddress.company}}</td>
+          <td>{{quoteRecord.customerRecord.deliveryAddress.fao}}</td>
+          <td>{{quoteRecord.customerRecord.deliveryAddress.line1}}</td>
+          <td>{{quoteRecord.customerRecord.deliveryAddress.line2}}</td>
+          <td>{{quoteRecord.customerRecord.deliveryAddress.line3}}</td>
+          <td>{{quoteRecord.customerRecord.deliveryAddress.townCity}}</td>
+          <td>{{quoteRecord.customerRecord.deliveryAddress.county}}</td>
+          <td>{{quoteRecord.customerRecord.deliveryAddress.postcode}}</td>
         </tr>
         </tbody>
       </table>
 
 
-      <h4>Line items</h4>
+      <h4 class = "card-header"><button type="button" class="btn btn-sm btn-primary"
+                                        (click)="openEditAddressModal(quoteRecord.deliveryAddress)"><i class="fa fa-edit"></i> Edit
+      </button> Line items</h4>
 
       <table class="table table-responsive table-bordered">
         <thead class="thead-default">
         <tr>
-          <th></th>
           <th>Product</th>
           <th>Image</th>
           <th>Quantity</th>
@@ -149,11 +114,6 @@
         <tbody>
         <tr *ngFor="let lineItem of quoteLineItems">
           <ng-container *ngIf="lineItemProducts.get(lineItem.productId) as product">
-            <td>
-              <button type="button" class="btn btn-sm btn-primary"
-                      (click)="openEditAddressModal(quoteRecord.deliveryAddress)"><i class="fa fa-edit"></i> Edit
-              </button>
-            </td>
             <td>{{product.productname}}</td>
             <td><img src="{{getThumb(product)}}"/></td>
             <td>{{lineItem.quantity}}</td>

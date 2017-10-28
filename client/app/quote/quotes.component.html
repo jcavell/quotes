@@ -22,11 +22,11 @@
           <td>{{quoteRecord.quote.title}}</td>
           <td>{{quoteRecord.quote.createdDate | date: 'EE dd/MM/yyyy'}}</td>
           <td>{{quoteRecord.quote.requiredDate | date: 'EE dd/MM/yyyy'}}</td>
-          <td>{{quoteRecord.quote.companyName}}</td>
-          <td>{{quoteRecord.quote.customerName}}</td>
-          <td>{{quoteRecord.quote.customerEmail}}</td>
-          <td>{{quoteRecord.quote.customerDirectPhone}}</td>
-          <td>{{quoteRecord.quote.customerMobilePhone}}</td>
+          <td>{{quoteRecord.customerRecord.company.name}}</td>
+          <td>{{quoteRecord.customerRecord.customer.name}}</td>
+          <td>{{quoteRecord.customerRecord.customer.email}}</td>
+          <td>{{quoteRecord.customerRecord.customer.directPhone}}</td>
+          <td>{{quoteRecord.customerRecord.customer.mobilePhone}}</td>
           <td>
             <button type="button" class="btn btn-sm btn-warning"
                     (click)="displaySelectedQuote($event, quoteRecord)"><i class="fa fa-binoculars"></i> View

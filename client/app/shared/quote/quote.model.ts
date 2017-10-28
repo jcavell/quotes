@@ -1,7 +1,6 @@
 import {User} from "../user/user.model";
-import {Customer} from "../customer/customer.model";
 import {Address} from "../address/address.model";
-import {Company} from "../company/company.model";
+import {CustomerRecord} from "../customer/customerRecord.model";
 
 export class QuoteMeta {
   constructor(public id: number,
@@ -19,11 +18,6 @@ export class Quote {
               public title: string,
               public requiredDate: string,
               public specialInstructions: string,
-              public companyName: string,
-              public customerName: string,
-              public customerEmail: string,
-              public customerDirectPhone: string,
-              public customerMobilePhone: string,
               public createdDate: string,
               public notes: string,
               public active: boolean) {
@@ -33,12 +27,11 @@ export class Quote {
   export class QuoteRecord {
   constructor(public quote: Quote,
               public quoteMeta: QuoteMeta,
-              public customer: Customer,
-              public company: Company,
-              public rep: User,
-              public assignedUser: User,
+              public customerRecord: CustomerRecord,
               public invoiceAddress: Address,
-              public deliveryAddress: Address) {
+              public deliveryAddress: Address,
+              public rep: User,
+              public assignedUser: User) {
   }
 }
 

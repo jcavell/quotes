@@ -9,6 +9,8 @@ import {CustomerRecord} from "../shared/customer/customerRecord.model";
 import {Company} from "../shared/company/company.model";
 import {Subject} from "rxjs";
 import {IAlert} from "../shared/customer/customer.alert";
+import {Router} from "@angular/router";
+import {Refresher} from "./refresher";
 
 @Component({
   selector: 'app-customer',
@@ -41,6 +43,7 @@ export class CustomerComponent implements OnInit {
   searchTerm$ = new Subject<string>();
 
   constructor(private http: Http,
+              private _router: Router,
               private customerService: CustomerService,
               private companyService: CompanyService,
               private userService: UserService,
@@ -61,6 +64,8 @@ export class CustomerComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    new Refresher(this._router);
 
     this.customers = [];
     this.orderParams = {};

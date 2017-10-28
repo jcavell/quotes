@@ -148,12 +148,12 @@ return true;
       return this.upsertCustomer();
     }).subscribe(
       customer => {
-        let upsertMessage = 'Updated customer';
+        let upsertMessage = 'Updated ' + this.customerRecord.customer.name;;
         if (!_.isEqual(this.customer, this.customerRecord.customer)) {
           if (this.customerRecord.customer.id === undefined) {
             // new customer
             this.onCustomerCreated.emit(this.customerRecord);
-            upsertMessage = 'Inserted new customer';
+            upsertMessage = 'Inserted ' + this.customerRecord.customer.name;
           }
           this.onAlertCreated.emit({
             type: 'success',

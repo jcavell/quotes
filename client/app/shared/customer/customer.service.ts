@@ -8,7 +8,6 @@ import "rxjs/add/operator/distinctUntilChanged";
 import "rxjs/add/operator/switchMap";
 import {Customer} from "./customer.model";
 import {CustomerRecord} from "./customerRecord.model";
-import _ from "lodash";
 
 @Injectable()
 export class CustomerService {
@@ -30,9 +29,7 @@ export class CustomerService {
       .switchMap(term => {
         params['searchField'] = 'multi';
         params['searchValue'] = term;
-        return _.isEmpty(term) ?
-          Observable.of([[], 1]) :
-          Observable.zip(this.getCustomerRecords(params, 1), this.getCustomerCount(params));
+        return Observable.zip(this.getCustomerRecords(params, 1), this.getCustomerCount(params));
       });
   }
 

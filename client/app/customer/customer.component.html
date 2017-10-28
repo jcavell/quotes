@@ -12,7 +12,7 @@
     <ngb-alert [type]="alert.type" (close)="closeAlert()">{{ alert.message }}</ngb-alert>
   </div>
 
-  <div *ngIf="count !== undefined">{{count}} customer(s) found
+  <div *ngIf="count !== undefined">{{count}} customer<span *ngIf = "count != 1">s</span> found
     <ngb-pagination *ngIf = "count > 5" [collectionSize]="count" [pageSize]="5" [(page)]="page" [maxSize]="5" [rotate]="true"></ngb-pagination>
   </div>
 

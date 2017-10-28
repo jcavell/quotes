@@ -4,6 +4,7 @@ import {QuoteRecord} from "../shared/quote/quote.model";
 import {SelectedQuoteService} from "../shared/quote/selectedQuote.service";
 import {Subscription} from "rxjs";
 import {ActivatedRoute, Params} from "@angular/router";
+import {IAlert} from "../shared/customer/customer.alert";
 
 @Component({
   moduleId: module.id,
@@ -19,6 +20,7 @@ export class QuotesComponent implements OnInit, OnDestroy {
   isEditing = false;
   subscription: Subscription;
   queryParams: {};
+  alert: IAlert;
 
   constructor(private activatedRoute: ActivatedRoute, public quoteService: QuoteService, public selectedQuoteService: SelectedQuoteService) {
   }
@@ -68,5 +70,13 @@ export class QuotesComponent implements OnInit, OnDestroy {
         error => this.errorMessage = <any>error
       );
     return false;
+  }
+
+  alertCreated(alert: IAlert) {
+    this.alert = alert;
+  }
+
+  public closeAlert() {
+    this.alert = undefined;
   }
 }
