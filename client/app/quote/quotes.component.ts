@@ -79,4 +79,24 @@ export class QuotesComponent implements OnInit, OnDestroy {
   public closeAlert() {
     this.alert = undefined;
   }
+
+  getCompanyName(quoteRecord: QuoteRecord) {
+    return quoteRecord.customerRecord ? quoteRecord.customerRecord.company.name : quoteRecord.enquiry.company;
+  }
+
+  getCustomerName(quoteRecord: QuoteRecord) {
+    return quoteRecord.customerRecord ? quoteRecord.customerRecord.customer.name : quoteRecord.enquiry.customerName;
+  }
+
+  getCustomerEmail(quoteRecord: QuoteRecord) {
+    return quoteRecord.customerRecord ? quoteRecord.customerRecord.customer.email : quoteRecord.enquiry.customerEmail;
+  }
+
+  getCustomerDirectPhone(quoteRecord: QuoteRecord) {
+    return quoteRecord.customerRecord ? quoteRecord.customerRecord.customer.directPhone : '';
+  }
+
+  getCustomerMobilePhone(quoteRecord: QuoteRecord) {
+    return quoteRecord.customerRecord ? quoteRecord.customerRecord.customer.mobilePhone : quoteRecord.enquiry.customerTelephone;
+  }
 }

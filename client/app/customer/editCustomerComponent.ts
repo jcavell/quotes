@@ -15,6 +15,7 @@ import {AddressService} from "../shared/address/address.service";
 import {CustomerRecord} from "../shared/customer/customerRecord.model";
 import {isNullOrUndefined} from "util";
 import {IAlert} from "../shared/customer/customer.alert";
+import {Subject} from "rxjs";
 
 
 @Component({
@@ -32,7 +33,19 @@ export class EditCustomerComponent {
   invoiceAddress: Address;
   deliveryAddress: Address;
 
+  // Company search variables
+  companySearchTerm$ = new Subject<string>();
+  private companyOrderParams = {};
+  private _companyPage: number;
+  companyCount: number;
   companies: Company[];
+
+  // Customer search variables
+  customerSearchTerm$ = new Subject<string>();
+  private customerOrderParams = {};
+  private _customerPage: number;
+  customerCount: number;
+  customers: CustomerRecord[];
 
   constructor(private modalService: NgbModal,
               public companyService: CompanyService,
@@ -41,33 +54,48 @@ export class EditCustomerComponent {
   }
 
   onOpen() {
+    this.searchCustomers();
+    this.searchCompanies();
+
     this.customer = _.clone(this.customerRecord.customer);
     this.company =  _.clone(this.customerRecord.company);
 
     this.invoiceAddress = isNullOrUndefined(this.customerRecord.invoiceAddress) ? new Address() : _.clone(this.customerRecord.invoiceAddress);
     this.deliveryAddress = isNullOrUndefined(this.customerRecord.deliveryAddress) ? new Address() : _.clone(this.customerRecord.deliveryAddress);
-
-    this.getCompanies();
   }
 
-  search = (text$: Observable<string>) =>
-    text$
-      .debounceTime(200)
-      .distinctUntilChanged()
-      .map(term => {
-        if (term.length < 2) {
-          return [];
-        } else {
-          const matchingCompanies = this.companies.filter(c => c.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10);
-          if (matchingCompanies.length > 0) {
-            return matchingCompanies;
-          } else {
-            return [new Company(undefined, term, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, true)];
-          }
-        }})
+  private searchCompanies() {
+    return this.companyService.search(this.companySearchTerm$, this.companyOrderParams)
+      .subscribe(companies => {
+        this.companies = companies[0];
+        this.companyCount = companies[0].length ? companies[1] : 0;
+        this._companyPage = companies[1] ? 1 : undefined;
+      });
+  }
 
-  inputFormatter = (c: Company) => c.name;
-  resultFormatter = (c: Company) => c.name + (c.id ? '' :  ' (new)');
+  selectCompany(company: Company) {
+    this.company = company;
+  }
+
+  createNewCompany() {
+    this.company = new Company();
+  }
+
+
+  private searchCustomers() {
+    return this.customerService.search(this.customerSearchTerm$, this.customerOrderParams)
+      .subscribe(customers => {
+        this.customers = customers[0];
+        this.customerCount = customers[0].length ? customers[1] : 0;
+        this._customerPage = customers[1] ? 1 : undefined;
+      });
+  }
+
+  selectcustomer(customer: Customer) {
+    this.customer = customer;
+  }
+
+
 
   open(content) {
     this.modalRef = this.modalService.open(content, {size: 'lg', beforeDismiss: this.reset});
@@ -170,14 +198,5 @@ return true;
       }
     );
     this.modalRef.close();
-  }
-
-  getCompanies() {
-    this.companyService.getCompanies().subscribe(
-      companies => {
-        this.companies = companies;
-      },
-      error => console.log(error)
-    );
   }
 }

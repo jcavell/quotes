@@ -24,6 +24,21 @@
       <ngb-tab>
         <ng-template ngbTabTitle><b>Customer</b></ng-template>
         <ng-template ngbTabContent>
+          <div class="card-body"><i class = "fa fa-search"></i> <input
+            (keyup)="customerSearchTerm$.next($event.target.value)" placeholder="Search customers">
+            <button type="button" class="btn btn-sm btn-outline-dark" (click) = "createNewCusomer()">Create new</button>
+          </div>
+
+          <div *ngIf="customerCount" class="card-block">
+            <table class="table table-bordered table-striped">
+              <tbody>
+              <tr *ngFor="let customer of customers">
+                <td (click) = "selectCompany(company)">{{customer.customer.name}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
         <div class="form-group row">
     <label for="name-text-input" class="col-4 col-form-label">Name</label>
     <div class="col-8">
@@ -115,13 +130,28 @@
       <ngb-tab>
         <ng-template ngbTabTitle><b>Company</b></ng-template>
         <ng-template ngbTabContent>
-          <div class="form-group row">
-            <label for="company-text-input" class="col-4 col-form-label">Name</label>
-            <div class="col-8">
-              <input required minlength="2" name = "company" id="company-text-input" type="text" class="form-control" [(ngModel)]="company"
+          <div class="card-body"><i class = "fa fa-search"></i> <input
+            (keyup)="companySearchTerm$.next($event.target.value)" placeholder="Search companies">
+            <button type="button" class="btn btn-sm btn-outline-dark" (click) = "createNewCompany()">Create new</button>
+          </div>
 
-                     [ngbTypeahead]="search"
-                     [inputFormatter]="inputFormatter" [resultFormatter]="resultFormatter"/>
+
+          <div *ngIf="companyCount" class="card-block">
+            <table class="table table-bordered table-striped">
+              <tbody>
+              <tr *ngFor="let company of companies">
+                <td (click) = "selectCompany(company)">{{company.name}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+
+
+          <div class="form-group row">
+            <label for="company-name-text-input" class="col-4 col-form-label">Name</label>
+            <div class="col-8">
+              <input class="form-control" type="text" name="name" [(ngModel)]="company.name" placeholder="name" id="company-name-text-input">
             </div>
           </div>
 
