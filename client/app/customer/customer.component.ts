@@ -24,7 +24,7 @@ export class CustomerComponent implements OnInit {
   private _page: number;
   count: number;
   customer: CustomerRecord;
-  private orderParams;
+  private searchParams;
   alert: IAlert;
 
   addCustomerForm: FormGroup;
@@ -68,7 +68,7 @@ export class CustomerComponent implements OnInit {
     new Refresher(this._router);
 
     this.customers = [];
-    this.orderParams = {};
+    this.searchParams = {};
 
     this.search();
 
@@ -88,7 +88,7 @@ export class CustomerComponent implements OnInit {
   }
 
   private search() {
-    return this.customerService.search(this.searchTerm$, this.orderParams)
+    return this.customerService.search(this.searchTerm$, this.searchParams)
       .subscribe(customerRecords => {
         this.customers = customerRecords[0];
         this.count = customerRecords[0].length ? customerRecords[1] : 0;
@@ -97,7 +97,7 @@ export class CustomerComponent implements OnInit {
   }
 
   getCustomers() {
-    this.customerService.getCustomerRecords(this.orderParams, this._page).subscribe(
+    this.customerService.getCustomerRecords(this.searchParams, this._page).subscribe(
       data => this.customers = data,
       error => console.log(error)
     );
@@ -105,8 +105,8 @@ export class CustomerComponent implements OnInit {
 
   getClass(field: string): string {
     let clazz: string;
-    if (this.orderParams['orderField'] === field) {
-      if (this.orderParams['orderAsc']) {
+    if (this.searchParams['orderField'] === field) {
+      if (this.searchParams['orderAsc']) {
         clazz = 'fa fa-sort-desc';
       } else {
         clazz = 'fa fa-sort-asc';
@@ -118,12 +118,12 @@ export class CustomerComponent implements OnInit {
   }
 
   orderBy(field: string) {
-    if (this.orderParams['orderField'] === field && this.orderParams['orderAsc']) {
-      this.orderParams['orderAsc'] = false;
+    if (this.searchParams['orderField'] === field && this.searchParams['orderAsc']) {
+      this.searchParams['orderAsc'] = false;
     } else {
-      this.orderParams['orderAsc'] = true;
+      this.searchParams['orderAsc'] = true;
     }
-    this.orderParams['orderField'] = field;
+    this.searchParams['orderField'] = field;
     this._page = 1;
     this.getCustomers();
   }

@@ -1,23 +1,38 @@
 import {Injectable} from "@angular/core";
-import {Headers, Http, RequestOptions, Response} from "@angular/http";
+import {Http, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import {Quote, QuoteLineItem, QuoteRecord} from "./quote.model";
+import {Options} from "../common/options";
 // import 'rxjs/add/operator/do';  // for debugging
 
 
 @Injectable()
 export class QuoteService {
-
-  private headers = new Headers({ 'Content-Type': 'application/json', 'charset': 'UTF-8' });
-  private options = new RequestOptions({ headers: this.headers });
-
+  private opts = new Options();
   constructor(private http: Http) {}
 
-  getQuotes(queryParams): Observable<QuoteRecord[]> {
-    return this.http.get('http://localhost:9000/quotes', {'params' : queryParams})
-      .map((res: Response) => res.json())
-      //              .do(data => console.log('server data:', data))  // debug
-      .catch(this.handleError);
+
+  search(terms: Observable<string>, params): Observable<[QuoteRecord[], number]> {
+    console.log('Search called');
+    return terms.debounceTime(400)
+      .distinctUntilChanged()
+      .filter(term => term.length > 1)
+      .switchMap(term => {
+        params['searchField'] = 'multi';
+        params['searchValue'] = term;
+        return Observable.zip(this.getQuoteRecords(params, 1), this.getQuoteCount(params));
+      });
+  }
+
+  getQuoteRecords(params, page: number): Observable<QuoteRecord[]> {
+    console.log('Getting quote records for page ' + page);
+    params['page'] = page;
+    return this.http.get('http://localhost:9000/quotes', this.opts.getOptions(params)).map(res => res.json());
+  }
+
+  getQuoteCount(params): Observable<number> {
+    console.log('Getting quote count');
+    return this.http.get('http://localhost:9000/quote-count', this.opts.getOptions(params)).map(res => res.json());
   }
 
   getLineItems(quoteId: number): Observable<QuoteLineItem[]> {
@@ -28,7 +43,7 @@ export class QuoteService {
   }
 
   updateQuote(quote: Quote): Observable<Quote> {
-    return this.http.put(`http://localhost:9000/quotes/${quote.id}`, JSON.stringify(quote), this.options)
+    return this.http.put(`http://localhost:9000/quotes/${quote.id}`, JSON.stringify(quote), this.opts.getOptions())
       .map((res: Response) => res.json())
       //              .do(data => console.log('server data:', data))  // debug
       .catch(this.handleError);

@@ -1,8 +1,8 @@
-import {Component, OnDestroy, OnInit} from "@angular/core";
+import {Component, Input, OnDestroy, OnInit} from "@angular/core";
 import {QuoteService} from "../shared/quote/quote.service";
 import {QuoteRecord} from "../shared/quote/quote.model";
 import {SelectedQuoteService} from "../shared/quote/selectedQuote.service";
-import {Subscription} from "rxjs";
+import {Subject, Subscription} from "rxjs";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {IAlert} from "../shared/customer/customer.alert";
 import {Refresher} from "../customer/refresher";
@@ -22,6 +22,10 @@ export class QuotesComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   queryParams: {};
   alert: IAlert;
+  searchTerm$ = new Subject<string>();
+  private _page: number;
+  private searchParams;
+  count: number;
 
   constructor(private activatedRoute: ActivatedRoute,
               public quoteService: QuoteService,
@@ -29,8 +33,22 @@ export class QuotesComponent implements OnInit, OnDestroy {
               private _router: Router
   ) {}
 
+
+  @Input() set page(pageNum: number) {
+    if (!isNaN(pageNum)) {
+      this._page = pageNum;
+      this.getQuotes();
+    }
+  }
+
+  get page(): number {
+    return this._page;
+  }
+
   ngOnInit() {
     new Refresher(this._router);
+
+    this.searchParams = {};
 
     this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
       this.queryParams = queryParams;
@@ -46,6 +64,27 @@ export class QuotesComponent implements OnInit, OnDestroy {
     });
 
     this.getQuotes();
+    this.search();
+  }
+
+  private search() {
+    return this.quoteService.search(this.searchTerm$, this.searchParams)
+      .subscribe(quoteRecords => {
+        this.quoteRecords = quoteRecords[0];
+        this.count = quoteRecords[0].length ? quoteRecords[1] : 0;
+        this._page = quoteRecords[1] ? 1 : undefined;
+      });
+  }
+
+  getQuotes(): boolean {
+    this.quoteService.getQuoteRecords(this.searchParams, this._page)
+      .subscribe(
+        qr => {
+          this.quoteRecords = qr;
+        },
+        error => this.errorMessage = <any>error
+      );
+    return false;
   }
 
   ngOnDestroy() {
@@ -64,19 +103,7 @@ export class QuotesComponent implements OnInit, OnDestroy {
     this.selectedQuoteService.setEditing(true);
   }
 
-  /*
-   Called from ngOnInit, get all new quotes
-   */
-  getQuotes(): boolean {
-    this.quoteService.getQuotes(this.queryParams)
-      .subscribe(
-        qr => {
-          this.quoteRecords = qr;
-        },
-        error => this.errorMessage = <any>error
-      );
-    return false;
-  }
+
 
   getCompanyName(quoteRecord: QuoteRecord) {
     return quoteRecord.customerRecord ? quoteRecord.customerRecord.company.name : quoteRecord.enquiry.company;
@@ -96,5 +123,13 @@ export class QuotesComponent implements OnInit, OnDestroy {
 
   getCustomerMobilePhone(quoteRecord: QuoteRecord) {
     return quoteRecord.customerRecord ? quoteRecord.customerRecord.customer.mobilePhone : quoteRecord.enquiry.customerTelephone;
+  }
+
+  alertCreated(alert: IAlert) {
+    this.alert = alert;
+  }
+
+  public closeAlert() {
+    this.alert = undefined;
   }
 }

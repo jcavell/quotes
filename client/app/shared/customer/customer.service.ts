@@ -21,27 +21,27 @@ export class CustomerService {
     return new RequestOptions({ headers: this.headers, params: params });
   }
 
-  search(terms: Observable<string>, params): Observable<[CustomerRecord[], number]> {
+  search(terms: Observable<string>, searchParams): Observable<[CustomerRecord[], number]> {
     console.log('Search called');
     return terms.debounceTime(400)
       .distinctUntilChanged()
       .filter(term => term.length > 1)
       .switchMap(term => {
-        params['searchField'] = 'multi';
-        params['searchValue'] = term;
-        return Observable.zip(this.getCustomerRecords(params, 1), this.getCustomerCount(params));
+        searchParams['searchField'] = 'multi';
+        searchParams['searchValue'] = term;
+        return Observable.zip(this.getCustomerRecords(searchParams, 1), this.getCustomerCount(searchParams));
       });
   }
 
-  getCustomerRecords(params, page: number): Observable<CustomerRecord[]> {
+  getCustomerRecords(searchParams, page: number): Observable<CustomerRecord[]> {
     console.log('Getting customer records for page ' + page);
-    params['page'] = page;
-    return this.http.get('http://localhost:9000/customers', this.getOptions(params)).map(res => res.json());
+    searchParams['page'] = page;
+    return this.http.get('http://localhost:9000/customers', this.getOptions(searchParams)).map(res => res.json());
   }
 
-  getCustomerCount(params): Observable<number> {
+  getCustomerCount(searchParams): Observable<number> {
     console.log('Getting customer count');
-    return this.http.get('http://localhost:9000/customer-count', this.getOptions(params)).map(res => res.json());
+    return this.http.get('http://localhost:9000/customer-count', this.getOptions(searchParams)).map(res => res.json());
   }
   addCustomer(customer: Customer): Observable<CustomerRecord> {
     return this.http.post('http://localhost:9000/customers', customer, this.options).map(res => res.json());
