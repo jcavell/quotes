@@ -3,6 +3,10 @@
 
     <div class="card-block">
 
+      <div *ngIf="alert">
+        <ngb-alert [type]="alert.type" (close)="closeAlert()">{{ alert.message }}</ngb-alert>
+      </div>
+
       <h4 class = "card-header"> <edit-quote [quote]="quoteRecord.quote"></edit-quote> Quote details
       </h4>
 
@@ -26,7 +30,7 @@
       </table>
 
 
-      <h4 class = "card-header"><edit-customer (onCustomerCreated)="customerCreated($event)" (onAlertCreated)="alertCreated($event)"  [customerRecord]="quoteRecord.customerRecord"></edit-customer>
+      <h4 class = "card-header"><edit-customer (onCustomerCreated)="customerUpserted($event)" (onCustomerUpdated)="customerUpserted($event)" (onAlertCreated)="alertCreated($event)"  [customerRecord]="quoteRecord.customerRecord" [enquiry] = "quoteRecord.enquiry"></edit-customer>
       </h4>
       <table class="table table-responsive table-bordered">
         <thead class="thead-default">
@@ -54,7 +58,6 @@
         <tr>
           <th>Address type</th>
           <th>Name</th>
-          <th>Company</th>
           <th>FAO</th>
           <th>Line1</th>
           <th>Line2</th>
@@ -65,10 +68,9 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
+        <tr *ngIf="quoteRecord.customerRecord.invoiceAddress">
           <td>Invoice</td>
           <td>{{quoteRecord.customerRecord.invoiceAddress.name}}</td>
-          <td>{{quoteRecord.customerRecord.invoiceAddress.company}}</td>
           <td>{{quoteRecord.customerRecord.invoiceAddress.fao}}</td>
           <td>{{quoteRecord.customerRecord.invoiceAddress.line1}}</td>
           <td>{{quoteRecord.customerRecord.invoiceAddress.line2}}</td>
@@ -77,10 +79,9 @@
           <td>{{quoteRecord.customerRecord.invoiceAddress.county}}</td>
           <td>{{quoteRecord.customerRecord.invoiceAddress.postcode}}</td>
         </tr>
-        <tr>
+        <tr *ngIf="quoteRecord.customerRecord.deliveryAddress">
           <td>Delivery</td>
           <td>{{quoteRecord.customerRecord.deliveryAddress.name}}</td>
-          <td>{{quoteRecord.customerRecord.deliveryAddress.company}}</td>
           <td>{{quoteRecord.customerRecord.deliveryAddress.fao}}</td>
           <td>{{quoteRecord.customerRecord.deliveryAddress.line1}}</td>
           <td>{{quoteRecord.customerRecord.deliveryAddress.line2}}</td>

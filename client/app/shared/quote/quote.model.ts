@@ -44,6 +44,10 @@ export class Quote {
               public specialInstructions: string,
               public createdDate: string,
               public notes: string,
+              public customerId: number,
+              public enquiryId: number,
+              public repId: number,
+              public repEmail: string,
               public active: boolean) {
   }
 }

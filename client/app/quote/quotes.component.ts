@@ -3,8 +3,9 @@ import {QuoteService} from "../shared/quote/quote.service";
 import {QuoteRecord} from "../shared/quote/quote.model";
 import {SelectedQuoteService} from "../shared/quote/selectedQuote.service";
 import {Subscription} from "rxjs";
-import {ActivatedRoute, Params} from "@angular/router";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 import {IAlert} from "../shared/customer/customer.alert";
+import {Refresher} from "../customer/refresher";
 
 @Component({
   moduleId: module.id,
@@ -22,10 +23,15 @@ export class QuotesComponent implements OnInit, OnDestroy {
   queryParams: {};
   alert: IAlert;
 
-  constructor(private activatedRoute: ActivatedRoute, public quoteService: QuoteService, public selectedQuoteService: SelectedQuoteService) {
-  }
+  constructor(private activatedRoute: ActivatedRoute,
+              public quoteService: QuoteService,
+              public selectedQuoteService: SelectedQuoteService,
+              private _router: Router
+  ) {}
 
   ngOnInit() {
+    new Refresher(this._router);
+
     this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
       this.queryParams = queryParams;
     });
@@ -70,14 +76,6 @@ export class QuotesComponent implements OnInit, OnDestroy {
         error => this.errorMessage = <any>error
       );
     return false;
-  }
-
-  alertCreated(alert: IAlert) {
-    this.alert = alert;
-  }
-
-  public closeAlert() {
-    this.alert = undefined;
   }
 
   getCompanyName(quoteRecord: QuoteRecord) {

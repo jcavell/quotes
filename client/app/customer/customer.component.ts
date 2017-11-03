@@ -136,10 +136,6 @@ export class CustomerComponent implements OnInit {
     this.customers.push(cr);
   }
 
-  alertCreated(alert: IAlert) {
-    this.alert = alert;
-  }
-
   deleteCustomer(customer) {
     if (window.confirm('Are you sure you want to permanently delete this item?')) {
       this.customerService.deleteCustomer(customer.customer).subscribe(
@@ -153,6 +149,10 @@ export class CustomerComponent implements OnInit {
         error => this.toast.setMessage('Error deleting customer: ' + JSON.stringify(error).substr(0, 200), 'danger')
       );
     }
+  }
+
+  alertCreated(alert: IAlert) {
+    this.alert = alert;
   }
 
   public closeAlert() {

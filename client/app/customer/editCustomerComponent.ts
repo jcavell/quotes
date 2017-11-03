@@ -16,6 +16,7 @@ import {CustomerRecord} from "../shared/customer/customerRecord.model";
 import {isNullOrUndefined} from "util";
 import {IAlert} from "../shared/customer/customer.alert";
 import {Subject} from "rxjs";
+import {Enquiry} from "../shared/quote/quote.model";
 
 
 @Component({
@@ -24,8 +25,12 @@ import {Subject} from "rxjs";
 })
 export class EditCustomerComponent {
   private modalRef: NgbModalRef;
+
   @Input() customerRecord: CustomerRecord;
+  @Input() enquiry: Enquiry;
+
   @Output() onCustomerCreated = new EventEmitter<CustomerRecord>();
+  @Output() onCustomerUpdated = new EventEmitter<CustomerRecord>();
   @Output() onAlertCreated = new EventEmitter<IAlert>();
 
   customer: Customer;
@@ -75,10 +80,27 @@ export class EditCustomerComponent {
 
   selectCompany(company: Company) {
     this.company = company;
+    this.companyCount = undefined;
+    this.companies = undefined;
   }
+
+  selectCustomerRecord(customerRecord: CustomerRecord) {
+    this.customer = customerRecord.customer;
+    this.company = customerRecord.company;
+    // TODO ensure no nulls are set
+    this.invoiceAddress = customerRecord.invoiceAddress;
+    this.deliveryAddress = customerRecord.deliveryAddress;
+    this.customerCount = undefined;
+    this.customers = undefined;
+  }
+
 
   createNewCompany() {
     this.company = new Company();
+  }
+
+  createNewCustomer() {
+    this.customer = new Customer();
   }
 
 
@@ -90,11 +112,6 @@ export class EditCustomerComponent {
         this._customerPage = customers[1] ? 1 : undefined;
       });
   }
-
-  selectcustomer(customer: Customer) {
-    this.customer = customer;
-  }
-
 
 
   open(content) {
@@ -119,10 +136,10 @@ return true;
   }
 
   customerUnchanged() {
-    return _.isEqual(JSON.stringify(this.customerRecord.customer), JSON.stringify(this.customer));
+    return this.customer.id && _.isEqual(JSON.stringify(this.customerRecord.customer), JSON.stringify(this.customer));
   }
   companyUnchanged() {
-    return _.isEqual(JSON.stringify(this.customerRecord.company), JSON.stringify(this.company));
+    return this.company.id && _.isEqual(JSON.stringify(this.customerRecord.company), JSON.stringify(this.company));
   }
   invoiceAddressUnchanged() {
     return _.isEqual(JSON.stringify(this.customerRecord.invoiceAddress), JSON.stringify(this.invoiceAddress));
@@ -176,19 +193,19 @@ return true;
       return this.upsertCustomer();
     }).subscribe(
       customer => {
-        let upsertMessage = 'Updated ' + this.customerRecord.customer.name;;
-        if (!_.isEqual(this.customer, this.customerRecord.customer)) {
-          if (this.customerRecord.customer.id === undefined) {
-            // new customer
+        this.onAlertCreated.emit({
+          type: 'success',
+          message: 'Customer ' + customer.name + ' updated'
+        });
+
+        if (!_.isEqual(this.customer, this.customerRecord.customer)) { // customer has changed
+          this.customerRecord.customer = _.clone(customer);
+          if (this.customerRecord.customer.id === undefined) { // new
             this.onCustomerCreated.emit(this.customerRecord);
-            upsertMessage = 'Inserted ' + this.customerRecord.customer.name;
+          } else { // update
+            this.onCustomerUpdated.emit(this.customerRecord);
           }
-          this.onAlertCreated.emit({
-            type: 'success',
-            message: upsertMessage
-          });
         }
-        this.customerRecord.customer = _.clone(customer);
       },
       error => {
         this.onAlertCreated.emit({

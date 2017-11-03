@@ -11,6 +11,8 @@ import {GazProduct} from "../shared/gazproduct/gazproduct.model";
 import {Address} from "../shared/address/address.model";
 import {EditAddressModalComponent} from "../address/editAddress.component";
 import {GazProductService} from "../shared/gazproduct/gazProduct.service";
+import {IAlert} from "../shared/customer/customer.alert";
+import {CustomerRecord} from "../shared/customer/customerRecord.model";
 
 /**
  * This class represents the lazy loaded QuoteComponent.
@@ -27,7 +29,7 @@ export class SelectedQuoteComponent implements OnInit, OnDestroy {
   quoteLineItems: QuoteLineItem[];
   lineItemProducts: Map<number, GazProduct>;
   subscription: Subscription;
-  errorMessage: any;
+  alert: IAlert;
 
   constructor(public selectedQuoteService: SelectedQuoteService,
               public quoteService: QuoteService,
@@ -87,5 +89,21 @@ export class SelectedQuoteComponent implements OnInit, OnDestroy {
         return false;
       });
     return false;
+  }
+
+  customerUpserted(cr: CustomerRecord) {
+    this.quoteRecord.quote.customerId = cr.customer.id;
+    this.quoteService.updateQuote(this.quoteRecord.quote).subscribe(
+      success => {},
+      error => {}
+    );
+  }
+
+  alertCreated(alert: IAlert) {
+    this.alert = alert;
+  }
+
+  public closeAlert() {
+    this.alert = undefined;
   }
 }

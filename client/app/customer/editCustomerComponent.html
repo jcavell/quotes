@@ -23,17 +23,29 @@
 
       <ngb-tab>
         <ng-template ngbTabTitle><b>Customer</b></ng-template>
+
         <ng-template ngbTabContent>
-          <div class="card-body"><i class = "fa fa-search"></i> <input
-            (keyup)="customerSearchTerm$.next($event.target.value)" placeholder="Search customers">
-            <button type="button" class="btn btn-sm btn-outline-dark" (click) = "createNewCusomer()">Create new</button>
+
+            <div *ngIf="!customer.id; else updateCustomer" class="alert alert-danger">
+              You are creating a new customer. Alternatively, search for an existing customer below.
+            </div>
+
+            <ng-template #updateCustomer>
+              <div class="alert alert-warning">
+                You are updating an exising customer.<br>Search for a different customer below or create
+              <button type="button" class="btn btn-sm btn-outline-dark" (click)="createNewCustomer()">New customer</button>
+              </div>
+            </ng-template>
+
+          <div class="card-header"><i class="fa fa-search"></i>
+            <input (keyup)="customerSearchTerm$.next($event.target.value)" placeholder="Search customers">
           </div>
 
           <div *ngIf="customerCount" class="card-block">
             <table class="table table-bordered table-striped">
               <tbody>
               <tr *ngFor="let customer of customers">
-                <td (click) = "selectCompany(company)">{{customer.customer.name}}</td>
+                <td (click) = "selectCustomerRecord(customer)">{{customer.customer.name}}</td>
               </tr>
               </tbody>
             </table>
@@ -43,6 +55,7 @@
     <label for="name-text-input" class="col-4 col-form-label">Name</label>
     <div class="col-8">
       <input required class="form-control" type="text" name="name" [(ngModel)]="customer.name" placeholder="name" id="name-text-input">
+      {{enquiry?.customerName}}
     </div>
   </div>
 
@@ -50,6 +63,7 @@
     <label for="email-text-input" class="col-4 col-form-label">Email</label>
     <div class="col-8">
       <input required class="form-control" type="text" name="email" [(ngModel)]="customer.email" placeholder="email" id="email-text-input">
+      {{enquiry?.customerEmail}}
     </div>
   </div>
 
@@ -64,6 +78,7 @@
     <label for="mobilePhone-text-input" class="col-4 col-form-label">Mobile</label>
     <div class="col-8">
       <input class="form-control" type="text" name="mobilePhone" [(ngModel)]="customer.mobilePhone" placeholder="mobilePhone" id="mobilePhone-text-input">
+      {{enquiry?.customerTelephone}}
     </div>
   </div>
 
@@ -130,9 +145,20 @@
       <ngb-tab>
         <ng-template ngbTabTitle><b>Company</b></ng-template>
         <ng-template ngbTabContent>
-          <div class="card-body"><i class = "fa fa-search"></i> <input
+
+          <div *ngIf="!company.id; else updateCompany" class="alert alert-danger">
+            You are creating a new company. Alternatively, search for an existing company below.
+          </div>
+
+          <ng-template #updateCompany>
+            <div class="alert alert-warning">
+              You are updating an exising company.<br>Search for a different company below or create
+              <button type="button" class="btn btn-sm btn-outline-dark" (click)="createNewCompany()">New company</button>
+            </div>
+          </ng-template>
+
+          <div class="card-header"><i class = "fa fa-search"></i> <input
             (keyup)="companySearchTerm$.next($event.target.value)" placeholder="Search companies">
-            <button type="button" class="btn btn-sm btn-outline-dark" (click) = "createNewCompany()">Create new</button>
           </div>
 
 
@@ -152,6 +178,7 @@
             <label for="company-name-text-input" class="col-4 col-form-label">Name</label>
             <div class="col-8">
               <input class="form-control" type="text" name="name" [(ngModel)]="company.name" placeholder="name" id="company-name-text-input">
+              {{enquiry?.company}}
             </div>
           </div>
 
@@ -236,13 +263,6 @@
           </div>
 
           <div class="form-group row">
-            <label for="invoice-address-company-text-input" class="col-4 col-form-label">Company</label>
-            <div class="col-8">
-              <input class="form-control" type="text" name="company" [(ngModel)]="invoiceAddress.company" placeholder="company" id="invoice-address-company-text-input">
-            </div>
-          </div>
-
-          <div class="form-group row">
             <label for="invoice-address-fao-text-input" class="col-4 col-form-label">Fao</label>
             <div class="col-8">
               <input class="form-control" type="text" name="fao" [(ngModel)]="invoiceAddress.fao" placeholder="fao" id="invoice-address-fao-text-input">
@@ -316,13 +336,6 @@
           </div>
 
           <div class="form-group row">
-            <label for="delivery-address-company-text-input" class="col-4 col-form-label">Company</label>
-            <div class="col-8">
-              <input class="form-control" type="text" name="company" [(ngModel)]="deliveryAddress.company" placeholder="company" id="delivery-address-company-text-input">
-            </div>
-          </div>
-
-          <div class="form-group row">
             <label for="delivery-address-fao-text-input" class="col-4 col-form-label">Fao</label>
             <div class="col-8">
               <input class="form-control" type="text" name="fao" [(ngModel)]="deliveryAddress.fao" placeholder="fao" id="delivery-address-fao-text-input">
@@ -388,8 +401,9 @@
 
 
     <div class="modal-footer">
-      <button type="submit" class="btn btn-sm btn-outline-dark btn-warning" [disabled]="!form.form.valid">Update
-        customer
+      <button type="submit" class="btn btn-sm btn-outline-dark btn-warning" [disabled]="!form.form.valid">
+        <span *ngIf="customer.id;else createCustomerButton">Update customer</span>
+        <ng-template #createCustomerButton>Create customer</ng-template>
       </button>
       <button type="button" class="btn btn-sm btn-outline-dark" (click)="c('Close click')">Close</button>
     </div>
@@ -400,12 +414,12 @@
 
 <div *ngIf="customerRecord.customer.id;else create_customer_button">
   <button type="button" class="btn btn-sm btn-primary"
-          (click)="open(content)"><i class="fa fa-edit"></i> Edit
+          (click)="open(content)"><i class="fa fa-edit"></i> Edit customer
   </button>
 </div>
 <ng-template #create_customer_button>
   <button type="button" class="btn btn-sm btn-primary"
-          (click)="open(content)"><i class="fa fa-edit"></i> Create new
+          (click)="open(content)"><i class="fa fa-edit"></i> Create new customer
   </button>
 </ng-template>
 
