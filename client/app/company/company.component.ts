@@ -35,7 +35,7 @@ export class CompanyComponent implements OnInit {
   }
 
   getCompanies() {
-    this.companyService.getCompanies(null, 1).subscribe(
+    this.companyService.getCompanies({}, 1).subscribe(
       data => this.companies = data,
       error => console.log(error),
       () => this.isLoading = false
