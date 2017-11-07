@@ -28,6 +28,7 @@ export class EditCustomerComponent {
 
   @Input() customerRecord: CustomerRecord;
   @Input() enquiry: Enquiry;
+  @Input() activeTabId = 'company-tab';
 
   @Output() onCustomerCreated = new EventEmitter<CustomerRecord>();
   @Output() onCustomerUpdated = new EventEmitter<CustomerRecord>();

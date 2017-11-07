@@ -7,7 +7,7 @@
         <ngb-alert [type]="alert.type" (close)="closeAlert()">{{ alert.message }}</ngb-alert>
       </div>
 
-      <h4 class = "card-header"> <edit-quote [quote]="quoteRecord.quote"></edit-quote> Quote details
+      <h4 class = "card-header">Quote
       </h4>
 
       <table class="table table-responsive table-bordered">
@@ -17,6 +17,7 @@
           <th>Title</th>
           <th>Created</th>
           <th>Required</th>
+          <th></th>
         </tr>
         </thead>
         <tbody>
@@ -25,12 +26,13 @@
           <td>{{quoteRecord.quote.title}}</td>
           <td>{{quoteRecord.quote.createdDate | date: 'EE dd/MM/yyyy'}}</td>
           <td>{{quoteRecord.quote.requiredDate | date: 'EE dd/MM/yyyy'}}</td>
+          <td><edit-quote [quote]="quoteRecord.quote"></edit-quote></td>
         </tr>
         </tbody>
       </table>
 
 
-      <h4 class = "card-header"><edit-customer (onCustomerCreated)="customerUpserted($event)" (onCustomerUpdated)="customerUpserted($event)" (onAlertCreated)="alertCreated($event)"  [customerRecord]="quoteRecord.customerRecord" [enquiry] = "quoteRecord.enquiry"></edit-customer>
+      <h4 class = "card-header">Customer
       </h4>
       <table class="table table-responsive table-bordered">
         <thead class="thead-default">
@@ -40,6 +42,7 @@
           <th>Email</th>
           <th>Direct</th>
           <th>Mobile</th>
+          <th></th>
         </tr>
         </thead>
         <tbody>
@@ -49,14 +52,17 @@
           <td>{{quoteRecord.customerRecord.customer.email}}</td>
           <td>{{quoteRecord.customerRecord.customer.directPhone}}</td>
           <td>{{quoteRecord.customerRecord.customer.mobilePhone}}</td>
+          <td><edit-customer (onCustomerCreated)="customerUpserted($event)" (onCustomerUpdated)="customerUpserted($event)" (onAlertCreated)="alertCreated($event)"  [customerRecord]="quoteRecord.customerRecord" [enquiry] = "quoteRecord.enquiry" [activeTabId] = "'customer-tab'"></edit-customer></td>
         </tr>
         </tbody>
       </table>
 
+      <h4 class = "card-header">Addresses</h4>
+
       <table class="table table-responsive table-bordered">
         <thead class="thead-default">
         <tr>
-          <th>Address type</th>
+          <th>Type</th>
           <th>Name</th>
           <th>FAO</th>
           <th>Line1</th>
@@ -65,38 +71,39 @@
           <th>City</th>
           <th>County</th>
           <th>Postcode</th>
+          <th></th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngIf="quoteRecord.customerRecord.invoiceAddress">
+        <tr>
           <td>Invoice</td>
-          <td>{{quoteRecord.customerRecord.invoiceAddress.name}}</td>
-          <td>{{quoteRecord.customerRecord.invoiceAddress.fao}}</td>
-          <td>{{quoteRecord.customerRecord.invoiceAddress.line1}}</td>
-          <td>{{quoteRecord.customerRecord.invoiceAddress.line2}}</td>
-          <td>{{quoteRecord.customerRecord.invoiceAddress.line3}}</td>
-          <td>{{quoteRecord.customerRecord.invoiceAddress.townCity}}</td>
-          <td>{{quoteRecord.customerRecord.invoiceAddress.county}}</td>
-          <td>{{quoteRecord.customerRecord.invoiceAddress.postcode}}</td>
+          <td>{{quoteRecord.customerRecord.invoiceAddress?.name}}</td>
+          <td>{{quoteRecord.customerRecord.invoiceAddress?.fao}}</td>
+          <td>{{quoteRecord.customerRecord.invoiceAddress?.line1}}</td>
+          <td>{{quoteRecord.customerRecord.invoiceAddress?.line2}}</td>
+          <td>{{quoteRecord.customerRecord.invoiceAddress?.line3}}</td>
+          <td>{{quoteRecord.customerRecord.invoiceAddress?.townCity}}</td>
+          <td>{{quoteRecord.customerRecord.invoiceAddress?.county}}</td>
+          <td>{{quoteRecord.customerRecord.invoiceAddress?.postcode}}</td>
+          <td><edit-customer (onCustomerCreated)="customerUpserted($event)" (onCustomerUpdated)="customerUpserted($event)" (onAlertCreated)="alertCreated($event)"  [customerRecord]="quoteRecord.customerRecord" [enquiry] = "quoteRecord.enquiry" [activeTabId] = "'invoice-address-tab'"></edit-customer></td>
         </tr>
-        <tr *ngIf="quoteRecord.customerRecord.deliveryAddress">
+        <tr>
           <td>Delivery</td>
-          <td>{{quoteRecord.customerRecord.deliveryAddress.name}}</td>
-          <td>{{quoteRecord.customerRecord.deliveryAddress.fao}}</td>
-          <td>{{quoteRecord.customerRecord.deliveryAddress.line1}}</td>
-          <td>{{quoteRecord.customerRecord.deliveryAddress.line2}}</td>
-          <td>{{quoteRecord.customerRecord.deliveryAddress.line3}}</td>
-          <td>{{quoteRecord.customerRecord.deliveryAddress.townCity}}</td>
-          <td>{{quoteRecord.customerRecord.deliveryAddress.county}}</td>
-          <td>{{quoteRecord.customerRecord.deliveryAddress.postcode}}</td>
+          <td>{{quoteRecord.customerRecord.deliveryAddress?.name}}</td>
+          <td>{{quoteRecord.customerRecord.deliveryAddress?.fao}}</td>
+          <td>{{quoteRecord.customerRecord.deliveryAddress?.line1}}</td>
+          <td>{{quoteRecord.customerRecord.deliveryAddress?.line2}}</td>
+          <td>{{quoteRecord.customerRecord.deliveryAddress?.line3}}</td>
+          <td>{{quoteRecord.customerRecord.deliveryAddress?.townCity}}</td>
+          <td>{{quoteRecord.customerRecord.deliveryAddress?.county}}</td>
+          <td>{{quoteRecord.customerRecord.deliveryAddress?.postcode}}</td>
+          <td><edit-customer (onCustomerCreated)="customerUpserted($event)" (onCustomerUpdated)="customerUpserted($event)" (onAlertCreated)="alertCreated($event)"  [customerRecord]="quoteRecord.customerRecord" [enquiry] = "quoteRecord.enquiry" [activeTabId] = "'delivery-address-tab'"></edit-customer></td>
         </tr>
         </tbody>
       </table>
 
 
-      <h4 class = "card-header"><button type="button" class="btn btn-sm btn-primary"
-                                        (click)="openEditAddressModal(quoteRecord.deliveryAddress)"><i class="fa fa-edit"></i> Edit
-      </button> Line items</h4>
+      <h4 class = "card-header">Line items</h4>
 
       <table class="table table-responsive table-bordered">
         <thead class="thead-default">

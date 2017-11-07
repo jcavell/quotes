@@ -19,9 +19,9 @@
 
   <form class="form-inline" #form="ngForm" (ngSubmit)="updateAll()" style="display:inline">
 
-    <ngb-tabset>
+    <ngb-tabset [activeId] = "activeTabId">
 
-      <ngb-tab>
+      <ngb-tab id = "customer-tab">
         <ng-template ngbTabTitle><b>Customer</b></ng-template>
 
         <ng-template ngbTabContent>
@@ -142,7 +142,7 @@
         </ng-template>
       </ngb-tab>
 
-      <ngb-tab>
+      <ngb-tab id = "company-tab">
         <ng-template ngbTabTitle><b>Company</b></ng-template>
         <ng-template ngbTabContent>
 
@@ -251,7 +251,7 @@
 
 
 
-      <ngb-tab>
+      <ngb-tab id = "invoice-address-tab">
         <ng-template ngbTabTitle><b>Invoice address</b></ng-template>
         <ng-template ngbTabContent>
 
@@ -324,7 +324,7 @@
       </ngb-tab>
 
 
-      <ngb-tab>
+      <ngb-tab id = "delivery-address-tab">
         <ng-template ngbTabTitle><b>Delivery address</b></ng-template>
         <ng-template ngbTabContent>
 
@@ -414,7 +414,7 @@
 
 <div *ngIf="customerRecord.customer.id;else create_customer_button">
   <button type="button" class="btn btn-sm btn-primary"
-          (click)="open(content)"><i class="fa fa-edit"></i> Edit customer
+          (click)="open(content)"><i class="fa fa-edit"></i> Edit
   </button>
 </div>
 <ng-template #create_customer_button>
