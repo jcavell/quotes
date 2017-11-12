@@ -9,6 +9,7 @@ import {SelectedQuoteComponent} from "./selectedQuote.component";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {EditQuoteComponent} from "./editQuoteComponent";
 import {CustomerModule} from "../customer/customer.module";
+import {EditQuoteItemComponent} from "./editQuoteItemComponent";
 
 @NgModule({
   imports: [
@@ -18,7 +19,7 @@ import {CustomerModule} from "../customer/customer.module";
     BootstrapModalModule,
     NgbModule
   ],
-  declarations: [QuotesComponent, SelectedQuoteComponent, EditQuoteComponent],
+  declarations: [QuotesComponent, SelectedQuoteComponent, EditQuoteComponent, EditQuoteItemComponent],
   exports: [QuotesComponent, SelectedQuoteComponent],
   providers: [QuoteService, SelectedQuoteService]
 })

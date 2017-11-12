@@ -65,16 +65,16 @@ export class Quote {
 }
 
 
-export class QuoteLineItem {
-  constructor(public id: number,
-              public productId: number,
-              public quantity: number,
-              public colour: string,
-              public description: string,
-              public priceIncludes: string,
-              public cost: number,
-              public markup: number,
-              public sell: number,
-              public vat: number) {
+export class QuoteItem {
+  constructor(public id: number = undefined,
+              public productId: number = undefined,
+              public quantity: number = undefined,
+              public colour: string = undefined,
+              public description: string = undefined,
+              public priceIncludes: string = undefined,
+              public cost: number = undefined,
+              public markup: number = undefined,
+              public sell: number = undefined,
+              public vat: number = undefined) {
   }
 }

@@ -17,13 +17,13 @@ export class GazPrice {
 }
 
 export class GazProduct {
-  constructor(public productid: number,
-              public brandid: number,
-              public supplierid: number,
-              public productcode: string,
-              public productname: string,
-              public description1: string,
-              public images: GazImage[],
-              public prices: GazPrice[]) {
+  constructor(public productid: number = undefined,
+              public brandid: number = undefined,
+              public supplierid: number = undefined,
+              public productcode: string = undefined,
+              public productname: string = undefined,
+              public description1: string = undefined,
+              public images: GazImage[] = undefined,
+              public prices: GazPrice[] = undefined) {
   }
 }

@@ -3,7 +3,7 @@ import {Overlay, overlayConfigFactory} from "angular2-modal";
 import {BSModalContext, Modal} from "angular2-modal/plugins/bootstrap";
 
 import {Subscription} from "rxjs/Rx";
-import {QuoteLineItem, QuoteRecord} from "../shared/quote/quote.model";
+import {QuoteItem, QuoteRecord} from "../shared/quote/quote.model";
 import {SelectedQuoteService} from "../shared/quote/selectedQuote.service";
 import {QuoteService} from "../shared/quote/quote.service";
 import {isNullOrUndefined} from "util";
@@ -26,8 +26,8 @@ import {CustomerRecord} from "../shared/customer/customerRecord.model";
 
 export class SelectedQuoteComponent implements OnInit, OnDestroy {
   quoteRecord: QuoteRecord;
-  quoteLineItems: QuoteLineItem[];
-  lineItemProducts: Map<number, GazProduct>;
+  quoteItems: QuoteItem[];
+  quoteItemProducts: Map<number, GazProduct>;
   subscription: Subscription;
   alert: IAlert;
 
@@ -60,7 +60,7 @@ export class SelectedQuoteComponent implements OnInit, OnDestroy {
   }
 
   getThumb(product: GazProduct) {
-    return 'https://www.everythingbranded.co.uk/asset/image/imagep/thumbnail/' + product.images[0].imageid + '.jpg';
+    return this.gazProductService.getThumb(product);
   }
 
   cancelEditing() {
@@ -68,27 +68,66 @@ export class SelectedQuoteComponent implements OnInit, OnDestroy {
     this.selectedQuoteService.setEditing(false);
   }
 
+  deleteQuoteItem(quoteItem: QuoteItem) {
+      this.quoteService.deleteQuoteItem(quoteItem.id).subscribe(
+        success => {
+          this.quoteItems.unshift(quoteItem);
+          this.alert = {
+            type: 'success',
+            message: 'Quote item deleted'
+          };
+        },
+        error => {
+          this.alert = {
+            type: 'danger',
+            message: 'Quote item could not be deleted: ' + JSON.stringify(error)
+          };
+        }
+      );
+  }
 
   setSelectedQuote(qr: QuoteRecord): boolean {
     this.quoteRecord = qr;
 
     this.quoteService.getLineItems(qr.quote.id).subscribe(
       lineItems => {
-        this.quoteLineItems = lineItems;
-        this.lineItemProducts = new Map<number, GazProduct>();
-        this.quoteLineItems.forEach(lineItem => {
+        this.quoteItems = lineItems;
+        this.quoteItemProducts = new Map<number, GazProduct>();
+        this.quoteItems.forEach(lineItem => {
             this.gazProductService.getProduct(lineItem.productId).subscribe(
               product => {
-                this.lineItemProducts.set(lineItem.productId, product);
+                this.quoteItemProducts.set(lineItem.productId, product);
                 console.log('SET: ' + product);
-              });
+              },
+              error => console.log(error)
+            );
           },
-          error => console.log(error)
         );
 
         return false;
       });
     return false;
+  }
+
+  quoteItemCreated(event: [QuoteItem, GazProduct]) {
+    const quoteItem = event[0];
+    const product = event[1];
+    this.quoteItems.push(quoteItem);
+    this.quoteItemProducts.set(quoteItem.productId, product);
+  }
+
+  quoteItemUpdated(event: [QuoteItem, GazProduct]) {
+    const quoteItem = event[0];
+    const product = event[1];
+    const lineItemIndex = this.getQuoteItemIndex(quoteItem);
+
+    this.quoteItems[lineItemIndex] = quoteItem;
+    this.quoteItemProducts.set(quoteItem.productId, product);
+  }
+
+  private getQuoteItemIndex(lineItem: QuoteItem) {
+    const lineItemndex = this.quoteItems.findIndex(qi => qi.id === lineItem.id);
+    return lineItemndex;
   }
 
   customerUpserted(cr: CustomerRecord) {

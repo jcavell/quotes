@@ -77,7 +77,7 @@ export class GazProductService {
   }
 
 
-  getProduct(productId: number): Observable<GazProduct> {
+  getProduct(productId: number | string): Observable<GazProduct> {
     return this.http.get(`http://localhost:9000/gazproduct/${productId}`)
       .map((res: Response) => res.json())
       .catch(this.handleError);
@@ -94,6 +94,15 @@ export class GazProductService {
       error.status ? `${error.status} - ${error.statusText}` : 'Server error';
     console.error(errMsg); // log to console instead
     return Observable.throw(errMsg);
+  }
+
+  /**
+   * Utility method to get a thumbnail URL from a product
+   * @param product
+   * @returns {string}
+   */
+  getThumb(product: GazProduct) {
+    return 'https://www.everythingbranded.co.uk/asset/image/imagep/thumbnail/' + product.images[0].imageid + '.jpg';
   }
 }
 

@@ -1,0 +1,111 @@
+<ng-template #content let-c="close" let-d="dismiss">
+
+  <div class="modal-header">
+
+    <div *ngIf="quoteItem?.id;else create_quote_item">
+      <h4 class="modal-title">Edit quote item</h4>
+    </div>
+    <ng-template #create_quote_item>
+      <h4 class="modal-title">Create quote item</h4>
+    </ng-template>
+
+
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+
+    <div *ngIf="alert">
+      <ngb-alert [type]="alert.type" (close)="closeAlert()">{{ alert.message }}</ngb-alert>
+    </div>
+
+    <form class="form-inline" #form="ngForm" (ngSubmit)="upsertQuoteItem()" style="display:inline">
+
+
+      <img *ngIf="productDTO.productname" src="{{getThumb(productDTO)}}"/>
+
+      <div class="form-group row">
+        <label for="name-text-input" class="col-4 col-form-label">Product ID</label>
+        <div class="col-8">
+          <input required (keyup)="productId$.next($event.target.value)" required class="form-control" type="text" name="name" [(ngModel)]="productDTO.productid" placeholder="productId" id="name-text-input">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="product-name-text-input" class="col-4 col-form-label">Product name</label>
+        <div class="col-8">
+          <input required class="form-control" type="text" name="productName" [(ngModel)]="productDTO.productname" placeholder="product name" id="product-name-text-input">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="quantity-text-input" class="col-4 col-form-label">Quantity</label>
+        <div class="col-8">
+          <input required class="form-control" type="text" name="quantity" [(ngModel)]="quoteItemDTO.quantity" placeholder="quantity" id="quantity-text-input">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="colour-text-input" class="col-4 col-form-label">Colour</label>
+        <div class="col-8">
+          <input required class="form-control" type="text" name="colour" [(ngModel)]="quoteItemDTO.colour" placeholder="colour" id="colour-text-input">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="priceIncludes-text-input" class="col-4 col-form-label">Price includes</label>
+        <div class="col-8">
+          <input required class="form-control" type="text" name="priceIncludes" [(ngModel)]="quoteItemDTO.priceIncludes" placeholder="price includes" id="priceIncludes-text-input">
+        </div>
+      </div>
+
+
+      <div class="form-group row">
+      <label for="cost-text-input" class="col-4 col-form-label">Cost</label>
+      <div class="col-8">
+        £<input required class="form-control" type="text" name="cost" [(ngModel)]="quoteItemDTO.cost" placeholder="Cost" id="cost-text-input">
+      </div>
+    </div>
+
+
+      <div class="form-group row">
+        <label for="markup-text-input" class="col-4 col-form-label">Markup</label>
+        <div class="col-8">
+          <input required class="form-control" type="text" name="markup" [(ngModel)]="quoteItemDTO.markup" placeholder="markup" id="markup-text-input">%
+        </div>
+      </div>
+
+
+      <div class="form-group row">
+        <label for="vat-text-input" class="col-4 col-form-label">VAT</label>
+        <div class="col-8">
+          <input required class="form-control" type="text" name="vat" [(ngModel)]="quoteItemDTO.vat" placeholder="VAT" id="vat-text-input">%
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-sm btn-outline-dark btn-warning">
+          <span *ngIf="quoteItem?.id;else createQuoteItemButton">Update quote item</span>
+          <ng-template #createQuoteItemButton>Create quote item</ng-template>
+        </button>
+        <button type="button" class="btn btn-sm btn-outline-dark" (click)="c('Close click')">Close</button>
+      </div>
+
+    </form>
+  </div>
+</ng-template>
+
+<div *ngIf="quoteItem?.id;else create_quote_item_button">
+  <button type="button" class="btn btn-sm btn-primary"
+          (click)="open(content)"><i class="fa fa-edit"></i> Edit
+  </button>
+</div>
+
+<ng-template #create_quote_item_button>
+  <button type="button" class="btn btn-sm btn-primary"
+          (click)="open(content)"><i class="fa fa-edit"></i> New
+  </button>
+</ng-template>
+

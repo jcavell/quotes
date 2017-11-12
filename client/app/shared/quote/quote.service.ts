@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Http, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
-import {Quote, QuoteLineItem, QuoteRecord} from "./quote.model";
+import {Quote, QuoteItem, QuoteRecord} from "./quote.model";
 import {Options} from "../common/options";
 // import 'rxjs/add/operator/do';  // for debugging
 
@@ -35,11 +35,24 @@ export class QuoteService {
     return this.http.get('http://localhost:9000/quote-count', this.opts.getOptions(params)).map(res => res.json());
   }
 
-  getLineItems(quoteId: number): Observable<QuoteLineItem[]> {
+  getLineItems(quoteId: number): Observable<QuoteItem[]> {
     return this.http.get('http://localhost:9000/quotes/' + quoteId + '/line-items')
       .map((res: Response) => res.json())
       //              .do(data => console.log('server data:', data))  // debug
       .catch(this.handleError);
+  }
+
+  upsertQuoteItem(quoteItem: QuoteItem): Observable<QuoteItem> {
+    console.log('Upsert quote item ' + JSON.stringify(quoteItem));
+    const action = quoteItem.id ?
+      this.http.put(`http://localhost:9000/quote-line-items/${quoteItem.id}`, JSON.stringify(quoteItem), this.opts.getOptions()) :
+      this.http.post(`http://localhost:9000/quote-line-items`, JSON.stringify(quoteItem), this.opts.getOptions());
+
+    return action.map(res => res.json());
+  }
+
+  deleteQuoteItem(quoteItemId: number): Observable<QuoteItem> {
+      return this.http.delete(`http://localhost:9000/quote-line-items/${quoteItemId}`, this.opts.getOptions()).map(res => res.json());
   }
 
   updateQuote(quote: Quote): Observable<Quote> {
