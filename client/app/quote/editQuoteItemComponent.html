@@ -27,37 +27,37 @@
       <img *ngIf="productDTO.productname" src="{{getThumb(productDTO)}}"/>
 
       <div class="form-group row">
-        <label for="name-text-input" class="col-4 col-form-label">Product ID</label>
+        <label for="product-id-text-input" class="col-4 col-form-label">Product ID</label>
         <div class="col-8">
-          <input required (keyup)="productId$.next($event.target.value)" required class="form-control" type="text" name="name" [(ngModel)]="productDTO.productid" placeholder="productId" id="name-text-input">
+          <input required (keyup)="productId$.next($event.target.value)" required class="form-control" type="text" name="productId" [formControl]="productId" placeholder="productId" id="product-id-text-input">
         </div>
       </div>
 
       <div class="form-group row">
         <label for="product-name-text-input" class="col-4 col-form-label">Product name</label>
         <div class="col-8">
-          <input required class="form-control" type="text" name="productName" [(ngModel)]="productDTO.productname" placeholder="product name" id="product-name-text-input">
+          <input required class="form-control" type="text" name="productName" [formControl]="productName" placeholder="product name" id="product-name-text-input">
         </div>
       </div>
 
       <div class="form-group row">
         <label for="quantity-text-input" class="col-4 col-form-label">Quantity</label>
         <div class="col-8">
-          <input required class="form-control" type="text" name="quantity" [(ngModel)]="quoteItemDTO.quantity" placeholder="quantity" id="quantity-text-input">
+          <input required class="form-control" type="text" name="quantity" [formControl]="quantity" placeholder="quantity" id="quantity-text-input">
         </div>
       </div>
 
       <div class="form-group row">
         <label for="colour-text-input" class="col-4 col-form-label">Colour</label>
         <div class="col-8">
-          <input required class="form-control" type="text" name="colour" [(ngModel)]="quoteItemDTO.colour" placeholder="colour" id="colour-text-input">
+          <input required class="form-control" type="text" name="colour" [formControl]="colour" placeholder="colour" id="colour-text-input">
         </div>
       </div>
 
       <div class="form-group row">
         <label for="priceIncludes-text-input" class="col-4 col-form-label">Price includes</label>
         <div class="col-8">
-          <input required class="form-control" type="text" name="priceIncludes" [(ngModel)]="quoteItemDTO.priceIncludes" placeholder="price includes" id="priceIncludes-text-input">
+          <input required class="form-control" type="text" name="priceIncludes" [formControl]="priceIncludes" placeholder="price includes" id="priceIncludes-text-input">
         </div>
       </div>
 
@@ -65,7 +65,7 @@
       <div class="form-group row">
       <label for="cost-text-input" class="col-4 col-form-label">Cost</label>
       <div class="col-8">
-        £<input required class="form-control" type="text" name="cost" [(ngModel)]="quoteItemDTO.cost" placeholder="Cost" id="cost-text-input">
+        £<input required class="form-control" type="text" name="cost" [formControl]="cost" placeholder="Cost" id="cost-text-input">
       </div>
     </div>
 
@@ -73,7 +73,7 @@
       <div class="form-group row">
         <label for="markup-text-input" class="col-4 col-form-label">Markup</label>
         <div class="col-8">
-          <input required class="form-control" type="text" name="markup" [(ngModel)]="quoteItemDTO.markup" placeholder="markup" id="markup-text-input">%
+          <input required class="form-control" type="text" name="markup" [formControl]="markup" placeholder="markup" id="markup-text-input">%
         </div>
       </div>
 
@@ -81,7 +81,7 @@
       <div class="form-group row">
         <label for="vat-text-input" class="col-4 col-form-label">VAT</label>
         <div class="col-8">
-          <input required class="form-control" type="text" name="vat" [(ngModel)]="quoteItemDTO.vat" placeholder="VAT" id="vat-text-input">%
+          <input required class="form-control" type="text" name="vat" [formControl]="vat" placeholder="VAT" id="vat-text-input">%
         </div>
       </div>
 

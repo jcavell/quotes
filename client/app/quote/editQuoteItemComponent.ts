@@ -7,6 +7,7 @@ import {Subject} from "rxjs";
 import {IAlert} from "../shared/customer/customer.alert";
 import _ from "lodash";
 import {QuoteService} from "../shared/quote/quote.service";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 
 @Component({
@@ -17,9 +18,10 @@ export class EditQuoteItemComponent {
   private modalRef: NgbModalRef;
   @Input() quoteItem: QuoteItem;
   @Input() product: GazProduct;
-  productDTO: GazProduct;
-  quoteItemDTO: QuoteItem;
+  @Input() quoteId: number;
   productId$ = new Subject<string>();
+  productDTO: GazProduct;
+  quoteItemForm: FormGroup;
 
   alert: IAlert;
   @Output() onQuoteItemUpdated = new EventEmitter<[QuoteItem, GazProduct]>();
@@ -38,6 +40,7 @@ export class EditQuoteItemComponent {
       }).subscribe(
       product => {
         this.productDTO = product;
+        this.productName.setValue(product.productname);
       },
       error => {
         this.alert = {
@@ -55,8 +58,11 @@ export class EditQuoteItemComponent {
 
   onOpen() {
     this.productDTO = this.product ? _.clone(this.product) : new GazProduct();
-    this.quoteItemDTO = this.quoteItem ? _.clone(this.quoteItem) : new QuoteItem();
+    if (!this.quoteItem) {
+      this.quoteItem = new QuoteItem(this.quoteId);
+    }
     this.changeProduct();
+    this.populateValidators();
   }
 
   reset() {
@@ -76,23 +82,35 @@ export class EditQuoteItemComponent {
   }
 
   public upsertQuoteItem() {
-    this.quoteItemDTO.productId = this.productDTO.productid; // copy across product id
+    const quoteItem = new QuoteItem(
+      this.quoteItem.quoteId,
+      this.quoteItem.id,
+      parseInt(this.productId.value, 10),
+      parseFloat(this.quantity.value),
+      this.colour.value,
+      this.description.value,
+      this.priceIncludes.value,
+      parseFloat(this.cost.value),
+      parseFloat(this.markup.value),
+      this.sell.value ? parseFloat(this.sell.value) : null,
+      parseFloat(this.vat.value)
+    );
 
-    const quoteIsNew = this.quoteItemDTO.id === undefined;
-    const quoteHasChanged = !_.isEqual(this.quoteItem, this.quoteItemDTO);
+    const quoteIsNew = quoteItem.id === undefined;
+    const quoteHasChanged = !_.isEqual(this.quoteItem, quoteItem);
 
     if (quoteHasChanged) {
-      this.quoteService.upsertQuoteItem(this.quoteItemDTO).subscribe(
-        quoteItem => {
+      this.quoteService.upsertQuoteItem(quoteItem).subscribe(
+        qi => {
           this.onAlertCreated.emit({
             type: 'success',
-            message: 'Quote item for product id ' + quoteItem.productId + ' ' + quoteIsNew ? 'created' : 'updated'
+            message: ('Quote item for product id ' + qi.productId + ' ' + quoteIsNew ? 'created' : 'updated')
           });
 
           if (quoteIsNew) {
-            this.onQuoteItemCreated.emit([quoteItem, this.productDTO]);
+            this.onQuoteItemCreated.emit([qi, this.productDTO]);
           } else { // quote updated
-            this.onQuoteItemUpdated.emit([quoteItem, this.productDTO]);
+            this.onQuoteItemUpdated.emit([qi, this.productDTO]);
           }
         },
         error => {
@@ -110,4 +128,31 @@ export class EditQuoteItemComponent {
     }
     this.modalRef.close();
   }
+
+
+  populateValidators(): void {
+    this.quoteItemForm = new FormGroup({
+      'productId': new FormControl(this.productDTO.productid, [Validators.required, Validators.min(1), Validators.max(10000)]),
+      'productName': new FormControl(this.productDTO.productname, [Validators.required]),
+      'quantity': new FormControl(this.quoteItem.quantity, [Validators.required, Validators.min(1), Validators.max(10000)]),
+      'colour': new FormControl(this.quoteItem.colour),
+      'description': new FormControl(this.quoteItem.description),
+      'priceIncludes': new FormControl(this.quoteItem.priceIncludes),
+      'cost': new FormControl(this.quoteItem.cost, [Validators.required, Validators.min(0.01), Validators.max(10000)]),
+      'markup': new FormControl(this.quoteItem.markup, [Validators.required, Validators.min(0), Validators.max(500)]),
+      'sell': new FormControl(this.quoteItem.sell, [Validators.required, Validators.min(0), Validators.max(100000)]),
+      'vat': new FormControl(this.quoteItem.vat, [Validators.required, Validators.min(0), Validators.max(100)])
+    });
+  }
+
+  get productId() { return this.quoteItemForm.get('productId'); }
+  get productName() { return this.quoteItemForm.get('productName'); }
+  get quantity() { return this.quoteItemForm.get('quantity'); }
+  get colour() { return this.quoteItemForm.get('colour'); }
+  get description() { return this.quoteItemForm.get('description'); }
+  get priceIncludes() { return this.quoteItemForm.get('priceIncludes'); }
+  get cost() { return this.quoteItemForm.get('cost'); }
+  get markup() { return this.quoteItemForm.get('markup'); }
+  get sell() { return this.quoteItemForm.get('sell'); }
+  get vat() { return this.quoteItemForm.get('vat'); }
 }

@@ -104,7 +104,7 @@
 
 
       <h4 class = "card-header">Line items</h4>
-      <edit-quote-item (onQuoteItemCreated)="quoteItemCreated($event)" (onAlertCreated)="alertCreated($event)"></edit-quote-item>
+      <edit-quote-item [quoteId]="quoteRecord.quote.id" (onQuoteItemCreated)="quoteItemCreated($event)" (onAlertCreated)="alertCreated($event)"></edit-quote-item>
 
       <table class="table table-responsive table-bordered">
         <thead class="thead-default">
@@ -118,6 +118,7 @@
           <th>Markup</th>
           <th>VAT</th>
           <th>Sell</th>
+          <th></th>
           <th></th>
         </tr>
         </thead>
@@ -135,7 +136,7 @@
             <td>{{lineItem.sell}}</td>
             <td><edit-quote-item (onQuoteItemUpdated)="quoteItemUpdated($event)" (onAlertCreated)="alertCreated($event)"  [quoteItem]="lineItem" [product] = "product"></edit-quote-item></td>
           </ng-container>
-          <td><button (click)="deleteQuoteItem(lineItem)">Delete</button></td>
+          <td><button class="btn btn-sm btn-outline-dark btn-outline-danger" (click)="deleteQuoteItem(lineItem)">Delete</button></td>
         </tr>
         </tbody>
       </table>

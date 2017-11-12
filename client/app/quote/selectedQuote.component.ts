@@ -71,7 +71,7 @@ export class SelectedQuoteComponent implements OnInit, OnDestroy {
   deleteQuoteItem(quoteItem: QuoteItem) {
       this.quoteService.deleteQuoteItem(quoteItem.id).subscribe(
         success => {
-          this.quoteItems.unshift(quoteItem);
+          this.quoteItems = this.quoteItems.filter(i => i !== quoteItem);
           this.alert = {
             type: 'success',
             message: 'Quote item deleted'

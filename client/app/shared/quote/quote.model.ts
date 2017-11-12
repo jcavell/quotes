@@ -52,7 +52,7 @@ export class Quote {
   }
 }
 
-  export class QuoteRecord {
+export class QuoteRecord {
   constructor(public quote: Quote,
               public quoteMeta: QuoteMeta,
               public enquiry: Enquiry,
@@ -66,7 +66,8 @@ export class Quote {
 
 
 export class QuoteItem {
-  constructor(public id: number = undefined,
+  constructor(public quoteId: number = undefined,
+              public id: number = undefined,
               public productId: number = undefined,
               public quantity: number = undefined,
               public colour: string = undefined,

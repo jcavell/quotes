@@ -51,8 +51,8 @@ export class QuoteService {
     return action.map(res => res.json());
   }
 
-  deleteQuoteItem(quoteItemId: number): Observable<QuoteItem> {
-      return this.http.delete(`http://localhost:9000/quote-line-items/${quoteItemId}`, this.opts.getOptions()).map(res => res.json());
+  deleteQuoteItem(quoteItemId: number): Observable<string> {
+      return this.http.delete(`http://localhost:9000/quote-line-items/${quoteItemId}`, this.opts.getOptions()).map(res => res.text());
   }
 
   updateQuote(quote: Quote): Observable<Quote> {
