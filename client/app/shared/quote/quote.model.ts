@@ -1,12 +1,13 @@
 import {User} from "../user/user.model";
 import {Address} from "../address/address.model";
 import {CustomerRecord} from "../customer/customerRecord.model";
+import {GazProduct} from "../gazproduct/gazproduct.model";
 
 export class Enquiry {
   constructor(public id: number,
               public enquiryId: number,
               public enquiryTimestamp: string,
-              public productId: number,
+              public productId: number, // todo use sku instead
               public sku: string,
               public productName: string,
               public supplier: string,
@@ -43,7 +44,7 @@ export class Quote {
               public requiredDate: string,
               public specialInstructions: string,
               public createdDate: string,
-              public notes: string,
+              public notes: string[] = [],
               public customerId: number,
               public enquiryId: number,
               public repId: number,
@@ -68,14 +69,15 @@ export class QuoteRecord {
 export class QuoteItem {
   constructor(public quoteId: number = undefined,
               public id: number = undefined,
-              public productId: number = undefined,
+              public productId: number = undefined, // TODO change to sku
+              public product: GazProduct = undefined,
               public quantity: number = undefined,
               public colour: string = undefined,
-              public description: string = undefined,
               public priceIncludes: string = undefined,
-              public cost: number = undefined,
-              public markup: number = undefined,
-              public sell: number = undefined,
-              public vat: number = undefined) {
+              public printSetup: number = undefined,
+              public printSetupMarkup: number = 40,
+              public carriage: number = undefined,
+              public carriageMarkup: number = 40,
+              public vat: number = 20) {
   }
 }

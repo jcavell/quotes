@@ -1,31 +1,44 @@
 <ng-template #content let-c="close" let-d="dismiss">
 
-  <div class="modal-header">
-    <h4 class="modal-title">Modal title</h4>
+  <div class="modal-header card-header">
+    <h4 class="modal-title">Edit quote</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
 
 
-  <form class="form-inline">
-    <div class="form-group">
-      <div class="input-group">
-        <input class="form-control" type="text" name="name" [(ngModel)]="quote.title" placeholder="title">
+  <form>
+
+    <div class="card-body">
+    <div class="form-group row">
+      <label for="title-text-input" class="col-2 col-form-label">Title</label>
+      <div class="col-10">
+        <input class="form-control" type="text" name="name" [(ngModel)]="quote.title" placeholder="title" id="title-text-input">
       </div>
-      <br>
-      <div class="input-group">
-        <input class="form-control" placeholder="yyyy-mm-dd"
-               name="requiredDate" [(ngModel)]="theDate" ngbDatepicker #dp="ngbDatepicker">
-        <button class="input-group-addon" (click)="dp.toggle()" type="button">
-          <img src="/assets/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
-        </button>
+    </div>
+
+    <div class="form-group row">
+      <label for="notes-text-input" class="col-2 col-form-label">Add note</label>
+      <div class="col-10">
+        <textarea name="notes" [(ngModel)]="newNote" id="notes-text-input"></textarea>
       </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="required-date-text-input" class="col-2 col-form-label">Required</label>
+      <div class="col-10 form-inline">
+        <input class="form-control" placeholder="yyyy-mm-dd" name="requiredDate" [(ngModel)]="requiredDate" ngbDatepicker #dp="ngbDatepicker" id="required-date-text-input">
+        <button class="input-group-addon" (click)="dp.toggle()" type="button"><img src="/assets/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/></button>
+      </div>
+    </div>
+
     </div>
   </form>
 
   <div class="modal-footer">
-    <button type="submit" class="btn btn-sm btn-outline-dark btn-warning" (click) = "updateQuote(quote)">Update quote</button>
+    <button type="submit" class="btn btn-sm btn-outline-dark btn-warning" (click)="updateQuote(quote)">Update quote
+    </button>
     <button type="button" class="btn btn-sm btn-outline-dark" (click)="c('Close click')">Close</button>
   </div>
 

@@ -10,6 +10,7 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {EditQuoteComponent} from "./editQuoteComponent";
 import {CustomerModule} from "../customer/customer.module";
 import {EditQuoteItemComponent} from "./editQuoteItemComponent";
+import {DynamicFormQuestionComponent} from "./dynamic-form-question.component";
 
 @NgModule({
   imports: [
@@ -19,7 +20,7 @@ import {EditQuoteItemComponent} from "./editQuoteItemComponent";
     BootstrapModalModule,
     NgbModule
   ],
-  declarations: [QuotesComponent, SelectedQuoteComponent, EditQuoteComponent, EditQuoteItemComponent],
+  declarations: [QuotesComponent, SelectedQuoteComponent, EditQuoteComponent, EditQuoteItemComponent, DynamicFormQuestionComponent],
   exports: [QuotesComponent, SelectedQuoteComponent],
   providers: [QuoteService, SelectedQuoteService]
 })

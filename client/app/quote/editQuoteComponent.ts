@@ -1,35 +1,57 @@
-import {Component, Input} from "@angular/core";
+import {Component, EventEmitter, Input, Output} from "@angular/core";
 
-import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {ModalDismissReasons, NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {Quote} from "../shared/quote/quote.model";
 import {QuoteService} from "../shared/quote/quote.service";
+import {IAlert} from "../shared/customer/customer.alert";
 
 @Component({
   selector: 'edit-quote',
-  templateUrl: './editQuoteComponent.html'
+  templateUrl: './editQuoteComponent.html',
 })
 export class EditQuoteComponent {
+  private modalRef: NgbModalRef;
   closeResult: string;
   @Input() quote: Quote;
-  @Input() theDate = { "year": "2017", "month": "2", "day": "25" };
+  @Input() requiredDate;
+  @Input() newNote: string;
+  @Output() onAlertCreated = new EventEmitter<IAlert>();
+
 
   constructor(private modalService: NgbModal, public quoteService: QuoteService) {}
 
   open(content) {
-    this.modalService.open(content).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+    const parsedDate = new Date (this.quote.requiredDate);
+    this.requiredDate = {year: parsedDate.getFullYear(), month: parsedDate.getMonth() + 1, day: parsedDate.getDate()};
+    this.modalRef = this.modalService.open(content, {size: 'lg', beforeDismiss: this.reset, keyboard : false});
+  }
+
+  reset() {
+    return true;
   }
 
   updateQuote(quote: Quote) {
-    console.log('Updating quote: ' + JSON.stringify(quote));
+
+    this.quote.requiredDate = new Date(this.requiredDate.year, this.requiredDate.month - 1, this.requiredDate.day).toISOString().split('.')[0] + 'Z';
+
+    if (this.newNote) {
+      this.quote.notes.push(this.newNote);
+    }
     this.quoteService.updateQuote(quote).subscribe(
       res => {
-        // this.dismiss();
+        this.onAlertCreated.emit({
+          type: 'success',
+          message: ('Quote updated')
+        });
+        this.modalRef.close();
       },
-      error => console.log('ERROR')
+      error => {
+        this.onAlertCreated.emit({
+          type: 'danger',
+          message: ('Error: ' + JSON.stringify(error))
+        });
+        this.modalRef.close();
+      }
     );
   }
 

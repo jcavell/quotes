@@ -7,16 +7,19 @@
         <ngb-alert [type]="alert.type" (close)="closeAlert()">{{ alert.message }}</ngb-alert>
       </div>
 
-      <h4 class = "card-header">Quote
+      <h4 class="card-header">Quote
       </h4>
 
       <table class="table table-responsive table-bordered">
+
         <thead class="thead-default">
         <tr>
           <th>ID</th>
           <th>Title</th>
           <th>Created</th>
           <th>Required</th>
+          <th>Additional info</th>
+          <th></th>
           <th></th>
         </tr>
         </thead>
@@ -26,13 +29,30 @@
           <td>{{quoteRecord.quote.title}}</td>
           <td>{{quoteRecord.quote.createdDate | date: 'EE dd/MM/yyyy'}}</td>
           <td>{{quoteRecord.quote.requiredDate | date: 'EE dd/MM/yyyy'}}</td>
-          <td><edit-quote [quote]="quoteRecord.quote"></edit-quote></td>
+          <td>{{quoteRecord.enquiry?.otherRequirements}}</td>
+          <td>
+            <ngb-accordion #acc="ngbAccordion">
+              <ngb-panel title="Notes ({{quoteRecord.quote.notes.length}})">
+                <ng-template ngbPanelContent>
+
+        <span *ngFor="let note of quoteRecord.quote.notes; let i = index">
+          <span class="td-align-left" colspan="5">
+            {{ note }}
+          </span>
+        </span>
+                </ng-template>
+              </ngb-panel>
+            </ngb-accordion>
+          </td>
+          <td>
+            <edit-quote [quote]="quoteRecord.quote"></edit-quote>
+          </td>
         </tr>
         </tbody>
       </table>
 
 
-      <h4 class = "card-header">Customer
+      <h4 class="card-header">Customer
       </h4>
       <table class="table table-responsive table-bordered">
         <thead class="thead-default">
@@ -52,12 +72,16 @@
           <td>{{quoteRecord.customerRecord.customer.email}}</td>
           <td>{{quoteRecord.customerRecord.customer.directPhone}}</td>
           <td>{{quoteRecord.customerRecord.customer.mobilePhone}}</td>
-          <td><edit-customer (onCustomerCreated)="customerUpserted($event)" (onCustomerUpdated)="customerUpserted($event)" (onAlertCreated)="alertCreated($event)"  [customerRecord]="quoteRecord.customerRecord" [enquiry] = "quoteRecord.enquiry" [activeTabId] = "'customer-tab'"></edit-customer></td>
+          <td>
+            <edit-customer (onCustomerCreated)="customerUpserted($event)" (onCustomerUpdated)="customerUpserted($event)"
+                           (onAlertCreated)="alertCreated($event)" [customerRecord]="quoteRecord.customerRecord"
+                           [enquiry]="quoteRecord.enquiry" [activeTabId]="'customer-tab'"></edit-customer>
+          </td>
         </tr>
         </tbody>
       </table>
 
-      <h4 class = "card-header">Addresses</h4>
+      <h4 class="card-header">Addresses</h4>
 
       <table class="table table-responsive table-bordered">
         <thead class="thead-default">
@@ -85,7 +109,11 @@
           <td>{{quoteRecord.customerRecord.invoiceAddress?.townCity}}</td>
           <td>{{quoteRecord.customerRecord.invoiceAddress?.county}}</td>
           <td>{{quoteRecord.customerRecord.invoiceAddress?.postcode}}</td>
-          <td><edit-customer (onCustomerCreated)="customerUpserted($event)" (onCustomerUpdated)="customerUpserted($event)" (onAlertCreated)="alertCreated($event)"  [customerRecord]="quoteRecord.customerRecord" [enquiry] = "quoteRecord.enquiry" [activeTabId] = "'invoice-address-tab'"></edit-customer></td>
+          <td>
+            <edit-customer (onCustomerCreated)="customerUpserted($event)" (onCustomerUpdated)="customerUpserted($event)"
+                           (onAlertCreated)="alertCreated($event)" [customerRecord]="quoteRecord.customerRecord"
+                           [enquiry]="quoteRecord.enquiry" [activeTabId]="'invoice-address-tab'"></edit-customer>
+          </td>
         </tr>
         <tr>
           <td>Delivery</td>
@@ -97,14 +125,20 @@
           <td>{{quoteRecord.customerRecord.deliveryAddress?.townCity}}</td>
           <td>{{quoteRecord.customerRecord.deliveryAddress?.county}}</td>
           <td>{{quoteRecord.customerRecord.deliveryAddress?.postcode}}</td>
-          <td><edit-customer (onCustomerCreated)="customerUpserted($event)" (onCustomerUpdated)="customerUpserted($event)" (onAlertCreated)="alertCreated($event)"  [customerRecord]="quoteRecord.customerRecord" [enquiry] = "quoteRecord.enquiry" [activeTabId] = "'delivery-address-tab'"></edit-customer></td>
+          <td>
+            <edit-customer (onCustomerCreated)="customerUpserted($event)" (onCustomerUpdated)="customerUpserted($event)"
+                           (onAlertCreated)="alertCreated($event)" [customerRecord]="quoteRecord.customerRecord"
+                           [enquiry]="quoteRecord.enquiry" [activeTabId]="'delivery-address-tab'"></edit-customer>
+          </td>
         </tr>
         </tbody>
       </table>
 
 
-      <h4 class = "card-header">Line items</h4>
-      <edit-quote-item [quoteId]="quoteRecord.quote.id" (onQuoteItemCreated)="quoteItemCreated($event)" (onAlertCreated)="alertCreated($event)"></edit-quote-item>
+      <h4 class="card-header">Quote items
+      <edit-quote-item [quoteId]="quoteRecord.quote.id" (onQuoteItemCreated)="quoteItemCreated($event)"
+                       (onAlertCreated)="alertCreated($event)"></edit-quote-item>
+      </h4>
 
       <table class="table table-responsive table-bordered">
         <thead class="thead-default">
@@ -114,29 +148,27 @@
           <th>Quantity</th>
           <th>Colour</th>
           <th>Price includes</th>
-          <th>Cost</th>
-          <th>Markup</th>
-          <th>VAT</th>
-          <th>Sell</th>
           <th></th>
           <th></th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let lineItem of quoteItems">
-          <ng-container *ngIf="quoteItemProducts.get(lineItem.productId) as product">
-            <td>{{product.productname}}</td>
-            <td><img src="{{getThumb(product)}}"/></td>
-            <td>{{lineItem.quantity}}</td>
-            <td>{{lineItem.colour}}</td>
-            <td>{{lineItem.priceIncludes}}</td>
-            <td>{{lineItem.cost}}</td>
-            <td>{{lineItem.markup}}</td>
-            <td>{{lineItem.vat}}</td>
-            <td>{{lineItem.sell}}</td>
-            <td><edit-quote-item (onQuoteItemUpdated)="quoteItemUpdated($event)" (onAlertCreated)="alertCreated($event)"  [quoteItem]="lineItem" [product] = "product"></edit-quote-item></td>
+        <tr *ngFor="let quoteItem of quoteItems">
+          <ng-container *ngIf="quoteItem.product">
+            <td>{{quoteItem.product.productname}}</td>
+            <td><img src="{{getThumb(quoteItem.product)}}"/></td>
+            <td>{{quoteItem.quantity}}</td>
+            <td>{{quoteItem.colour}}</td>
+            <td>{{quoteItem.priceIncludes}}</td>
+            <td>
+              <edit-quote-item (onQuoteItemUpdated)="quoteItemUpdated($event)" (onAlertCreated)="alertCreated($event)"
+                               [quoteItem]="quoteItem"></edit-quote-item>
+            </td>
           </ng-container>
-          <td><button class="btn btn-sm btn-outline-dark btn-outline-danger" (click)="deleteQuoteItem(lineItem)">Delete</button></td>
+          <td>
+            <button class="btn btn-sm btn-outline-dark btn-outline-danger" (click)="deleteQuoteItem(lineItem)">Delete
+            </button>
+          </td>
         </tr>
         </tbody>
       </table>

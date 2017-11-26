@@ -27,7 +27,6 @@ import {CustomerRecord} from "../shared/customer/customerRecord.model";
 export class SelectedQuoteComponent implements OnInit, OnDestroy {
   quoteRecord: QuoteRecord;
   quoteItems: QuoteItem[];
-  quoteItemProducts: Map<number, GazProduct>;
   subscription: Subscription;
   alert: IAlert;
 
@@ -90,17 +89,17 @@ export class SelectedQuoteComponent implements OnInit, OnDestroy {
     this.quoteRecord = qr;
 
     this.quoteService.getLineItems(qr.quote.id).subscribe(
-      lineItems => {
-        this.quoteItems = lineItems;
-        this.quoteItemProducts = new Map<number, GazProduct>();
-        this.quoteItems.forEach(lineItem => {
-            this.gazProductService.getProduct(lineItem.productId).subscribe(
-              product => {
-                this.quoteItemProducts.set(lineItem.productId, product);
-                console.log('SET: ' + product);
-              },
-              error => console.log(error)
-            );
+      quoteItems => {
+        this.quoteItems = quoteItems;
+        this.quoteItems.forEach(quoteItem => {
+            if (!quoteItem.product) {
+              this.gazProductService.getProduct(quoteItem.productId).subscribe(
+                product => {
+                  quoteItem.product = product;
+                },
+                error => console.log(error)
+              );
+            }
           },
         );
 
@@ -113,7 +112,6 @@ export class SelectedQuoteComponent implements OnInit, OnDestroy {
     const quoteItem = event[0];
     const product = event[1];
     this.quoteItems.push(quoteItem);
-    this.quoteItemProducts.set(quoteItem.productId, product);
   }
 
   quoteItemUpdated(event: [QuoteItem, GazProduct]) {
@@ -122,7 +120,6 @@ export class SelectedQuoteComponent implements OnInit, OnDestroy {
     const lineItemIndex = this.getQuoteItemIndex(quoteItem);
 
     this.quoteItems[lineItemIndex] = quoteItem;
-    this.quoteItemProducts.set(quoteItem.productId, product);
   }
 
   private getQuoteItemIndex(lineItem: QuoteItem) {

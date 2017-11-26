@@ -71,7 +71,7 @@ var PensWarehouseProductService = (function () {
             if (similarProds.length > 0) {
                 // console.log('Getting cheapest product')
                 // TODO use price for quantity requested
-                var cheapestProd = similarProds.sort(function (a, b) { return a.prices[0] - b.prices[0]; })[0];
+                var cheapestProd = similarProds.sort(function (a, b) { return a.priceInputs[0] - b.priceInputs[0]; })[0];
                 // console.log('cheapest product: ' + JSON.stringify(cheapestProd));
                 if (cheapestProd.sku !== sku) {
                     quoteProducts.push(cheapestProd);

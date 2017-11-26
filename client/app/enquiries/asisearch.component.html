@@ -69,7 +69,7 @@
         <tr *ngFor="let product of products">
           <td><img width = "60" src = "{{product.image_url}}"/></td>
           <td>{{product.name}}</td>
-          <td>{{product.prices[priceKey]}}</td>
+          <td>{{product.priceInputs[priceKey]}}</td>
           <td>{{product.stock_level}}</td>
           <td> <button type="button" (click) = "add(product)" class="btn btn-sm btn-warning">Add</button></td>
         </tr>

@@ -15,73 +15,115 @@
     </button>
   </div>
 
-  <div class="modal-body">
 
-    <div *ngIf="alert">
+  <div class="container-fluid">
+
+  <div *ngIf="alert">
       <ngb-alert [type]="alert.type" (close)="closeAlert()">{{ alert.message }}</ngb-alert>
     </div>
 
-    <form class="form-inline" #form="ngForm" (ngSubmit)="upsertQuoteItem()" style="display:inline">
+    <form class="form-inline" (ngSubmit)="upsertQuoteItem()" style="display:inline">
 
 
-      <img *ngIf="productDTO.productname" src="{{getThumb(productDTO)}}"/>
+      <img *ngIf="quoteItemCopy.product.productname" src="{{getThumb(quoteItemCopy.product)}}"/>
 
       <div class="form-group row">
-        <label for="product-id-text-input" class="col-4 col-form-label">Product ID</label>
-        <div class="col-8">
+        <label for="product-id-text-input" class="col-2 col-form-label">Product ID</label>
+        <div class="col-3">
           <input required (keyup)="productId$.next($event.target.value)" required class="form-control" type="text" name="productId" [formControl]="productId" placeholder="productId" id="product-id-text-input">
         </div>
-      </div>
 
-      <div class="form-group row">
-        <label for="product-name-text-input" class="col-4 col-form-label">Product name</label>
-        <div class="col-8">
-          <input required class="form-control" type="text" name="productName" [formControl]="productName" placeholder="product name" id="product-name-text-input">
+        <label for="product-name-text-input" class="col-2 col-form-label">Name</label>
+        <div class="col-3">
+          <input required class="form-control" type="text" name="productName" [formControl]="productName" placeholder="Name" id="product-name-text-input">
         </div>
       </div>
 
       <div class="form-group row">
-        <label for="quantity-text-input" class="col-4 col-form-label">Quantity</label>
-        <div class="col-8">
-          <input required class="form-control" type="text" name="quantity" [formControl]="quantity" placeholder="quantity" id="quantity-text-input">
+        <!--<label for="quantity-text-input" class="col-2 col-form-label">Quantity</label>-->
+        <!--<div class="col-3">-->
+          <!--<input required class="form-control" type="text" name="quantity" [formControl]="quantity" placeholder="quantity" id="quantity-text-input">-->
+        <!--</div>-->
+
+        <label for="product-description-text-input" class="col-2 col-form-label">Description</label>
+        <div class="col-10">
+          <input required class="form-control" type="text" name="productDescription" [formControl]="productDescription" placeholder="Description" id="product-description-text-input">
         </div>
       </div>
 
+
       <div class="form-group row">
-        <label for="colour-text-input" class="col-4 col-form-label">Colour</label>
-        <div class="col-8">
+        <label for="colour-text-input" class="col-2 col-form-label">Colour</label>
+        <div class="col-3">
           <input required class="form-control" type="text" name="colour" [formControl]="colour" placeholder="colour" id="colour-text-input">
         </div>
-      </div>
-
-      <div class="form-group row">
-        <label for="priceIncludes-text-input" class="col-4 col-form-label">Price includes</label>
-        <div class="col-8">
+        <label for="priceIncludes-text-input" class="col-2 col-form-label">Includes</label>
+        <div class="col-3">
           <input required class="form-control" type="text" name="priceIncludes" [formControl]="priceIncludes" placeholder="price includes" id="priceIncludes-text-input">
         </div>
       </div>
 
 
-      <div class="form-group row">
-      <label for="cost-text-input" class="col-4 col-form-label">Cost</label>
-      <div class="col-8">
-        £<input required class="form-control" type="text" name="cost" [formControl]="cost" placeholder="Cost" id="cost-text-input">
+      <div *ngFor="let price of priceInputs" class="form-group row">
+        <div *ngFor="let priceItem of price">
+          <app-question [question]="priceItem" [form]="form"></app-question>
+        </div>
       </div>
-    </div>
+
+
+      <!--<div *ngIf="productpriceInputsices">-->
+        <!--<div class="form-group row" *ngFor="let price of productpriceInputsices">-->
+
+          <!--<label class="col-2 col-form-label">{{price.qty}}</label>-->
+            <!--<div class="col-2"><input type="checkbox" name = "show_qty_{{qty}}" value="1"></div>-->
+
+          <!--<div class="col-4"><input type="text" name = "cost_{{qty}}" value="{{price.price}}"></div>-->
+
+          <!--<div class="col-4"><input type="text" name = "markup_{{qty}}" value="40"></div>-->
+        <!--</div>-->
+      <!--</div>-->
+
 
 
       <div class="form-group row">
-        <label for="markup-text-input" class="col-4 col-form-label">Markup</label>
-        <div class="col-8">
-          <input required class="form-control" type="text" name="markup" [formControl]="markup" placeholder="markup" id="markup-text-input">%
+        <label for="print-setup-text-input" class="col-2 col-form-label">Print setup</label>
+        <div class="col-3">
+          <input required class="form-control" type="text" name="printSetup" [formControl]="printSetup" placeholder="Print Setup" id="print-setup-text-input">
+        </div>
+        <label for="print-setup-markup-text-input" class="col-2 col-form-label">Markup</label>
+        <div class="col-3">
+          <input required class="form-control" type="text" name="printSetupMarkup" [formControl]="printSetupMarkup" placeholder="Markup" id="print-setup-markup-text-input">
+        </div>
+        <div *ngIf = "printSetupPrice" class="col-2">
+          = {{printSetupPrice}}
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="unit-cost-text-input" class="col-2 col-form-label">Carriage</label>
+        <div class="col-3">
+          <input required class="form-control" type="text" name="carriage" [formControl]="carriage" placeholder="Carriage" id="carriage-text-input">
+        </div>
+        <label for="carriage-markup-text-input" class="col-2 col-form-label">Markup</label>
+        <div class="col-3">
+          <input required class="form-control" type="text" name="carriageMarkup" [formControl]="carriageMarkup" placeholder="Markup" id="carriage-markup-text-input">
+        </div>
+        <div *ngIf = "carriagePrice" class="col-2">
+          = {{carriagePrice}}
         </div>
       </div>
 
 
       <div class="form-group row">
-        <label for="vat-text-input" class="col-4 col-form-label">VAT</label>
-        <div class="col-8">
-          <input required class="form-control" type="text" name="vat" [formControl]="vat" placeholder="VAT" id="vat-text-input">%
+        <label for="vat-text-input" class="col-2 col-form-label">VAT</label>
+        <div class="col-3">
+          <input class = "col-xs-2" required class="form-control" type="text" name="vat" [formControl]="vat" placeholder="VAT" id="vat-text-input">
+        </div>
+        <div *ngIf="totalPrice" class="col-2">
+          Total price
+        </div>
+        <div *ngIf="totalPrice" class="col-3">
+          <strong>= {{totalPrice}}</strong>
         </div>
       </div>
 
